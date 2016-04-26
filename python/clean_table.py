@@ -29,6 +29,7 @@ def dict_to_df(serie):
     # -- Get all possible key values (to speed-up the process)
     keys = get_all_possible_keys(serie)
     table = pd.DataFrame(columns=list(keys))
+
     len_serie = len(serie)
     k = 0
     for i in serie:
