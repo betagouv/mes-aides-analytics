@@ -26,28 +26,27 @@ def dict_to_df(serie):
     """parameters : - series : a Pandas Series where each row is a dict.
        returns: - a pandas DataFrame containing all keys as columns.
     """
-    # -- Get all possible key values (to speed-up the process)
+    # -- Get all possible key values
+    serie = data.logement
     keys = get_all_possible_keys(serie)
-    table = pd.DataFrame(columns=list(keys))
-
     len_serie = len(serie)
+    # -- Pre-allocate memory by declaring size
+    table = pd.DataFrame(np.nan, index=range(0, len_serie), columns=list(keys))
+    # -- Fill row by row
     k = 0
     for i in serie:
         if(type(i) == list):
             if (len(i) > 0):
-                df = pd.DataFrame(list(i[0].items()))
+                df.loc[k] = pd.Series(i[0])
             else:
                 continue
         elif(type(i) == dict):
-            df = pd.DataFrame(list(i.items()))
+            df.loc[k] = pd.Series(i)
         else:
             continue
-        df = df.transpose()
-        df.columns = df.iloc[0]
-        df = df.reindex(df.index.drop(0))
-        table = pd.concat([table, df], axis=0)
         k += 1
         print('%s / %s' % (k, len_serie))
         clear_output(wait=True)
         sys.stdout.flush()
+
     return table
