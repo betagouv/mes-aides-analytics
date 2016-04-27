@@ -22,31 +22,12 @@ def get_all_possible_keys(serie):
     return keys
 
 
-def dict_to_df(serie):
-    """parameters : - series : a Pandas Series where each row is a dict.
-       returns: - a pandas DataFrame containing all keys as columns.
+def add_id_to_individus(serie):
+    """parameter : -serie : a Pandas Series where each row is a person ([dict])
+                            or a list of person (list of dicts)
+    role : add the "_id_demandeur" on each dicts.
     """
-    # -- Get all possible key values
-    serie = data.logement
-    keys = get_all_possible_keys(serie)
-    len_serie = len(serie)
-    # -- Pre-allocate memory by declaring size
-    table = pd.DataFrame(np.nan, index=range(0, len_serie), columns=list(keys))
-    # -- Fill row by row
-    k = 0
-    for i in serie:
-        if(type(i) == list):
-            if (len(i) > 0):
-                df.loc[k] = pd.Series(i[0])
-            else:
-                continue
-        elif(type(i) == dict):
-            df.loc[k] = pd.Series(i)
-        else:
-            continue
-        k += 1
-        print('%s / %s' % (k, len_serie))
-        clear_output(wait=True)
-        sys.stdout.flush()
-
-    return table
+    for list_ind in serie:
+        if len(list_ind) > 0:
+            for d in list_ind:
+                d['_id_demandeur'] = list_ind[0]['_id']
