@@ -41,7 +41,7 @@ def add_id_to_serie(df, serie, df_id, serie_id):
     for list_ind in df[str(serie)]:
         if len(list_ind) > 0:
             for d in list_ind:
-                d[str(df_id)] = df.loc[k][str(serie_id)]
+                d[str(df_id)] = df.iloc[k][str(serie_id)]
         k += 1
 
 
