@@ -3,6 +3,7 @@ import sys
 import numpy as np
 import pandas as pd
 from IPython.display import clear_output
+from datetime import date
 
 
 def get_all_possible_keys(serie):
@@ -22,12 +23,53 @@ def get_all_possible_keys(serie):
     return keys
 
 
-def add_id_to_individus(serie):
-    """parameter : -serie : a Pandas Series where each row is a person ([dict])
-                            or a list of person (list of dicts)
-    role : add the "_id_demandeur" on each dicts.
+def add_id_to_serie(df, serie, df_id, serie_id):
+    """parameter : -df : a pandas DataFrame contaning '_id' and a serie of
+                         list of dict.
+                   -serie (str) : Name of the pandas Serie contaning a list
+                                  of dict.
+                   -df_id (str) : name of df id (must starts with '_id_')
+                   -serie_id (str) : name of newly created serie id (must
+                                     starts with '_id_')
+    role : add the "_id_xxx" on each dicts of the pandas Serie
     """
-    for list_ind in serie:
+    k = 0
+    assert type(serie) == str, "serie parameter must be a valid str"
+    assert type(df_id) == str, "df_id parameter must be a valid str"
+    assert type(serie_id) == str, "new_id parameter must be a valid str"
+    assert str(serie) in df.columns.tolist(), "serie must be in df columns"
+    for list_ind in df[str(serie)]:
         if len(list_ind) > 0:
             for d in list_ind:
-                d['_id_demandeur'] = list_ind[0]['_id']
+                d[str(df_id)] = df.loc[k][str(serie_id)]
+        k += 1
+
+
+def calculate_age(born):
+    today = date.today()
+    return today.year - born.year - ((today.month, today.day) <
+                                     (born.month, born.day))
+
+
+def clean_individus():
+    """import and clean table individus
+    - returns : pandas Dataframe
+    """
+    t_individus = pd.read_csv(path + "individus.csv", index_col=False)
+    t_individus = t_individus.rename(columns={'_id': '_id_individu'})
+    del t_individus['Unnamed: 0']
+    # -- On ne conserve que la date (sans les nanosecondes..)
+    t_individus.dateDeNaissance =\
+        [x.split(' ')[0] for x in t_individus.dateDeNaissance]
+    t_individus.dateDeNaissance =\
+        pd.to_datetime(t_individus.dateDeNaissance, errors='coerce')
+    # -- Filter 12-12-12
+    t_individus = t_individus.loc[t_individus.dateDeNaissance != '12-12-2012']
+    # -- Clean situation_pro dicts
+    t_individus.situationsPro =\
+        t_individus.situationsPro.apply(
+            lambda x: [] if (pd.isnull(x) or x == '[]') else x)
+    t_individus.situationsPro =\
+        [ast.literal_eval(x.replace("ObjectId('", '\'').replace("')", '\''))
+            if type(x) == str else x for x in t_individus.situationsPro]
+    return t_individus
