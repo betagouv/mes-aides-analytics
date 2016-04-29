@@ -72,4 +72,6 @@ def clean_individus():
     t_individus.situationsPro =\
         [ast.literal_eval(x.replace("ObjectId('", '\'').replace("')", '\''))
             if type(x) == str else x for x in t_individus.situationsPro]
+    # -- age from birthdate
+    t_individus['age'] = t_individus.dateDeNaissance.apply(calculate_age)
     return t_individus
