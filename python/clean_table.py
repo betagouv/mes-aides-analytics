@@ -4,8 +4,7 @@ import numpy as np
 import pandas as pd
 from IPython.display import clear_output
 from datetime import date
-
-
+import ast
 def get_all_possible_keys(serie):
     """parameters : - series : a Pandas Series where each row is a dict.
        returns: - set of all unique keys.
@@ -51,7 +50,7 @@ def calculate_age(born):
                                      (born.month, born.day))
 
 
-def clean_individus():
+def clean_individus(path):
     """import and clean table individus
     - returns : pandas Dataframe
     """
@@ -63,7 +62,6 @@ def clean_individus():
         [x.split(' ')[0] for x in t_individus.dateDeNaissance]
     t_individus.dateDeNaissance =\
         pd.to_datetime(t_individus.dateDeNaissance, errors='coerce')
-    # -- Filter 12-12-12
     t_individus = t_individus.loc[t_individus.dateDeNaissance != '12-12-2012']
     # -- Clean situation_pro dicts
     t_individus.situationsPro =\
@@ -72,6 +70,43 @@ def clean_individus():
     t_individus.situationsPro =\
         [ast.literal_eval(x.replace("ObjectId('", '\'').replace("')", '\''))
             if type(x) == str else x for x in t_individus.situationsPro]
-    # -- age from birthdate
     t_individus['age'] = t_individus.dateDeNaissance.apply(calculate_age)
+    t_individus.drop_duplicates(subset=['_id_individu'], inplace=True)
+    # -- dtypes
+    t_individus.statutMarital = t_individus.statutMarital.astype(str)
+    t_individus.statutMarital =\
+        t_individus.statutMarital.replace('nan', np.nan)
+
     return t_individus
+
+
+def clean_simulations(path):
+    """import and clean table simulations
+    - returns : pandas Dataframe
+    """
+    t_simulations = pd.read_csv(path + 'simulations.csv')
+    t_simulations.dateDeValeur = pd.to_datetime(t_simulations.dateDeValeur)
+    t_simulations =\
+        t_simulations.loc[t_simulations.dateDeValeur >= '01-01-2015']
+    t_simulations._id = t_simulations._id.astype(str)
+
+    return t_simulations
+
+
+def clean_logements(path):
+    """import and clean table simulations
+    - returns : pandas Dataframe
+    """
+    t_logements = pd.read_csv(path + 'logements.csv')
+    del t_logements['Unnamed: 0']
+    t_logements.adresse =\
+        t_logements.adresse.apply(
+            lambda x: [] if (pd.isnull(x) or x == '[]') else x)
+    t_logements.adresse =\
+        [ast.literal_eval(x) if (
+            type(x) == str) else x for x in t_logements.adresse]
+    t_logements.adresse =\
+        t_logements.adresse.apply(lambda x: [x] if type(x) != list else x)
+    t_logements._id_demandeur = t_logements._id_demandeur.astype('str')
+
+    return t_logements
