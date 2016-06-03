@@ -5,6 +5,8 @@ import pandas as pd
 from IPython.display import clear_output
 from datetime import date
 import ast
+
+
 def get_all_possible_keys(serie):
     """parameters : - series : a Pandas Series where each row is a dict.
        returns: - set of all unique keys.
