@@ -4,7 +4,6 @@ from openfisca_core.simulations import Simulation
 import openfisca_france
 import requests
 
-
 import copy
 import utils
 
@@ -32,7 +31,9 @@ if False:
       situations = utils.merge(situations, utils.prefix(str(i), situation))
 
 import server
-remoteSituations = server.getSituations()
+s = server.getBogusSituations()
+# s = server.getDailySituations()
+remoteSituations = server.processSituations(s, remote=True)
 situations = utils.empty()
 for prefix, situation in remoteSituations.iteritems():
     situations = utils.merge(situations, utils.prefix(prefix, situation))
@@ -83,7 +84,6 @@ for calcul, periods in calculs.iteritems():
         data = simulation_actuelle.calculate(calcul, period)
         print calcul
         print data
-
 
 
 # for sid, situation in remoteSituations.iteritems():
