@@ -11,5 +11,6 @@ Les dépendances de cette expérimentation peuvent être installées à partir d
 ```
 pip install -r requirements.txt
 ```
+Il est aussi nécessaire d'installer les dépendances OpenFisca de Mes Aides (depuis `mes-aides-ui/openfisca/requirements.txt`).
 
 Le fichier `parallel.py` permet d'aggréger des situations et d'effectuer des calculs sur ces situations.
