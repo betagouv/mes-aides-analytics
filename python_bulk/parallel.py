@@ -1,18 +1,28 @@
 # -*- coding: utf-8 -*-
+
+import logging
+FORMAT = '%(asctime)-15s %(message)s'
+logging.basicConfig(format=FORMAT)
+log = logging.getLogger()
+log.setLevel(logging.INFO)
+
 from openfisca_core.scripts import build_tax_benefit_system
 from openfisca_core.simulations import Simulation
 import openfisca_france
-import requests
 
 import copy
-import utils
-
 import json
+import os
+import requests
+import sys
 
+import utils
 
 country_package = 'openfisca_france'
 extensions = ['openfisca_bacASable', 'openfisca_paris', 'openfisca_brestmetropole', 'openfisca_rennesmetropole']
 
+
+log.info('build_tax_benefit_system')
 tax_benefit_system = build_tax_benefit_system(
     country_package_name = country_package,
     extensions = extensions,
@@ -30,10 +40,12 @@ if False:
     for i in range(1, 800):
       situations = utils.merge(situations, utils.prefix(str(i), situation))
 
+log.info('import server')
 import server
-s = server.getBogusSituations()
-# s = server.getDailySituations()
-remoteSituations = server.processSituations(s, remote=True)
+#s = server.getBogusSituations()
+#s = server.getDailySituations(int(sys.argv[-1]))
+s = server.getSituationSubset()
+remoteSituations = server.processSituations(s, remote=False)
 situations = utils.empty()
 for prefix, situation in remoteSituations.iteritems():
     situations = utils.merge(situations, utils.prefix(prefix, situation))
@@ -71,28 +83,28 @@ calculs = {
 }
 
 calculs = {
-    'ass': allMonths,
+    'af': allMonths,
+    'aide_logement': allMonths,
+    'rsa': allMonths,
+    'ppa': allMonths,
 }
 
-print json.dumps(situations)
+import pandas as pd
+results = pd.DataFrame()
 
+log.info('Simulation')
 simulation_actuelle = Simulation(
     tax_benefit_system=tax_benefit_system,
     simulation_json=situations)
+results['ids'] = simulation_actuelle.get_variable_entity('af').ids
+
+log.info('calculate')
 for calcul, periods in calculs.iteritems():
     for period in periods:
         data = simulation_actuelle.calculate(calcul, period)
-        print calcul
-        print data
+        results[calcul] = data
 
 
-# for sid, situation in remoteSituations.iteritems():
-#     simulation_actuelle = Simulation(
-#     tax_benefit_system=tax_benefit_system,
-#     simulation_json=situation)
-
-#     for calcul, periods in calculs.iteritems():
-#         for period in periods:
-#             data = simulation_actuelle.calculate(calcul, period)
-#             print calcul
-#             print data
+log.info('save')
+results.to_csv('file.csv', index=False)
+log.info('end')
