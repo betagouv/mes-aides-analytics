@@ -70,7 +70,7 @@ const MyResponsiveBar = ({ data /* see data tab */ }) => (
         data={data}
         keys={Object.keys(catMapping)}
         indexBy="category"
-        margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+        margin={{ top: 15, right: 10, bottom: 50, left: 60 }}
         padding={0.3}
         colors={({ id }) => colors(id)}
         borderColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
@@ -115,17 +115,20 @@ function Home() {
         <div>
         <style jsx>{`
             .chart {
-                height: 400px;
+                height: 300px;
             }
             .list {
                 display: flex;
                 flex-wrap: wrap;
             }
             .cell {
-                width: 400px;
+                width: 300px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
             }
             h3 {
-                min-height: 3em;
+                margin: 0;
             }
           `}</style>
           <div className="list">
