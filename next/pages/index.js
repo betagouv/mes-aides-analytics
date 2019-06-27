@@ -3,6 +3,7 @@ import {categoricalColorSchemes} from '@nivo/colors'
 import fetch from 'isomorphic-unfetch'
 import { scaleOrdinal } from 'd3-scale'
 import { ResponsiveBar } from '@nivo/bar'
+import 'iframe-resizer'
 
 const catMapping = {
     show: { cat: 'Affiché' },
@@ -131,7 +132,11 @@ function Home() {
                 margin: 0;
             }
           `}</style>
-          <div className="list">
+            <p>
+                Les graphiques suivants représentent les taux de conversion sur la page de présentation de résultats sur le simulateur.
+                Différents évènements sont capturés pour mieux évaluer l'impact du simulateur sur le non-recours aux dispositifs présentés aux usagers.
+            </p>
+            <div className="list">
                 <div className="cell">
                     <div><label>
                         Période de référence
