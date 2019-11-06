@@ -7,13 +7,18 @@ import 'iframe-resizer'
 
 const catMapping = {
     show: { cat: 'Affiché' },
+
     click: { cat: 'Cliqué' },
     form: { cat: 'Actionné', name: 'Formulaire' },
-    teleservice: { cat: 'Actionné', name: 'Téléservice' },
     instructions: { cat: 'Actionné', name: 'Instructions' },
     link: { cat: 'Actionné', name: 'Lien' },
     msa: { cat: 'Actionné', name: 'MSA' },
+    'show-locations': { cat: 'Actionné', name: 'Agence' },
+    teleservice: { cat: 'Actionné', name: 'Téléservice' },
+    'link-ineligible': { cat: 'Actionné inélig.', name: 'Lien sans éligibilité' },
+
     'show-unexpected': { cat: 'Incompris'},
+
     close: { cat: 'Expliqué', name: 'Fermé'},
     'retour-logement':  {cat: 'Expliqué', name: 'Retour page logement'},
     'simulation-caf':  {cat: 'Expliqué', name: 'Simulateur CAF'},
@@ -24,6 +29,7 @@ const cats = [
     'Affiché',
     'Cliqué',
     'Actionné',
+    'Actionné inélig.',
     'Incompris',
     'Expliqué'
 ]
