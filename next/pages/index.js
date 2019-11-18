@@ -264,6 +264,22 @@ function Home() {
 
           <h2>Résultats de sondage 7 jours après les simulations (sur {survey.count} réponses)</h2>
 
+          <h3>Le sondage</h3>
+          <p>
+            Pour chaque prestation affichée sur la page de résultats, les répondants peuvent choisir parmi la liste de réponses suivantes&nbsp;:
+          </p>
+
+          <ul>
+            <li>J'en bénéficiais déjà</li>
+            <li>J'ai fait une demande</li>
+            <li>Je n'ai pas réussi à faire une demande</li>
+            <li>Je n'ai rien fait</li>
+          </ul>
+
+          <p>
+            En cas d'échec (demandé échouée ou aucune action), les répondants ont la possibilité d'ajouter un commentaire.
+          </p>
+
           <h3>Résumé du sondage</h3>
             { survey.summary.map(v => (
                 <div key={v.key}><span style={{color:surveyColors(v.category)}}>◼</span>&nbsp;<span dangerouslySetInnerHTML={{ __html: surveyLabels[v.key].legend }}></span></div>
