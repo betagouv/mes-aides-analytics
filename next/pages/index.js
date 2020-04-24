@@ -154,7 +154,7 @@ function Home() {
 
     async function fetchSurveyData(period) {
         try {
-            const res = await fetch('https://mes-aides.gouv.fr/documents/stats.json')
+            const res = await fetch('https://metal-mex.mes-aides.gouv.fr/documents/stats.json')
             const json = await res.json()
 
             const summary = surveyIds.map(id => {
@@ -200,7 +200,7 @@ function Home() {
 
     async function fetchOpenfiscaVariables() {
         try {
-            const res = await fetch('https://mes-aides.gouv.fr/api/benefits')
+            const res = await fetch('https://metal-mex.mes-aides.gouv.fr/api/benefits')
             const json = await res.json()
             setOpenfiscaVariables(json.reduce((a,v) => {
                 a[v.id] = v
