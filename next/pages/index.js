@@ -101,8 +101,8 @@ const sources = {
 }
 
 const periods = {
-    day: 'Hier',
-    month: 'Mois en cours'
+    year: '2019',
+    month: 'Décembre 2019'
 }
 
 // make sure parent container have a defined height when using
@@ -135,7 +135,7 @@ function Home() {
     const [showActions, setShowActions] = useState(true);
     const [showSurveyDetails, setShowSurveyDetails] = useState(true);
     const [openfiscaVariables, setOpenfiscaVariables] = useState({});
-    const [period, setPeriod] = useState('day');
+    const [period, setPeriod] = useState('year');
     const [source, setSource] = useState('nb_visits');
     const [show, setShow] = useState(cats.reduce((accum, c) => {
         accum[c] = true
@@ -144,7 +144,7 @@ function Home() {
 
     async function fetchData(period) {
         try {
-            const res = await fetch(`https://stats.data.gouv.fr/index.php?date=yesterday&expanded=1&filter_limit=50&format=JSON&idSite=9&method=Events.getName&module=API&period=${period}`)
+            const res = await fetch(`https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=50&format=JSON&idSite=9&method=Events.getName&module=API&period=${period}&date=2019-12-27`)
             const json = await res.json()
             setBenefits(json)
         } catch {
@@ -154,7 +154,7 @@ function Home() {
 
     async function fetchSurveyData(period) {
         try {
-            const res = await fetch('https://metal-mex.mes-aides.gouv.fr/documents/stats.json')
+            const res = await fetch('/static/stats.json')
             const json = await res.json()
 
             const summary = surveyIds.map(id => {
@@ -199,16 +199,7 @@ function Home() {
     }
 
     async function fetchOpenfiscaVariables() {
-        try {
-            const res = await fetch('https://metal-mex.mes-aides.gouv.fr/api/benefits')
-            const json = await res.json()
-            setOpenfiscaVariables(json.reduce((a,v) => {
-                a[v.id] = v
-                return a
-            }, {}))
-        } catch {
-            setOpenfiscaVariables({})
-        }
+      setOpenfiscaVariables({})
     }
 
     useEffect(() => {
