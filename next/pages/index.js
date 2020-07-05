@@ -5,6 +5,7 @@ import { scaleOrdinal } from 'd3-scale'
 import { ResponsiveBar } from '@nivo/bar'
 import 'iframe-resizer'
 
+import config from '../next.config'
 
 const surveyLabels = {
     asked: {
@@ -154,7 +155,7 @@ function Home() {
 
     async function fetchSurveyData(period) {
         try {
-            const res = await fetch('/static/stats.json')
+            const res = await fetch(`${config.assetPrefix}/static/stats.json`)
             const json = await res.json()
 
             const summary = surveyIds.map(id => {
