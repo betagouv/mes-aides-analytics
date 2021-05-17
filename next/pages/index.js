@@ -155,7 +155,7 @@ function Home() {
 
     async function fetchSurveyData(period) {
         try {
-            const res = await fetch(`${config.assetPrefix}/static/stats.json`)
+            const res = await fetch("https://mes-aides.1jeune1solution.beta.gouv.fr/documents/stats.json")
             const json = await res.json()
 
             const summary = surveyIds.map(id => {
