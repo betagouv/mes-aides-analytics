@@ -103,7 +103,7 @@ const sources = {
 
 const periods = {
     day: 'Hier',
-    month: "Mois d'hier",
+    month: "Mois dernier",
     year: '2021',
 }
 
