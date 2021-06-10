@@ -106,7 +106,7 @@ const sources = {
 const periods = {
     day: 'Hier',
     month: "Mois dernier",
-    year: '2021',
+    year: new Date().getFullYear().toString(),
 }
 
 // make sure parent container have a defined height when using
