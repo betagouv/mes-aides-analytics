@@ -4,9 +4,7 @@ import fetch from 'isomorphic-unfetch'
 import { scaleOrdinal } from 'd3-scale'
 import { ResponsiveBar } from '@nivo/bar'
 import 'iframe-resizer'
-import aides from "../static/aides.json"
 
-import config from '../next.config'
 
 const surveyLabels = {
     asked: {
@@ -162,21 +160,36 @@ function Home() {
         return newClickData
     }
 
+    async function fetchBenefitPage() {
+        const json = await fetchJson(`https://stats.data.gouv.fr/index.php?date=yesterday&expanded=1&filter_limit=100&format=JSON&idSite=165&method=Actions.getPageUrls&module=API&period=${period}&segment=&token_auth=anonymous`)
+        return json.find((obj) => obj.label === "simulation").subtable.find((obj) => obj.label === "resultats").subtable
+    }
+
+    async function fetchBenefitNames() {
+        const json = await fetchJson("https://mes-aides.1jeune1solution.beta.gouv.fr/api/benefits")
+        return json.reduce((accum, aide) => {
+            if (!accum[aide.label])
+                accum[aide.label] = []
+            accum[aide.label].push(aide.id)
+            return accum
+        }, {})
+    }
+
     async function fetchData(period) {
         try {
             const data = await Promise.all([
                 fetchJson(`https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=50&format=JSON&idSite=165&method=Events.getName&module=API&period=${period}&date=yesterday`),
-                fetchJson(`https://stats.data.gouv.fr/index.php?date=yesterday&expanded=1&filter_limit=100&format=JSON&idSite=165&method=Actions.getPageUrls&module=API&period=${period}&segment=&token_auth=anonymous`)
+                fetchBenefitPage(),
+                fetchBenefitNames(),
             ])
-            const pages = data[1].find((obj) => obj.label === "simulation").subtable.find((obj) => obj.label === "resultats").subtable
 
             const result = data[0].map(aide => {
-                if (!(aide.label in aides))
+                if (!(aide.label in data[2]))
                     return aide
                 const subtableIndex = aide.subtable.findIndex(((evt) => evt.label === "click"))
                 let clickEvt = aide.subtable[subtableIndex]
 
-                clickEvt = pages.filter((page) => aides[aide.label].includes(page.label.substring(1))).reduce(reducePageDataToEventClick, clickEvt)
+                clickEvt = data[1].filter((page) => data[2][aide.label].includes(page.label.substring(1))).reduce(reducePageDataToEventClick, clickEvt)
 
                 if (subtableIndex > -1)
                     aide.subtable[subtableIndex] = clickEvt
