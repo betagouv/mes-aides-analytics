@@ -4,6 +4,7 @@ import fetch from 'isomorphic-unfetch'
 import { scaleOrdinal } from 'd3-scale'
 import { ResponsiveBar } from '@nivo/bar'
 import 'iframe-resizer'
+import aides from "../static/aides.json"
 
 import config from '../next.config'
 
@@ -148,6 +149,11 @@ function Home() {
         try {
             const res = await fetch(`https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=50&format=JSON&idSite=165&method=Events.getName&module=API&period=${period}&date=yesterday`)
             const json = await res.json()
+            const myaides = aides
+            debugger
+
+            // const res = await fetch(`https://stats.data.gouv.fr/index.php?date=yesterday&expanded=1&filter_limit=100&format=JSON&idSite=165&method=Actions.getPageUrls&module=API&period=${period}&segment=&token_auth=anonymous`)
+            // const json = await res.json().find((obj) => obj.label === "simulation").subtable.find((obj) => obj.label === "resultats").subtable
             setBenefits(json)
         } catch {
             setBenefits([])
