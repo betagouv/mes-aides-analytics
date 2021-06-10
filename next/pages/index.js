@@ -42,7 +42,7 @@ const surveyIds = Object.keys(surveyLabels)
 const catMapping = {
     show: { cat: 'Affiché' },
 
-    click: { cat: 'Cliqué' },
+    click: { cat: 'Affiché détails' },
     form: { cat: 'Actionné', name: 'Formulaire' },
     instructions: { cat: 'Actionné', name: 'Instructions' },
     link: { cat: 'Actionné', name: 'Lien' },
@@ -61,7 +61,7 @@ const catMapping = {
 
 const cats = [
     'Affiché',
-    'Cliqué',
+    'Affiché détails',
     'Actionné',
     'Actionné inélig.',
     'Incompris',
@@ -80,6 +80,7 @@ function apply(prop, base, shouldShow) {
         if (!catMapping[table.label]) {
             return accum
         }
+
         accum[catMapping[table.label].cat] = accum[catMapping[table.label].cat] || {
             category: catMapping[table.label].cat
         }
@@ -145,16 +146,46 @@ function Home() {
         return accum
     }, {}))
 
+    async function fetchJson(url) {
+        const res = await fetch(url)
+        return await res.json()
+    }
+
+    function reducePageDataToEventClick(clickEventData, pageData) {
+        const newClickData = clickEventData ? clickEventData : {
+            label: "click",
+            nb_events: 0,
+            nb_visits: 0,
+        }
+        newClickData.nb_events += pageData.nb_visits
+        newClickData.nb_visits += pageData.nb_visits
+        return newClickData
+    }
+
     async function fetchData(period) {
         try {
-            const res = await fetch(`https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=50&format=JSON&idSite=165&method=Events.getName&module=API&period=${period}&date=yesterday`)
-            const json = await res.json()
-            const myaides = aides
-            debugger
+            const data = await Promise.all([
+                fetchJson(`https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=50&format=JSON&idSite=165&method=Events.getName&module=API&period=${period}&date=yesterday`),
+                fetchJson(`https://stats.data.gouv.fr/index.php?date=yesterday&expanded=1&filter_limit=100&format=JSON&idSite=165&method=Actions.getPageUrls&module=API&period=${period}&segment=&token_auth=anonymous`)
+            ])
+            const pages = data[1].find((obj) => obj.label === "simulation").subtable.find((obj) => obj.label === "resultats").subtable
 
-            // const res = await fetch(`https://stats.data.gouv.fr/index.php?date=yesterday&expanded=1&filter_limit=100&format=JSON&idSite=165&method=Actions.getPageUrls&module=API&period=${period}&segment=&token_auth=anonymous`)
-            // const json = await res.json().find((obj) => obj.label === "simulation").subtable.find((obj) => obj.label === "resultats").subtable
-            setBenefits(json)
+            const result = data[0].map(aide => {
+                if (!(aide.label in aides))
+                    return aide
+                const subtableIndex = aide.subtable.findIndex(((evt) => evt.label === "click"))
+                let clickEvt = aide.subtable[subtableIndex]
+
+                clickEvt = pages.filter((page) => aides[aide.label].includes(page.label.substring(1))).reduce(reducePageDataToEventClick, clickEvt)
+
+                if (subtableIndex > -1)
+                    aide.subtable[subtableIndex] = clickEvt
+                else if (clickEvt)
+                    aide.subtable.push(clickEvt)
+                return aide
+            })
+
+            setBenefits(result)
         } catch {
             setBenefits([])
         }
