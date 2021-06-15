@@ -160,7 +160,7 @@ function Home() {
         return newClickData
     }
 
-    async function fetchBenefitPage() {
+    async function fetchBenefitPage(period) {
         const json = await fetchJson(`https://stats.data.gouv.fr/index.php?date=yesterday&expanded=1&filter_limit=100&format=JSON&idSite=165&method=Actions.getPageUrls&module=API&period=${period}&segment=&token_auth=anonymous`)
         return json.find((obj) => obj.label === "simulation").subtable.find((obj) => obj.label === "resultats").subtable
     }
@@ -179,7 +179,7 @@ function Home() {
         try {
             const data = await Promise.all([
                 fetchJson(`https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=50&format=JSON&idSite=165&method=Events.getName&module=API&period=${period}&date=yesterday`),
-                fetchBenefitPage(),
+                fetchBenefitPage(period),
                 fetchBenefitNames(),
             ])
 
