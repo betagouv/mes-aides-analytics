@@ -92,7 +92,9 @@ function apply(prop, base, shouldShow) {
         }
     })
 
-    return Object.values(result)
+    return Object.values(result).sort((a, b) => {
+        return cats.indexOf(a.category) > cats.indexOf(b.category) ? 1 : -1
+    })
 }
 
 const sources = {
