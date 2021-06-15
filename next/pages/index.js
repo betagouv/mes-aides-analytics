@@ -39,8 +39,7 @@ const surveyIds = Object.keys(surveyLabels)
 
 const catMapping = {
     show: { cat: 'Affiché' },
-
-    click: { cat: 'Affiché détails' },
+    showDetails: { cat: 'Détails affichés' },
     form: { cat: 'Actionné', name: 'Formulaire' },
     instructions: { cat: 'Actionné', name: 'Instructions' },
     link: { cat: 'Actionné', name: 'Lien' },
@@ -92,9 +91,7 @@ function apply(prop, base, shouldShow) {
         }
     })
 
-    return Object.values(result).sort((a, b) => {
-        return cats.indexOf(a.category) > cats.indexOf(b.category) ? 1 : -1
-    })
+    return cats.map(c => result[c]).filter(c => c)
 }
 
 const sources = {
@@ -152,14 +149,9 @@ function Home() {
     }
 
     function reducePageDataToEventClick(clickEventData, pageData) {
-        const newClickData = clickEventData ? clickEventData : {
-            label: "click",
-            nb_events: 0,
-            nb_visits: 0,
-        }
-        newClickData.nb_events += pageData.nb_visits
-        newClickData.nb_visits += pageData.nb_visits
-        return newClickData
+        clickEventData.nb_events += pageData.nb_visits
+        clickEventData.nb_visits += pageData.nb_visits
+        return clickEventData
     }
 
     async function fetchBenefitPage(period) {
@@ -170,8 +162,7 @@ function Home() {
     async function fetchBenefitNames() {
         const json = await fetchJson("https://mes-aides.1jeune1solution.beta.gouv.fr/api/benefits")
         return json.reduce((accum, aide) => {
-            if (!accum[aide.label])
-                accum[aide.label] = []
+            accum[aide.label] = accum[aide.label] || []
             accum[aide.label].push(aide.id)
             return accum
         }, {})
@@ -184,19 +175,24 @@ function Home() {
                 fetchBenefitPage(period),
                 fetchBenefitNames(),
             ])
+            const matomoEvents = data[0]
+            const nameMap = data[2]
+            const matomoPageVisits = data[1]
 
-            const result = data[0].map(aide => {
-                if (!(aide.label in data[2]))
+            const result = matomoEvents.map(aide => {
+                if (!(aide.label in nameMap))
                     return aide
-                const subtableIndex = aide.subtable.findIndex(((evt) => evt.label === "click"))
-                let clickEvt = aide.subtable[subtableIndex]
 
-                clickEvt = data[1].filter((page) => data[2][aide.label].includes(page.label.substring(1))).reduce(reducePageDataToEventClick, clickEvt)
+                const showDetails = matomoPageVisits.filter((page) => {
+                    const cleanName = page.label.substring(1) // benefit names are prefixed with /
+                    return nameMap[aide.label].includes(cleanName)
+                }).reduce(reducePageDataToEventClick, {
+                    label: "showDetails",
+                    nb_events: 0,
+                    nb_visits: 0,
+                })
+                aide.subtable.push(showDetails)
 
-                if (subtableIndex > -1)
-                    aide.subtable[subtableIndex] = clickEvt
-                else if (clickEvt)
-                    aide.subtable.push(clickEvt)
                 return aide
             })
 
