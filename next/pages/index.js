@@ -5,7 +5,6 @@ import { scaleOrdinal } from 'd3-scale'
 import { ResponsiveBar } from '@nivo/bar'
 import 'iframe-resizer'
 
-import config from '../next.config'
 
 const surveyLabels = {
     asked: {
@@ -40,8 +39,7 @@ const surveyIds = Object.keys(surveyLabels)
 
 const catMapping = {
     show: { cat: 'Affiché' },
-
-    click: { cat: 'Cliqué' },
+    showDetails: { cat: 'Détails affichés' },
     form: { cat: 'Actionné', name: 'Formulaire' },
     instructions: { cat: 'Actionné', name: 'Instructions' },
     link: { cat: 'Actionné', name: 'Lien' },
@@ -60,7 +58,7 @@ const catMapping = {
 
 const cats = [
     'Affiché',
-    'Cliqué',
+    'Affiché détails',
     'Actionné',
     'Actionné inélig.',
     'Incompris',
@@ -79,6 +77,7 @@ function apply(prop, base, shouldShow) {
         if (!catMapping[table.label]) {
             return accum
         }
+
         accum[catMapping[table.label].cat] = accum[catMapping[table.label].cat] || {
             category: catMapping[table.label].cat
         }
@@ -92,7 +91,7 @@ function apply(prop, base, shouldShow) {
         }
     })
 
-    return Object.values(result)
+    return cats.map(c => result[c]).filter(c => c)
 }
 
 const sources = {
@@ -102,8 +101,9 @@ const sources = {
 }
 
 const periods = {
-    year: '2019',
-    month: 'Décembre 2019'
+    day: 'Hier',
+    month: "Mois dernier",
+    year: new Date().getFullYear().toString(),
 }
 
 // make sure parent container have a defined height when using
@@ -143,11 +143,60 @@ function Home() {
         return accum
     }, {}))
 
+    async function fetchJson(url) {
+        const res = await fetch(url)
+        return await res.json()
+    }
+
+    function reducePageDataToEventClick(clickEventData, pageData) {
+        clickEventData.nb_events += pageData.nb_visits
+        clickEventData.nb_visits += pageData.nb_visits
+        return clickEventData
+    }
+
+    async function fetchBenefitPage(period) {
+        const json = await fetchJson(`https://stats.data.gouv.fr/index.php?date=yesterday&expanded=1&filter_limit=100&format=JSON&idSite=165&method=Actions.getPageUrls&module=API&period=${period}&segment=&token_auth=anonymous`)
+        return json.find((obj) => obj.label === "simulation").subtable.find((obj) => obj.label === "resultats").subtable
+    }
+
+    async function fetchBenefitNames() {
+        const json = await fetchJson("https://mes-aides.1jeune1solution.beta.gouv.fr/api/benefits")
+        return json.reduce((accum, aide) => {
+            accum[aide.label] = accum[aide.label] || []
+            accum[aide.label].push(aide.id)
+            return accum
+        }, {})
+    }
+
     async function fetchData(period) {
         try {
-            const res = await fetch(`https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=50&format=JSON&idSite=9&method=Events.getName&module=API&period=${period}&date=2019-12-27`)
-            const json = await res.json()
-            setBenefits(json)
+            const data = await Promise.all([
+                fetchJson(`https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=50&format=JSON&idSite=165&method=Events.getName&module=API&period=${period}&date=yesterday`),
+                fetchBenefitPage(period),
+                fetchBenefitNames(),
+            ])
+            const matomoEvents = data[0]
+            const nameMap = data[2]
+            const matomoPageVisits = data[1]
+
+            const result = matomoEvents.map(aide => {
+                if (!(aide.label in nameMap))
+                    return aide
+
+                const showDetails = matomoPageVisits.filter((page) => {
+                    const cleanName = page.label.substring(1) // benefit names are prefixed with /
+                    return nameMap[aide.label].includes(cleanName)
+                }).reduce(reducePageDataToEventClick, {
+                    label: "showDetails",
+                    nb_events: 0,
+                    nb_visits: 0,
+                })
+                aide.subtable.push(showDetails)
+
+                return aide
+            })
+
+            setBenefits(result)
         } catch {
             setBenefits([])
         }
