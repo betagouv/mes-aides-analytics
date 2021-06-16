@@ -29,12 +29,6 @@ const surveyLabels = {
     }
 }
 
-const globalSurveyResults = [
-    { category: 'asked', value: 305 },
-    { category: 'failed', value: 110 },
-    { category: 'nothing', value: 133 },
-    { category: 'already', value: 22 },
-]
 const surveyIds = Object.keys(surveyLabels)
 
 const catMapping = {
