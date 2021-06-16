@@ -39,31 +39,32 @@ const surveyIds = Object.keys(surveyLabels)
 
 const catMapping = {
     show: { cat: 'Affiché' },
+
     showDetails: { cat: 'Détails affichés' },
+
     form: { cat: 'Actionné', name: 'Formulaire' },
     instructions: { cat: 'Actionné', name: 'Instructions' },
     link: { cat: 'Actionné', name: 'Lien' },
     msa: { cat: 'Actionné', name: 'MSA' },
     'show-locations': { cat: 'Actionné', name: 'Agence' },
     teleservice: { cat: 'Actionné', name: 'Téléservice' },
+
     'link-ineligible': { cat: 'Actionné inélig.', name: 'Lien sans éligibilité' },
 
     'show-unexpected': { cat: 'Incompris'},
 
     close: { cat: 'Expliqué', name: 'Fermé'},
+
     'retour-logement':  {cat: 'Expliqué', name: 'Retour page logement'},
     'simulation-caf':  {cat: 'Expliqué', name: 'Simulateur CAF'},
     email: { cat: 'Expliqué', name: 'Email'},
 }
 
-const cats = [
-    'Affiché',
-    'Affiché détails',
-    'Actionné',
-    'Actionné inélig.',
-    'Incompris',
-    'Expliqué'
-]
+const cats = Object.keys(Object.values(catMapping).reduce((c, v) => {
+    c[v.cat] = {}
+    return c
+}, {}))
+
 const actionColors = scaleOrdinal(categoricalColorSchemes.category10)
 const surveyColors = scaleOrdinal([
     '#2ca02c',
