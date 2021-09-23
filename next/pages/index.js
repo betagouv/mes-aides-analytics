@@ -128,6 +128,7 @@ function Home() {
         }
     });
     const [benefits, setBenefits] = useState([]);
+    const [notDisplayedBenefits, setNotDisplayedBenefits] = useState([]);
     const [showActions, setShowActions] = useState(true);
     const [showSurveyDetails, setShowSurveyDetails] = useState(true);
     const [openfiscaVariables, setOpenfiscaVariables] = useState({});
@@ -187,9 +188,9 @@ function Home() {
                     nb_visits: 0,
                 })
                 aide.subtable.push(showDetails)
-
                 return aide
             })
+            setNotDisplayedBenefits(Object.keys(nameMap).filter((benefitName) => !result.some((benefit) => benefit.label === benefitName)).map((notDisplayed) => `${notDisplayed} (${nameMap[notDisplayed].join(",")})`))
 
             setBenefits(result)
         } catch {
@@ -436,7 +437,14 @@ function Home() {
               })}
               </div>
           </div>) }
-
+            <div>
+                <h3>Liste des aides non-affichées durant cette période</h3>
+                <ul>
+                    {notDisplayedBenefits.map((benefitName) => {
+                        return <li>{benefitName}</li>
+                    })}
+                </ul>
+            </div>
 
         </div>
     );
