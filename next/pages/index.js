@@ -420,9 +420,9 @@ function Home() {
                         </table>
                     </div>
               {benefits.map(b => {
-                let l = b.label
                 let data = apply(source, b, show)
-                let title = b.ids && b.ids.join(', ')
+                let ids = b.ids && b.ids.join(', ')
+                let l = b.label
 
                 if (!data.length) {
                     return
@@ -430,7 +430,7 @@ function Home() {
 
                 return (
                     <div key={l} className="cell">
-                        <h3 title={title}>{l}</h3>
+                        <h3>{ids ? <abbr title={ids}>{l}</abbr> : l}</h3>
                         <div className="chart">
                             <ActionResponsiveBar data={data} />
                         </div>
