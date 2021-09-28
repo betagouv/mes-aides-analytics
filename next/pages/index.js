@@ -188,6 +188,7 @@ function Home() {
                     nb_visits: 0,
                 })
                 aide.subtable.push(showDetails)
+                aide.ids = nameMap[aide.label]
                 return aide
             }).filter(r => r.subtable)
             setNotDisplayedBenefits(Object.keys(nameMap).filter((benefitName) => !result.some((benefit) => benefit.label === benefitName)).map((notDisplayed) => `${notDisplayed} (${nameMap[notDisplayed].join(",")})`))
@@ -421,6 +422,7 @@ function Home() {
               {benefits.map(b => {
                 let l = b.label
                 let data = apply(source, b, show)
+                let title = b.ids && b.ids.join(', ')
 
                 if (!data.length) {
                     return
@@ -428,7 +430,7 @@ function Home() {
 
                 return (
                     <div key={l} className="cell">
-                        <h3>{l}</h3>
+                        <h3 title={title}>{l}</h3>
                         <div className="chart">
                             <ActionResponsiveBar data={data} />
                         </div>
