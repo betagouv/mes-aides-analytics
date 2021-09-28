@@ -151,7 +151,7 @@ function Home() {
     }
 
     async function fetchBenefitPage(period) {
-        const json = await fetchJson(`https://stats.data.gouv.fr/index.php?date=yesterday&expanded=1&filter_limit=100&format=JSON&idSite=165&method=Actions.getPageUrls&module=API&period=${period}&segment=&token_auth=anonymous`)
+        const json = await fetchJson(`https://stats.data.gouv.fr/index.php?date=yesterday&expanded=1&filter_limit=-1&format=JSON&idSite=165&method=Actions.getPageUrls&module=API&period=${period}&segment=&token_auth=anonymous`)
         return json.find((obj) => obj.label === "simulation").subtable.find((obj) => obj.label === "resultats").subtable
     }
 
@@ -167,7 +167,7 @@ function Home() {
     async function fetchData(period) {
         try {
             const data = await Promise.all([
-                fetchJson(`https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=50&format=JSON&idSite=165&method=Events.getName&module=API&period=${period}&date=yesterday`),
+                fetchJson(`https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=-1&format=JSON&idSite=165&method=Events.getName&module=API&period=${period}&date=yesterday`),
                 fetchBenefitPage(period),
                 fetchBenefitNames(),
             ])
@@ -189,7 +189,7 @@ function Home() {
                 })
                 aide.subtable.push(showDetails)
                 return aide
-            })
+            }).filter(r => r.subtable)
             setNotDisplayedBenefits(Object.keys(nameMap).filter((benefitName) => !result.some((benefit) => benefit.label === benefitName)).map((notDisplayed) => `${notDisplayed} (${nameMap[notDisplayed].join(",")})`))
 
             setBenefits(result)
