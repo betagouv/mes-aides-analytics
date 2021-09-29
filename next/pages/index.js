@@ -191,10 +191,17 @@ function Home() {
                 aide.ids = nameMap[aide.label]
                 return aide
             }).filter(r => r.subtable)
-            setNotDisplayedBenefits(Object.keys(nameMap).filter((benefitName) => !result.some((benefit) => benefit.label === benefitName)).map((notDisplayed) => `${notDisplayed} (${nameMap[notDisplayed].join(",")})`))
 
+            const undisplayedBenefits = Object.keys(nameMap).filter(
+                (benefitName) => !result.some((benefit) => benefit.label === benefitName)
+            ).map(
+                (notDisplayed) => `${notDisplayed} (${nameMap[notDisplayed].join(",")})`
+            )
+
+            setNotDisplayedBenefits(undisplayedBenefits)
             setBenefits(result)
         } catch {
+            setNotDisplayedBenefits([])
             setBenefits([])
         }
     }
