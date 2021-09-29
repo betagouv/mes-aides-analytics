@@ -128,6 +128,7 @@ function Home() {
         }
     });
     const [benefits, setBenefits] = useState([]);
+    const [notDisplayedBenefits, setNotDisplayedBenefits] = useState([]);
     const [showActions, setShowActions] = useState(true);
     const [showSurveyDetails, setShowSurveyDetails] = useState(true);
     const [openfiscaVariables, setOpenfiscaVariables] = useState({});
@@ -150,7 +151,7 @@ function Home() {
     }
 
     async function fetchBenefitPage(period) {
-        const json = await fetchJson(`https://stats.data.gouv.fr/index.php?date=yesterday&expanded=1&filter_limit=100&format=JSON&idSite=165&method=Actions.getPageUrls&module=API&period=${period}&segment=&token_auth=anonymous`)
+        const json = await fetchJson(`https://stats.data.gouv.fr/index.php?date=yesterday&expanded=1&filter_limit=-1&format=JSON&idSite=165&method=Actions.getPageUrls&module=API&period=${period}&segment=&token_auth=anonymous`)
         return json.find((obj) => obj.label === "simulation").subtable.find((obj) => obj.label === "resultats").subtable
     }
 
@@ -166,7 +167,7 @@ function Home() {
     async function fetchData(period) {
         try {
             const data = await Promise.all([
-                fetchJson(`https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=50&format=JSON&idSite=165&method=Events.getName&module=API&period=${period}&date=yesterday`),
+                fetchJson(`https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=-1&format=JSON&idSite=165&method=Events.getName&module=API&period=${period}&date=yesterday`),
                 fetchBenefitPage(period),
                 fetchBenefitNames(),
             ])
@@ -187,12 +188,20 @@ function Home() {
                     nb_visits: 0,
                 })
                 aide.subtable.push(showDetails)
-
+                aide.ids = nameMap[aide.label]
                 return aide
-            })
+            }).filter(r => r.subtable)
 
+            const undisplayedBenefits = Object.keys(nameMap).filter(
+                (benefitName) => !result.some((benefit) => benefit.label === benefitName)
+            ).map(
+                (notDisplayed) => `${notDisplayed} (${nameMap[notDisplayed].join(",")})`
+            )
+
+            setNotDisplayedBenefits(undisplayedBenefits)
             setBenefits(result)
         } catch {
+            setNotDisplayedBenefits([])
             setBenefits([])
         }
     }
@@ -418,8 +427,9 @@ function Home() {
                         </table>
                     </div>
               {benefits.map(b => {
-                let l = b.label
                 let data = apply(source, b, show)
+                let ids = b.ids && b.ids.join(', ')
+                let l = b.label
 
                 if (!data.length) {
                     return
@@ -427,7 +437,7 @@ function Home() {
 
                 return (
                     <div key={l} className="cell">
-                        <h3>{l}</h3>
+                        <h3>{ids ? <abbr title={ids}>{l}</abbr> : l}</h3>
                         <div className="chart">
                             <ActionResponsiveBar data={data} />
                         </div>
@@ -436,7 +446,14 @@ function Home() {
               })}
               </div>
           </div>) }
-
+            <div>
+                <h3>Liste des aides non-affichées durant cette période</h3>
+                <ul>
+                    {notDisplayedBenefits.map((benefitName) => {
+                        return <li>{benefitName}</li>
+                    })}
+                </ul>
+            </div>
 
         </div>
     );
