@@ -150,6 +150,14 @@ function Home() {
         return clickEventData
     }
 
+    async function fetchMatomoEvents(period) {
+        const json = await fetchJson(`https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=-1&format=JSON&idSite=165&method=Events.getName&module=API&period=${period}&date=yesterday`)
+        json.forEach((event) => {
+            event.label = event.label.split(" [")[0]
+        })
+        return json
+    }
+
     async function fetchBenefitPage(period) {
         const json = await fetchJson(`https://stats.data.gouv.fr/index.php?date=yesterday&expanded=1&filter_limit=-1&format=JSON&idSite=165&method=Actions.getPageUrls&module=API&period=${period}&segment=&token_auth=anonymous`)
         return json.find((obj) => obj.label === "simulation").subtable.find((obj) => obj.label === "resultats").subtable
@@ -167,7 +175,7 @@ function Home() {
     async function fetchData(period) {
         try {
             const data = await Promise.all([
-                fetchJson(`https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=-1&format=JSON&idSite=165&method=Events.getName&module=API&period=${period}&date=yesterday`),
+                fetchMatomoEvents(period),
                 fetchBenefitPage(period),
                 fetchBenefitNames(),
             ])
@@ -180,7 +188,8 @@ function Home() {
                     return aide
 
                 const showDetails = matomoPageVisits.filter((page) => {
-                    const cleanName = page.label.substring(1) // benefit names are prefixed with /
+                    // Sometimes benefit names are prefixed with /
+                    const cleanName = page.label.replace(/^\//, '')
                     return nameMap[aide.label].includes(cleanName)
                 }).reduce(reducePageDataToEventClick, {
                     label: "showDetails",
@@ -450,7 +459,7 @@ function Home() {
                 <h3>Liste des aides non-affichées durant cette période</h3>
                 <ul>
                     {notDisplayedBenefits.map((benefitName) => {
-                        return <li>{benefitName}</li>
+                        return <li key={benefitName}>{benefitName}</li>
                     })}
                 </ul>
             </div>
