@@ -150,12 +150,40 @@ function Home() {
         return clickEventData
     }
 
-    async function fetchMatomoEvents(period) {
-        const json = await fetchJson(`https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=-1&format=JSON&idSite=165&method=Events.getName&module=API&period=${period}&date=yesterday`)
+    function cleanIndexMatomoEvents(json) {
+        // remove index of benefits : ex aide [1/17]
         json.forEach((event) => {
             event.label = event.label.split(" [")[0]
         })
-        return json
+        // merge subtable of benefits with different index
+        json = json.reduce((accum, event) => {
+            if (event.label in accum) {
+                const subtable = accum[event.label].subtable
+                event.subtable.forEach((eventItem) => {
+                    const subtableItem = subtable.find((item) => item.label === eventItem.label)
+                    if (subtableItem) {
+                        Object.keys(eventItem).forEach((key) => {
+                            if (typeof eventItem[key] === "number") {
+                                subtableItem[key] = typeof subtableItem[key] === "number" ? subtableItem[key] + eventItem[key] : eventItem[key]
+                            }
+                        })
+                    } else {
+                        subtable.push(eventItem)
+                    }
+                })
+
+            } else {
+                accum[event.label] = event
+            }
+            return accum
+
+        }, {})
+        return  Object.values(json)
+    }
+
+    async function fetchMatomoEvents(period) {
+        const json = await fetchJson(`https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=-1&format=JSON&idSite=165&method=Events.getName&module=API&period=${period}&date=yesterday`)
+        return cleanIndexMatomoEvents(json)
     }
 
     async function fetchBenefitPage(period) {
