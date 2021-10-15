@@ -54,6 +54,8 @@ const catMapping = {
     email: { cat: 'Expliqué', name: 'Email'},
 }
 
+const catKeys = Object.keys(catMapping)
+
 const cats = Object.keys(Object.values(catMapping).reduce((c, v) => {
     c[v.cat] = {}
     return c
@@ -67,16 +69,13 @@ const surveyColors = scaleOrdinal([
     '#7f7f7f',
 ]).domain(Object.keys(surveyLabels))
 
-function apply(prop, base, shouldShow) {
-    let result = base.subtable.reduce((accum, table) => {
-        if (!catMapping[table.label]) {
-            return accum
-        }
+function apply(prop, event, shouldShow) {
+    let result = Object.keys(event.data).reduce((accum, cat) => {
 
-        accum[catMapping[table.label].cat] = accum[catMapping[table.label].cat] || {
-            category: catMapping[table.label].cat
+        accum[catMapping[cat].cat] = accum[catMapping[cat].cat] || {
+            category: catMapping[cat].cat
         }
-        accum[catMapping[table.label].cat][table.label] = table[prop]
+        accum[catMapping[cat].cat][cat] = event.data[cat][prop]
         return accum
     }, {})
 
@@ -94,6 +93,7 @@ const sources = {
     nb_visits: 'Visite',
     nb_events: 'Évènement'
 }
+const sourcesKeys = Object.keys(sources)
 
 const periods = {
     day: 'Hier',
@@ -150,35 +150,56 @@ function Home() {
         return clickEventData
     }
 
+    function isIndexed(label) {
+        return label.match(/ \[/)
+    }
+
     function cleanIndexMatomoEvents(json) {
-        // remove index of benefits : ex aide [1/17]
-        json.forEach((event) => {
-            event.label = event.label.split(" [")[0]
-        })
-        // merge subtable of benefits with different index
-        json = json.reduce((accum, event) => {
-            if (event.label in accum) {
-                const subtable = accum[event.label].subtable
-                event.subtable.forEach((eventItem) => {
-                    const subtableItem = subtable.find((item) => item.label === eventItem.label)
-                    if (subtableItem) {
-                        Object.keys(eventItem).forEach((key) => {
-                            if (typeof eventItem[key] === "number") {
-                                subtableItem[key] = typeof subtableItem[key] === "number" ? subtableItem[key] + eventItem[key] : eventItem[key]
-                            }
-                        })
-                    } else {
-                        subtable.push(eventItem)
-                    }
-                })
-
-            } else {
-                accum[event.label] = event
+        // keep only benefits and restructure it
+        const benefitsEvent = json.filter((event) => event.subtable && event.subtable.some((item) => {
+            return item.label in catMapping
+        })).map((event) => {
+            return {
+                label: event.label,
+                data: catKeys.reduce((accum, itemLabel) => {
+                    const item = event.subtable.find((item) => item.label === itemLabel) || {}
+                    accum[itemLabel] = sourcesKeys.reduce((sourceAccum, source) => {
+                        sourceAccum[source] = item[source] || 0
+                        return sourceAccum
+                    }, {})
+                    return accum
+                }, {})
             }
-            return accum
+        })
 
+        const indexedBenefitsEvents = benefitsEvent.filter((event) => isIndexed(event.label))
+
+        const notIndexedBenefitsEvents = benefitsEvent.filter((event) => !isIndexed(event.label)).reduce((accum, event) => {
+            accum[event.label] = event
+            return accum
         }, {})
-        return  Object.values(json)
+
+        indexedBenefitsEvents.forEach(event => {
+            const notIndexedLabel = event.label.split(' [')[0]
+            if (notIndexedLabel in notIndexedBenefitsEvents) {
+                notIndexedBenefitsEvents[notIndexedLabel] = {
+                    label: notIndexedLabel,
+                    data: {
+                        ...event.data
+                    }
+                }
+            } else {
+                sourcesKeys.forEach((source) => {
+                    notIndexedBenefitsEvents[notIndexedLabel].data[source] += event.data[source]
+                })
+            }
+
+        })
+
+        return  {
+            indexedBenefitsEvents,
+            notIndexedBenefitsEvents: Object.values(notIndexedBenefitsEvents)
+        }
     }
 
     async function fetchMatomoEvents(period) {
@@ -211,7 +232,7 @@ function Home() {
             const nameMap = data[2]
             const matomoPageVisits = data[1]
 
-            const result = matomoEvents.map(aide => {
+            const result = matomoEvents.notIndexedBenefitsEvents.map(aide => {
                 if (!(aide.label in nameMap))
                     return aide
 
@@ -219,15 +240,11 @@ function Home() {
                     // Sometimes benefit names are prefixed with /
                     const cleanName = page.label.replace(/^\//, '')
                     return nameMap[aide.label].includes(cleanName)
-                }).reduce(reducePageDataToEventClick, {
-                    label: "showDetails",
-                    nb_events: 0,
-                    nb_visits: 0,
-                })
-                aide.subtable.push(showDetails)
+                }).reduce(reducePageDataToEventClick, aide.data.showDetails)
+                aide.data.showDetails = showDetails
                 aide.ids = nameMap[aide.label]
                 return aide
-            }).filter(r => r.subtable)
+            })
 
             const undisplayedBenefits = Object.keys(nameMap).filter(
                 (benefitName) => !result.some((benefit) => benefit.label === benefitName)
