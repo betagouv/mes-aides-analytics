@@ -69,8 +69,11 @@ const surveyColors = scaleOrdinal([
     '#7f7f7f',
 ]).domain(Object.keys(surveyLabels))
 
-function apply(prop, event, shouldShow) {
+function mapEventPerCategory(prop, event, shouldShow) {
     let result = Object.keys(event.data).reduce((accum, cat) => {
+        // if prop === 0 do not show
+        if (!event.data[cat][prop])
+            return accum
 
         accum[catMapping[cat].cat] = accum[catMapping[cat].cat] || {
             category: catMapping[cat].cat
@@ -144,17 +147,18 @@ function Home() {
         return await res.json()
     }
 
-    function reducePageDataToEventClick(clickEventData, pageData) {
-        clickEventData.nb_events += pageData.nb_visits
-        clickEventData.nb_visits += pageData.nb_visits
-        return clickEventData
+    function reducePageDataToEvent(eventData, pageData) {
+        sourcesKeys.forEach((source) => {
+            eventData[source] = pageData[source]
+        })
+        return eventData
     }
 
     function isIndexed(label) {
         return label.match(/ \[/)
     }
 
-    function cleanIndexMatomoEvents(json) {
+    function mapMatomoBenefitsEvents(json) {
         // keep only benefits and restructure it
         const benefitsEvent = json.filter((event) => event.subtable && event.subtable.some((item) => {
             return item.label in catMapping
@@ -182,29 +186,30 @@ function Home() {
         indexedBenefitsEvents.forEach(event => {
             const notIndexedLabel = event.label.split(' [')[0]
             if (notIndexedLabel in notIndexedBenefitsEvents) {
+                Object.entries(event.data).reduce((accum, [key, value]) => {
+                    reducePageDataToEvent(notIndexedBenefitsEvents[notIndexedLabel].data[key], value[source])
+                })
+
+            } else {
                 notIndexedBenefitsEvents[notIndexedLabel] = {
                     label: notIndexedLabel,
                     data: {
                         ...event.data
                     }
                 }
-            } else {
-                sourcesKeys.forEach((source) => {
-                    notIndexedBenefitsEvents[notIndexedLabel].data[source] += event.data[source]
-                })
-            }
 
+            }
         })
 
         return  {
-            indexedBenefitsEvents,
-            notIndexedBenefitsEvents: Object.values(notIndexedBenefitsEvents)
+            indexed: indexedBenefitsEvents,
+            notIndexed: Object.values(notIndexedBenefitsEvents)
         }
     }
 
     async function fetchMatomoEvents(period) {
         const json = await fetchJson(`https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=-1&format=JSON&idSite=165&method=Events.getName&module=API&period=${period}&date=yesterday`)
-        return cleanIndexMatomoEvents(json)
+        return mapMatomoBenefitsEvents(json)
     }
 
     async function fetchBenefitPage(period) {
@@ -221,6 +226,22 @@ function Home() {
         }, {})
     }
 
+    function aggregateUrlEvent(matomoEvents, matomoPageVisits, benefitNameMap) {
+        return matomoEvents.map(aide => {
+            if (!(aide.label in benefitNameMap))
+                return aide
+
+            const showDetails = matomoPageVisits.filter((page) => {
+                // Sometimes benefit names are prefixed with /
+                const cleanName = page.label.replace(/^\//, '')
+                return benefitNameMap[aide.label].includes(cleanName)
+            }).reduce(reducePageDataToEvent, aide.data.showDetails)
+            aide.data.showDetails = showDetails
+            aide.ids = benefitNameMap[aide.label]
+            return aide
+        })
+    }
+
     async function fetchData(period) {
         try {
             const data = await Promise.all([
@@ -229,27 +250,14 @@ function Home() {
                 fetchBenefitNames(),
             ])
             const matomoEvents = data[0]
-            const nameMap = data[2]
+            const benefitNameMap = data[2]
             const matomoPageVisits = data[1]
 
-            const result = matomoEvents.notIndexedBenefitsEvents.map(aide => {
-                if (!(aide.label in nameMap))
-                    return aide
-
-                const showDetails = matomoPageVisits.filter((page) => {
-                    // Sometimes benefit names are prefixed with /
-                    const cleanName = page.label.replace(/^\//, '')
-                    return nameMap[aide.label].includes(cleanName)
-                }).reduce(reducePageDataToEventClick, aide.data.showDetails)
-                aide.data.showDetails = showDetails
-                aide.ids = nameMap[aide.label]
-                return aide
-            })
-
-            const undisplayedBenefits = Object.keys(nameMap).filter(
+            const result = aggregateUrlEvent(matomoEvents.notIndexed, matomoPageVisits, benefitNameMap)
+            const undisplayedBenefits = Object.keys(benefitNameMap).filter(
                 (benefitName) => !result.some((benefit) => benefit.label === benefitName)
             ).map(
-                (notDisplayed) => `${notDisplayed} (${nameMap[notDisplayed].join(",")})`
+                (notDisplayed) => `${notDisplayed} (${benefitNameMap[notDisplayed].join(",")})`
             )
 
             setNotDisplayedBenefits(undisplayedBenefits)
@@ -481,7 +489,7 @@ function Home() {
                         </table>
                     </div>
               {benefits.map(b => {
-                let data = apply(source, b, show)
+                let data = mapEventPerCategory(source, b, show)
                 let ids = b.ids && b.ids.join(', ')
                 let l = b.label
 
