@@ -120,6 +120,7 @@ const ActionResponsiveBar = ({ data /* see data tab */ }) => (
 )
 
 function Home() {
+    const [visitData, setVisitData] = useState([])
     const [survey, setSurvey] = useState({
         summary: [],
         details: {
@@ -127,6 +128,10 @@ function Home() {
             maxPercentage: 100,
         }
     });
+    const today = new Date()
+    const nextMonth = `${today.getFullYear()}-${today.getMonth() + 2}-01`
+    const observatoireURL = `https://observatoire.numerique.gouv.fr/Demarches/3135?view-mode=statistics&date-debut=2020-07-01&date-fin=${nextMonth}`
+
     const [benefits, setBenefits] = useState([]);
     const [notDisplayedBenefits, setNotDisplayedBenefits] = useState([]);
     const [showActions, setShowActions] = useState(true);
@@ -164,16 +169,31 @@ function Home() {
         }, {})
     }
 
+    async function fetchVisitData() {
+        const json = await fetchJson('https://stats.data.gouv.fr/index.php?date=2021-01-01,yesterday&expanded=1&filter_limit=100&force_api_session=1&format=JSON&format_metrics=1&idSite=165&method=API.get&module=API&period=month&token_auth=anonymous')
+        const months = Object.keys(json)
+        return months.map(m => {
+            return {
+                month: m,
+                visites: json[m].nb_visits,
+                simulations: json[m].nb_visits_converted,
+            }
+        })
+    }
+
     async function fetchData(period) {
         try {
             const data = await Promise.all([
                 fetchJson(`https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=-1&format=JSON&idSite=165&method=Events.getName&module=API&period=${period}&date=yesterday`),
                 fetchBenefitPage(period),
                 fetchBenefitNames(),
+                fetchVisitData()
             ])
             const matomoEvents = data[0]
             const nameMap = data[2]
             const matomoPageVisits = data[1]
+            const visitData = data[3]
+            setVisitData(visitData)
 
             const result = matomoEvents.map(aide => {
                 if (!(aide.label in nameMap))
@@ -306,6 +326,44 @@ function Home() {
             }
           `}</style>
           <h1>Statistiques d'impact et d'aide à l'amélioration du produit Mes Aides</h1>
+
+          <h2>Statistiques d'usage</h2>
+
+          <h3>Visites</h3>
+
+          <div className="chart doubleCell"><ResponsiveBar
+            data={visitData}
+            indexBy="month"
+            indexScale={{ type: 'band', round: true }}
+            keys={[ 'visites' ]}
+            groupMode="grouped"
+            margin={{ top: 15, right: 10, bottom: 50, left: 60 }}
+            padding={0.3}
+            animate={false}
+        /></div>
+
+          <h3>Simulations terminées</h3>
+
+          <div className="chart doubleCell"><ResponsiveBar
+            data={visitData}
+            indexBy="month"
+            indexScale={{ type: 'band', round: true }}
+            keys={['simulations' ]}
+            groupMode="grouped"
+            margin={{ top: 15, right: 10, bottom: 50, left: 60 }}
+            padding={0.3}
+            animate={false}
+        /></div>
+
+        <p>Les statistiques d'usage du simulateur sont publiques et accessibles à partir
+        de <a target="_blank" rel="noopener" href="https://stats.data.gouv.fr/index.php?idSite=165&module=MultiSites&action=index&date=yesterday&period=month">la page suivante</a> et à côté des statistiques d'usage d'autres Startup d'État. Sur Matomo, le simulateur est intitulé « aides-jeunes ».
+        </p>
+
+          <h2>Observatoire de la qualité des démarches en ligne</h2>
+
+        <p>La synthèse des avis déposés par les usagers grâce au bouton « Je donne mon avis » est publique et accessible sur l'observatoire de la qualité des démarches en ligne
+        à <a target="_blank" rel="noopener" href={observatoireURL}>la page suivante</a>.
+        </p>
 
           <h2>Résultats de sondage 7 jours après les simulations (sur {survey.count} réponses)</h2>
 
