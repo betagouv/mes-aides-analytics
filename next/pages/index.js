@@ -356,7 +356,7 @@ function Home() {
         /></div>
 
         <p>Les statistiques d'usage du simulateur sont publiques et accessibles à partir
-        de <a target="_blank" rel="noopener" href="https://stats.data.gouv.fr/index.php?idSite=165&module=MultiSites&action=index&date=yesterday&period=month">la page suivante</a> et à côté des statistiques d'usage d'autres Startup d'État. Sur Matomo, le simulateur est intitulé « aides-jeunes ».
+        de <a target="_blank" rel="noopener" href="https://stats.data.gouv.fr/index.php?idSite=165&module=MultiSites&action=index&date=yesterday&period=month">la page suivante</a> et à côté des statistiques d'usage d'autres Startups d'État. Sur Matomo, le simulateur est intitulé « aides-jeunes ».
         </p>
 
           <h2>Observatoire de la qualité des démarches en ligne</h2>
