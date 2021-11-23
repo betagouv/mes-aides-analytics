@@ -121,6 +121,7 @@ const ActionResponsiveBar = ({ data /* see data tab */ }) => (
 
 function Home() {
     const [visitData, setVisitData] = useState([])
+    const [observatoireURL, setObservatoireURL] = useState()
     const [survey, setSurvey] = useState({
         summary: [],
         details: {
@@ -128,9 +129,6 @@ function Home() {
             maxPercentage: 100,
         }
     });
-    const today = new Date()
-    const nextMonth = `${today.getFullYear()}-${today.getMonth() + 2}-01`
-    const observatoireURL = `https://observatoire.numerique.gouv.fr/Demarches/3135?view-mode=statistics&date-debut=2020-07-01&date-fin=${nextMonth}`
 
     const [benefits, setBenefits] = useState([]);
     const [notDisplayedBenefits, setNotDisplayedBenefits] = useState([]);
@@ -280,6 +278,10 @@ function Home() {
       fetchData(period)
       fetchSurveyData()
       fetchOpenfiscaVariables()
+
+      const today = new Date()
+      const nextMonth = `${today.getFullYear()}-${today.getMonth() + 2}-01`
+      setObservatoireURL(`https://observatoire.numerique.gouv.fr/Demarches/3135?view-mode=statistics&date-debut=2020-07-01&date-fin=${nextMonth}`)
     }, [])
 
     const handlePeriodChange = useCallback(e => {
