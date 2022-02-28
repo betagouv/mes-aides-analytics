@@ -1,0 +1,255 @@
+:root {
+  --text-color: #3a464d;
+  --text-color-light: #5c6975;
+  --background-color: #fff;
+  --light-transparency: #f3f5f6;
+  --light-transparency: #aaaaaa22;
+  --theme-color: #3cc7a7;
+  --nav-background-color: #252627;
+  --border-radius: 4px;
+  --screen-size: 860px;
+  --border-light: #d3dce444;
+  --text-shadow: 0.5px 1px 0px rgba(0, 0, 0, 0.3);
+  --light: #fff;
+  --page-width: 860px;
+  --small-gap: 10px;
+  --middle-gap: 20px;
+  --large-gap: 40px;
+}
+:root {
+  --theme-color: #6fb2ac;
+  margin: auto;
+  line-height: 1.25;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  margin: 0;
+  color: #6b7280;
+  font-size: 1.1rem;
+  line-height: 1.5rem;
+}
+
+header {
+  background-color: #6fb2ac /*var(--theme-color)*/;
+  height: 60px;
+  color: #fff;
+  padding: 0 30px;
+  background: transparent;
+}
+header nav {
+  width: 100%;
+  max-width: 1300px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+header nav a {
+  text-decoration: none;
+  color: #fff;
+  padding: 0 15px;
+  box-sizing: border-box;
+  height: 80px;
+  line-height: 80px;
+  color: #777;
+
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+header .active {
+  color: #050505;
+}
+
+h1 {
+  color: #111;
+  margin: 2rem 0;
+}
+h2 {
+  color: #222;
+  margin: 3rem 0;
+}
+h3 {
+  color: #333;
+  margin: 2rem 0;
+}
+
+h4 {
+  overflow-wrap: break-word;
+}
+
+h4 small {
+  display: block;
+}
+main {
+  width: 100%;
+  max-width: 1300px;
+  margin: auto;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+.flex,
+.flex-bottom,
+.flex-justify {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.flex-justify {
+  justify-content: space-between;
+}
+.flex-bottom {
+  align-items: flex-end;
+}
+.flex-gap {
+  gap: 20px;
+}
+
+select {
+  background-color: #f2f2f2;
+  border: none;
+  border-bottom: 2px solid var(--theme-color);
+  border-right: 5px solid #f2f2f2;
+  padding: 10px 15px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+label span {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #999;
+}
+table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+  width: 100%;
+}
+table thead {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: var(--theme-color);
+  color: #ffffff;
+  opacity: 0.95;
+  z-index: 10;
+}
+table thead tr {
+  text-align: left;
+}
+table th {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
+table th,
+table td {
+  padding: 12px 15px;
+  padding: 12px 12px;
+  /*display: flex;*/
+}
+table tbody tr {
+  /*border-bottom: 1px solid #dddddd;*/
+}
+
+table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+  background-color: #f9fafb;
+}
+
+table tbody tr:last-of-type {
+  border-bottom: 2px solid var(--theme-color);
+}
+table .text-right {
+  text-align: right;
+}
+table small {
+  margin-left: 10px;
+}
+table td {
+  position: relative;
+}
+table .gauge {
+  background: red;
+  position: absolute;
+  inset: 0 auto 0 0;
+  opacity: 0.2;
+}
+table .sortable {
+  position: relative;
+  display: inline-block;
+  padding-right: 20px;
+  cursor: pointer;
+}
+table .sortable:after,
+table .sortable:before {
+  display: block;
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 4px 4px 4px;
+  border-color: transparent transparent #fff transparent;
+  top: 5px;
+  right: 0;
+  opacity: 0.5;
+
+  top: calc(50% - 7px);
+}
+table .sortable:before {
+  border-width: 4px 4px 0 4px;
+  border-color: #fff transparent transparent transparent;
+  top: auto;
+  bottom: calc(50% - 7px);
+}
+table .sortable-desc:before {
+  opacity: 0;
+}
+table .sortable-desc:after {
+  opacity: 1;
+}
+table .sortable-asc:before {
+  opacity: 1;
+}
+table .sortable-asc:after {
+  opacity: 0;
+}
+
+.responsive-chart {
+  height: 300px;
+  min-width: 500px;
+  width: 100%;
+  flex: 1;
+  min-width: 0;
+}
+.flex-column {
+  width: 50%;
+  min-width: 500px;
+}
+.chart {
+  height: 300px;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.doubleCell {
+  max-width: 600px;
+  flex: 0 0 30rem;
+  flex-grow: 1;
+}
+
+.cell {
+  width: 345px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
