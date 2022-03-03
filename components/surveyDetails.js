@@ -43,7 +43,8 @@ class SurveyDetails extends Component {
         this.state.institutions,
         geographic,
         institution
-      ), () => this.sortTable("total")
+      ),
+      () => this.sortTable("total")
     )
   }
 
@@ -60,9 +61,13 @@ class SurveyDetails extends Component {
       this.state.sortBy,
       this.state.sortAscending,
       ["id"],
-      ["total","asked","failed","nothing","already"]
+      ["total", "asked", "failed", "nothing", "already"]
     )
-    this.setState({ sortAscending: sortAscending, sortBy: sortingBy, filteredBenefits: output })
+    this.setState({
+      sortAscending: sortAscending,
+      sortBy: sortingBy,
+      filteredBenefits: output,
+    })
   }
 
   percent(n, t) {
@@ -123,9 +128,11 @@ class SurveyDetails extends Component {
               <table>
                 <thead>
                   <tr>
-                    {Object.keys(categories).map(key => (
+                    {Object.keys(categories).map((key) => (
                       <th key={key} onClick={() => this.sortTable(key)}>
-                        <div className={`sortable ${this.sortState(key)}`}>{categories[key]}</div>
+                        <div className={`sortable ${this.sortState(key)}`}>
+                          {categories[key]}
+                        </div>
                       </th>
                     ))}
                   </tr>

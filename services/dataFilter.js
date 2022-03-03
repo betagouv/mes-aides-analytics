@@ -1,8 +1,8 @@
 import Url from "./url.js"
 
-const numCompare = (a,b) => {
-  a = (a) ? a : 0
-  b = (b) ? b : 0
+const numCompare = (a, b) => {
+  a = a ? a : 0
+  b = b ? b : 0
   return a - b
 }
 
@@ -44,25 +44,34 @@ export default class DataFilter {
     }
   }
 
-  static sort = (target, sortingBy, previousSort, ascending, alphabeticals=[], numericals=[]) => {
+  static sort = (
+    target,
+    sortingBy,
+    previousSort,
+    ascending,
+    alphabeticals = [],
+    numericals = []
+  ) => {
     let sortAscending = true
-    let output = target;
+    let output = target
     if (previousSort == sortingBy) {
       sortAscending = !ascending
     }
     if (alphabeticals.includes(sortingBy)) {
       if (sortAscending) {
-        output = target.sort((a, b) => a[sortingBy].localeCompare(b[sortingBy], "fi"))
+        output = target.sort((a, b) =>
+          a[sortingBy].localeCompare(b[sortingBy], "fi")
+        )
       } else {
-        output = target.sort((a, b) => b[sortingBy].localeCompare(a[sortingBy], "fi"))
+        output = target.sort((a, b) =>
+          b[sortingBy].localeCompare(a[sortingBy], "fi")
+        )
       }
-    } else if (
-      numericals.includes(sortingBy)
-    ) {
+    } else if (numericals.includes(sortingBy)) {
       if (sortAscending) {
-        output = target.sort((a, b) => numCompare(b[sortingBy],a[sortingBy]))
+        output = target.sort((a, b) => numCompare(b[sortingBy], a[sortingBy]))
       } else {
-        output = target.sort((a, b) => numCompare(a[sortingBy],b[sortingBy]))
+        output = target.sort((a, b) => numCompare(a[sortingBy], b[sortingBy]))
       }
     }
     return { output, sortAscending }

@@ -75,7 +75,7 @@ class Index extends Component {
           partir de{" "}
           <a
             target="_blank"
-            rel="noopener"
+            rel="noreferrer"
             href="https://stats.data.gouv.fr/index.php?idSite=165&module=MultiSites&action=index&date=yesterday&period=month"
           >
             la page suivante
@@ -90,7 +90,7 @@ class Index extends Component {
           La synthèse des avis déposés par les usagers grâce au bouton « Je
           donne mon avis » est publique et accessible sur l'observatoire de la
           qualité des démarches en ligne à{" "}
-          <a target="_blank" rel="noopener" href={this.state.observatory}>
+          <a target="_blank" rel="noreferrer" href={this.state.observatory}>
             la page suivante
           </a>
           .

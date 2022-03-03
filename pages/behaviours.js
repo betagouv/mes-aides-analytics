@@ -1,5 +1,4 @@
 import { Component } from "react"
-import SurveyResults from "../components/surveyResults.js"
 
 import { Config } from "../services/config.js"
 import Fetch from "../services/fetch.js"
@@ -90,7 +89,7 @@ class Behaviours extends Component {
       }
     })
     let benefitsList = {}
-    const result = matomoEvents.map((benefit) => {
+    matomoEvents.map((benefit) => {
       if (!benefitsMap[benefit.label]) return
       if (benefitsList[benefit.label]) {
         for (let key in benefit.subtable) {

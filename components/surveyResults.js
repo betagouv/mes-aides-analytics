@@ -2,8 +2,6 @@ import { Component } from "react"
 import { ResponsiveBar } from "@nivo/bar"
 
 import { Config } from "../services/config.js"
-import Fetch from "../services/fetch.js"
-import SurveyDetails from "./surveyDetails.js"
 
 class SurveyResults extends Component {
   constructor(props) {

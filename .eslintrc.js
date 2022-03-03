@@ -24,6 +24,8 @@ module.exports = {
     "no-param-reassign": "off",
     "no-unused-vars": ["error", { argsIgnorePattern: "next" }],
     "react/react-in-jsx-scope": "off",
+    "react/no-unescaped-entities": "off",
+    "react/prop-types": "off"
   },
   ignorePatterns: [".next/*"],
 }

@@ -25,19 +25,22 @@ class PagesVisits extends Component {
   }
 
   async fetchPagesStats() {
-    this.setState({ sortBy: null, sortAscending: false, pagesStats: [] }, async () => {
-      const pagesStats = await Fetch.getJSON(
-        `${process.env.pagesStatsURL}${periods[this.state.period].days}`
-      )
-      for (let element of pagesStats) {
-        if (element.label == "simulation") {
-          const result = []
-          this.flatten(result, element.subtable)
-          this.setState({ pagesStats: result })
+    this.setState(
+      { sortBy: null, sortAscending: false, pagesStats: [] },
+      async () => {
+        const pagesStats = await Fetch.getJSON(
+          `${process.env.pagesStatsURL}${periods[this.state.period].days}`
+        )
+        for (let element of pagesStats) {
+          if (element.label == "simulation") {
+            const result = []
+            this.flatten(result, element.subtable)
+            this.setState({ pagesStats: result })
+          }
         }
+        this.sortTable("exit_nb_visits")
       }
-      this.sortTable("exit_nb_visits")
-    })
+    )
   }
 
   flatten(output, array, depth = "") {
@@ -69,7 +72,11 @@ class PagesVisits extends Component {
       ["label"],
       ["nb_visits", "exit_nb_visits", "exit_rate"]
     )
-    this.setState({ sortAscending: sortAscending, sortBy: sortingBy, pagesStats: output })
+    this.setState({
+      sortAscending: sortAscending,
+      sortBy: sortingBy,
+      pagesStats: output,
+    })
   }
 
   sortState(sortingBy) {
@@ -113,7 +120,9 @@ class PagesVisits extends Component {
           <thead>
             <tr>
               <th onClick={() => this.sortTable("label")}>
-                <div className={`sortable ${this.sortState("label")}`}>Page</div>
+                <div className={`sortable ${this.sortState("label")}`}>
+                  Page
+                </div>
               </th>
               <th onClick={() => this.sortTable("nb_visits")}>
                 <div className={`sortable ${this.sortState("nb_visits")}`}>

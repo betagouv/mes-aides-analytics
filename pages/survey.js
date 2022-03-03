@@ -1,6 +1,5 @@
 import { Component } from "react"
 
-import { Config } from "../services/config.js"
 import Fetch from "../services/fetch.js"
 import SurveyResults from "../components/surveyResults.js"
 import SurveyDetails from "../components/surveyDetails.js"
