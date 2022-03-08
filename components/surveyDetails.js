@@ -124,7 +124,7 @@ class SurveyDetails extends Component {
                 <span>{this.state.filteredBenefits.length} aides</span>
               </div>
             </div>
-            {
+            {<div className="table-container">
               <table>
                 <thead>
                   <tr>
@@ -140,7 +140,7 @@ class SurveyDetails extends Component {
                 <tbody>
                   {this.state.filteredBenefits.map((benefit) => (
                     <tr key={benefit.id}>
-                      <td>{(benefit.id && benefit.label) || benefit.id}</td>
+                      <td>{((benefit.id && benefit.label) || benefit.id).replace(/(-|_)/gm, " ")}</td>
                       <td className="text-right">{benefit.total} réponses</td>
 
                       {Object.keys(Config.surveyLabels).map((key) => (
@@ -162,7 +162,7 @@ class SurveyDetails extends Component {
                   ))}
                 </tbody>
               </table>
-            }
+            </div>}
           </div>
         }
       </div>

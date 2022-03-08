@@ -3,6 +3,12 @@ import "iframe-resizer"
 import Head from "next/head"
 import Header from "../components/header.js"
 
+import { useRouter } from "next/router"
+
+function inIframe() {
+  return useRouter().asPath.split("?")[0] == "/iframe"
+}
+
 export default function App({ Component, pageProps }) {
   return (
     <>
@@ -20,7 +26,9 @@ export default function App({ Component, pageProps }) {
           content="Statistiques d'usage du simulateur d'aides sociales de 1Jeune1Solution"
         />
       </Head>
-      <Header />
+      {!inIframe() && (
+        <Header />
+      )}
       <main>
         <Component {...pageProps} />
       </main>

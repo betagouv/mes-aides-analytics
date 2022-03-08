@@ -275,7 +275,7 @@ class Behaviours extends Component {
           </div>
         </div>
 
-        <div className="list">
+        <div className="table-container">
           <table>
             <thead>
               <tr>

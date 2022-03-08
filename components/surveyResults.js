@@ -64,6 +64,12 @@ class SurveyResults extends Component {
                 colors={({ data }) =>
                   Config.surveyLabels[data.category].lightColor
                 }
+                axisBottom={{
+                  tickSize: 5,
+                  tickPadding: 5,
+                  tickRotation: -45,
+                  legendOffset: 32,
+                }}
                 borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
                 animate={false}
               />

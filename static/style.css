@@ -12,31 +12,31 @@ body {
 }
 
 header {
-  height: 60px;
+  min-height: 60px;
   color: #fff;
   padding: 0 30px;
   background: transparent;
+  box-sizing: border-box;
 }
 header nav {
   width: 100%;
   max-width: var(--page-width);
   margin: auto;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 20px;
   border-bottom: 1px solid #e5e7eb;
+  height: 80px;
 }
 header nav a {
   text-decoration: none;
-  color: #fff;
-  padding: 0 15px;
+  padding: 15px;
   box-sizing: border-box;
-  height: 80px;
-  line-height: 80px;
   color: #777;
-
   font-size: 0.9rem;
   font-weight: bold;
+  line-height: 0.9rem;
 }
 header .active {
   color: #050505;
@@ -45,6 +45,7 @@ header .active {
 h1 {
   color: #111;
   margin: 2rem 0;
+  line-height: 3rem;
 }
 h2 {
   color: #222;
@@ -76,6 +77,8 @@ main {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  box-sizing: border-box;
+  width: 100%;
 }
 .flex-justify {
   justify-content: space-between;
@@ -95,19 +98,27 @@ select {
   padding: 10px 15px;
   max-width: 100%;
   box-sizing: border-box;
+  display: block;
+}
+label {
+  max-width: 100%;
 }
 label span {
   font-size: 0.8rem;
   font-weight: bold;
   color: #999;
 }
+.table-container {
+  max-width: 100%;
+  overflow-x: auto;
+}
 table {
   border-collapse: collapse;
   margin: 25px 0;
   font-size: 0.9em;
   font-family: sans-serif;
-  min-width: 400px;
   width: 100%;
+  max-width: 100%;
 }
 table thead {
   position: -webkit-sticky;
@@ -129,6 +140,8 @@ table th,
 table td {
   padding: 12px 15px;
   padding: 12px 12px;
+
+  overflow-wrap: break-word;
 }
 table tbody tr:nth-of-type(even) {
   background-color: #f3f3f3;
@@ -198,15 +211,65 @@ table .sortable-asc:after {
   height: 300px;
   max-width: 700px;
   width: 100%;
-  min-width: 100%;
+  min-width: 300px;
   flex: 1;
-  min-width: 0;
 }
 .flex-column {
+  /*
   width: 50%;
   min-width: 500px;
+  */
+  min-width: 600px;
+  flex: 1;
 }
 .list {
   display: flex;
   flex-wrap: wrap;
 }
+
+@media (max-width: 1000px) {
+  table thead {
+    position: relative;
+  }
+}
+
+@media (max-width: 480px) {
+
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table thead tr {
+    display: flex;
+    flex-wrap: wrap;
+    border:  none;
+  }
+  
+  table tr {
+    border-bottom: 3px solid #ddd;
+    display: block;
+    margin-bottom: .625em;
+  }
+  
+  table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: .8em;
+    text-align: right;
+  }
+  
+  table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
+
