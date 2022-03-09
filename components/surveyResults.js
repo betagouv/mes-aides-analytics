@@ -59,7 +59,7 @@ class SurveyResults extends Component {
                 indexBy="legend"
                 keys={["value"]}
                 isInteractive={false}
-                margin={{ top: 15, right: 10, bottom: 50, left: 60 }}
+                margin={{ top: 15, right: 10, bottom: 150, left: 60 }}
                 padding={0.3}
                 colors={({ data }) =>
                   Config.surveyLabels[data.category].lightColor

@@ -6,7 +6,7 @@ import DataFilter from "../services/dataFilter.js"
 
 const categories = {
   id: "Aides",
-  total: "Total réponses",
+  total: "Réponses",
   asked: "Demandes réussies",
   failed: "Demandes échouées",
   nothing: "Pas de demande",
@@ -140,11 +140,18 @@ class SurveyDetails extends Component {
                 <tbody>
                   {this.state.filteredBenefits.map((benefit) => (
                     <tr key={benefit.id}>
-                      <td>{((benefit.id && benefit.label) || benefit.id).replace(/(-|_)/gm, " ")}</td>
-                      <td className="text-right">{benefit.total} réponses</td>
+                      <td data-label={categories["id"]}>
+                        {benefit.id && (
+                          <a href={`${process.env.benefitDetailURL}${benefit.id}`} target="_blank">{benefit.id.replace(/(-|_)/gm, " ")}</a>
+                        )}
+                        {benefit.label && (
+                          <>{benefit.label.replace(/(-|_)/gm, " ")}</>
+                        )}
+                      </td>
+                      <td data-label={categories["total"]} className="text-right">{benefit.total} réponses</td>
 
                       {Object.keys(Config.surveyLabels).map((key) => (
-                        <td key={key} className="text-right">
+                        <td data-label={categories[key]} key={key} className="text-right">
                           <div
                             className="gauge"
                             style={{

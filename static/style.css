@@ -37,6 +37,7 @@ header nav a {
   font-size: 0.9rem;
   font-weight: bold;
   line-height: 0.9rem;
+  border: none;
 }
 header .active {
   color: #050505;
@@ -63,6 +64,14 @@ h4 {
 h4 small {
   display: block;
 }
+
+a {
+  color: var(--theme-color);
+  text-decoration: none;
+  color: rgb(111, 146, 186);
+  border-bottom: 1px dotted rgb(111, 146, 186);
+}
+
 main {
   width: 100%;
   max-width: var(--page-width);
@@ -208,17 +217,13 @@ table .sortable-asc:after {
 }
 
 .responsive-chart {
-  height: 300px;
+  height: 400px;
   max-width: 700px;
   width: 100%;
   min-width: 300px;
   flex: 1;
 }
 .flex-column {
-  /*
-  width: 50%;
-  min-width: 500px;
-  */
   min-width: 600px;
   flex: 1;
 }
@@ -249,9 +254,12 @@ table .sortable-asc:after {
   }
   
   table tr {
-    border-bottom: 3px solid #ddd;
+    border-top: 3px solid #eee;
     display: block;
-    margin-bottom: .625em;
+    margin-bottom: 20px;
+    border-left: 1px solid #eee;
+    border-right: 1px solid #eee;
+    border-bottom: 1px solid #eee;
   }
   
   table td {
@@ -259,6 +267,7 @@ table .sortable-asc:after {
     display: block;
     font-size: .8em;
     text-align: right;
+    overflow: hidden;
   }
   
   table td::before {
@@ -270,6 +279,10 @@ table .sortable-asc:after {
   
   table td:last-child {
     border-bottom: 0;
+  }
+
+  .collapsable tbody tr td:not([data-content]) {
+    display: none;
   }
 }
 

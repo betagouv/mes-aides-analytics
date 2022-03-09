@@ -276,7 +276,7 @@ class Behaviours extends Component {
         </div>
 
         <div className="table-container">
-          <table>
+          <table className="collapsable">
             <thead>
               <tr>
                 <th>Nom de l'aide</th>
@@ -292,9 +292,9 @@ class Behaviours extends Component {
             <tbody>
               {this.state.filteredBenefits.map((benefit) => (
                 <tr key={benefit.label}>
-                  <td>{benefit.label}</td>
+                  <td data-label="Aide" data-content="aide">{benefit.label}</td>
                   {Object.keys(filteredCatMapping).map((key) => (
-                    <td className="text-right" key={key}>
+                    <td data-label={filteredCatMapping[key].name || filteredCatMapping[key].cat} data-content={benefit.events[key]} className="text-right" key={key}>
                       <div
                         className="gauge"
                         style={{

@@ -16,5 +16,6 @@ module.exports = {
       "https://stats.data.gouv.fr/index.php?date=yesterday&expanded=1&filter_limit=-1&format=JSON&idSite=165&method=Actions.getPageUrls&module=API&segment=&token_auth=anonymous&period=",
     matomoEvents:
       "https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=-1&format=JSON&idSite=165&method=Events.getName&module=API&date=yesterday&period=",
+    benefitDetailURL: "https://mes-aides.1jeune1solution.beta.gouv.fr/aides/"
   },
 }
