@@ -1,6 +1,8 @@
 :root {
   --theme-color: #6fb2ac;
   --page-width: 1300px;
+  --text-color: #000;
+  --border-radius: 4px;
 }
 
 body {
@@ -12,7 +14,7 @@ body {
 }
 
 header {
-  min-height: 60px;
+  min-height: 80px;
   color: #fff;
   padding: 0 30px;
   background: transparent;
@@ -27,7 +29,7 @@ header nav {
   align-items: center;
   gap: 20px;
   border-bottom: 1px solid #e5e7eb;
-  height: 80px;
+  min-height: 80px;
 }
 header nav a {
   text-decoration: none;
@@ -42,6 +44,7 @@ header nav a {
 header .active {
   color: #050505;
 }
+#menu-checkbox { display: none; }
 
 h1 {
   color: #111;
@@ -238,11 +241,64 @@ table .sortable-asc:after {
   }
 }
 
-@media (max-width: 480px) {
-
+@media screen and (max-width: 900px) {
+  header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  #menu-switch {
+      display: block;
+      width: 40px;
+      height: 40px;
+      position: relative;
+      cursor: pointer;
+  }
+  #menu-switch:before,
+  #menu-switch:after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      margin: 16px auto auto;
+      width: 20px;
+      height: 2px;
+      background-color: var(--text-color);
+      border-radius: var(--border-radius);
+      transform-origin: center;
+      transition: 0.2s;
+  }
+  #menu-switch:after { margin: auto auto 16px; }
+  #menu-checkbox:checked + label {
+      position: absolute;
+      z-index: 1001;
+      inset: 20px 30px auto auto;
+      
+  }
+  #menu-checkbox:checked + label:before { transform: rotate(-45deg);margin: auto; transform-origin: center center; }
+  #menu-checkbox:checked + label:after { transform: rotate(45deg); margin: auto; transform-origin: center center;}
+  #menu-checkbox + label + nav {
+      display: none;
+  }
+  #menu-checkbox:checked + label + nav {
+      padding: 0;
+      background: rgba(255,255,255, 0.95);
+      
+      position: fixed;
+      inset: 0;
+      overflow-x: none;
+      overflow-y: scroll;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      gap: 50px;
+      font-size: 1.4rem;
+      margin: 0;
+  }
 }
-
 @media screen and (max-width: 600px) {
+
   table {
     border: 0;
   }
@@ -285,4 +341,3 @@ table .sortable-asc:after {
     display: none;
   }
 }
-
