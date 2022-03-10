@@ -28,9 +28,10 @@ export default class DataFilter {
     let filteredBenefits = benefits.filter((benefit) => {
       return (
         (geographic == "*" || benefit.type == geographic) &&
-        (institution == "*" || benefit.institution == institution)
+        (institution == "*" || benefit.institution == institution || (benefit.institutions && benefit.institutions.includes(institution)))
       )
     })
+
 
     Url.setParameters({
       geographic: geographic,

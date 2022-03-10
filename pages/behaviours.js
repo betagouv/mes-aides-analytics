@@ -78,12 +78,12 @@ class Behaviours extends Component {
     const benefitsMap = {}
     benefits.map((institutionGroup) => {
       if (benefitsMap[institutionGroup.label]) {
-        benefitsMap[institutionGroup.label].instutions.push(
-          institutionGroup.institution.benefitsIds
+        benefitsMap[institutionGroup.label].institutions.push(
+          institutionGroup.institution.label
         )
       } else {
         benefitsMap[institutionGroup.label] = {
-          instutions: institutionGroup.institution.benefitsIds,
+          institutions: [institutionGroup.institution.label],
           type: institutionGroup.institution.type,
         }
       }
@@ -268,11 +268,9 @@ class Behaviours extends Component {
               this.state.currentInstitution != "*") && (
               <input type="reset" onClick={() => this.filterBenefits()} />
             )}
-          </div>
-          <div>
-            <br />
             <span>{this.state.filteredBenefits.length} aides</span>
           </div>
+          
         </div>
 
         <div className="table-container">

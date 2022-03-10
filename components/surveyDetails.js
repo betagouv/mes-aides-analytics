@@ -119,9 +119,7 @@ class SurveyDetails extends Component {
                   this.state.currentInstitution != "*") && (
                   <input type="reset" onClick={() => this.filterBenefits()} />
                 )}
-              </div>
-              <div>
-                <span>{this.state.filteredBenefits.length} aides</span>
+                  <span>{this.state.filteredBenefits.length} aides</span>
               </div>
             </div>
             {<div className="table-container">
