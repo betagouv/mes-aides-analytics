@@ -4,12 +4,9 @@ import { Config } from "../services/config.js"
 import Fetch from "../services/fetch.js"
 import Url from "../services/url.js"
 import DataFilter from "../services/dataFilter.js"
+import DateRange from "../services/date.js"
 
-const periods = {
-  day: "Hier",
-  month: "Mois dernier",
-  year: new Date().getFullYear().toString(),
-}
+
 
 const sources = {
   //    nb_uniq_visitors: 'Visiteur unique', // Non fonctionnel avec les données mensuelles
@@ -46,6 +43,7 @@ const catMapping = {
   email: { cat: "Expliqué", name: "Email", color: "#d62728" },
 }
 const filteredCatMapping = {}
+const periods = DateRange.getPeriods()
 
 class Behaviours extends Component {
   constructor(props) {
@@ -70,7 +68,7 @@ class Behaviours extends Component {
 
   async fetchUsersBehavioursData() {
     let matomoEvents = await Fetch.getJSON(
-      `${process.env.matomoEvents}${this.state.period}`
+      `${process.env.matomoEvents}${periods[this.state.period].from},${DateRange.getPastDate(0)}`
     )
 
     const { benefits, institutions } = await Fetch.benefits()
@@ -198,7 +196,7 @@ class Behaviours extends Component {
                 {Object.keys(periods).map((k) => {
                   return (
                     <option key={k} value={k}>
-                      {periods[k]}
+                      {periods[k].label}
                     </option>
                   )
                 })}

@@ -11,11 +11,11 @@ module.exports = {
       "https://mes-aides.1jeune1solution.beta.gouv.fr/documents/stats.json",
     benefitsURL: "https://mes-aides.1jeune1solution.beta.gouv.fr/api/benefits",
     pagesStatsURL:
-      "https://stats.data.gouv.fr/index.php?module=API&format=JSON&idSite=165&period=range&method=Actions.getExitPageUrls&expanded=1&date=previous",
+      "https://stats.data.gouv.fr/index.php?module=API&format=JSON&idSite=165&period=range&method=Actions.getExitPageUrls&expanded=1&date=",
     visitorsBehaviour:
       "https://stats.data.gouv.fr/index.php?date=yesterday&expanded=1&filter_limit=-1&format=JSON&idSite=165&method=Actions.getPageUrls&module=API&segment=&token_auth=anonymous&period=",
     matomoEvents:
-      "https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=-1&format=JSON&idSite=165&method=Events.getName&module=API&date=yesterday&period=",
+      "https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=-1&format=JSON&idSite=165&method=Events.getName&module=API&period=range&date=",
     benefitDetailURL: "https://mes-aides.1jeune1solution.beta.gouv.fr/aides/"
   },
 }

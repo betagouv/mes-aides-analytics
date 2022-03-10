@@ -1,13 +1,9 @@
 import { Component } from "react"
 import Fetch from "../services/fetch.js"
 import DataFilter from "../services/dataFilter.js"
+import DateRange from "../services/date.js"
 
-const periods = {
-  day: { days: 1, label: "Dernière 24 heures" },
-  week: { days: 7, label: "7 derniers jours" },
-  month: { days: 30, label: "30 derniers jours" },
-  year: { days: 365, label: "Une année" },
-}
+const periods = DateRange.getPeriods()
 
 class PagesVisits extends Component {
   constructor(props) {
@@ -29,7 +25,7 @@ class PagesVisits extends Component {
       { sortBy: null, sortAscending: false, pagesStats: [] },
       async () => {
         const pagesStats = await Fetch.getJSON(
-          `${process.env.pagesStatsURL}${periods[this.state.period].days}`
+          `${process.env.pagesStatsURL}${periods[this.state.period].from},${DateRange.getPastDate(0)}`
         )
         for (let element of pagesStats) {
           if (element.label == "simulation") {
