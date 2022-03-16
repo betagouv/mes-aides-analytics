@@ -59,6 +59,8 @@ class Behaviours extends Component {
       currentInstitution: "*",
       surveyDetails: [],
       undisplayedBenefits: [],
+      sortBy: null,
+      sortAscending: false,
     }
   }
 
@@ -163,6 +165,30 @@ class Behaviours extends Component {
         institution
       )
     )
+  }
+
+  sortTable(sortingBy) {
+    const { output, sortAscending } = DataFilter.sort(
+      this.state.benefits,
+      sortingBy,
+      this.state.sortBy,
+      this.state.sortAscending,
+      ["label"],
+      Object.keys(filteredCatMapping).map(k=>`events.${k}`)
+    )
+    
+    this.setState({
+      sortAscending: sortAscending,
+      sortBy: sortingBy,
+      filteredBenefits: output,
+    })
+    
+  }
+
+  sortState(sortingBy) {
+    if (sortingBy == this.state.sortBy) {
+      return this.state.sortAscending ? "sortable-asc" : "sortable-desc"
+    }
   }
 
   percent(n, t) {
@@ -275,12 +301,16 @@ class Behaviours extends Component {
           <table className="collapsable">
             <thead>
               <tr>
-                <th>Nom de l'aide</th>
+                <th onClick={() => this.sortTable("label")}>
+                  <div className={`sortable ${this.sortState("label")}`}>Nom de l'aide</div>
+                </th>
                 {Object.keys(filteredCatMapping).map((key) => (
-                  <th key={key}>
-                    {filteredCatMapping[key].name ||
-                      filteredCatMapping[key].cat ||
-                      key}
+                  <th key={key} onClick={() => this.sortTable(`events.${key}`)}>
+                    <div className={`sortable ${this.sortState(`events.${key}`)}`}>
+                      {filteredCatMapping[key].name ||
+                        filteredCatMapping[key].cat ||
+                        key}
+                    </div>
                   </th>
                 ))}
               </tr>
