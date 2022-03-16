@@ -28,7 +28,7 @@ class SurveyDetails extends Component {
       filteredBenefits: [],
       sortBy: null,
       sortAscending: false,
-      showGraph: false
+      showGraph: true
     }
   }
 
@@ -96,57 +96,90 @@ class SurveyDetails extends Component {
     return (
       <div>
         <h3>Détails des résultats du sondage par prestation</h3>
-        <br />
-        {
-          <div>
-              <div className="flex flex-gap flex-justify">
-                <div>
-                <div className="flex flex-gap">
-                {this.state.institutions && (
-                  <select
-                    onChange={(e) => this.filterBenefits(e.target.value)}
-                    value={this.state.currentInstitutionType}
-                  >
-                    {Config.institutionsType.map((type) => (
-                      <option value={type.value} key={type.value}>
-                        {type.label}
-                      </option>
-                    ))}
-                  </select>
-                )}
 
-                {this.state.filteredInstitutions && (
-                  <select
-                    onChange={(e) =>
-                      this.filterBenefits(
-                        this.state.currentInstitutionType,
-                        e.target.value
-                      )
-                    }
-                    value={this.state.currentInstitution}
-                  >
-                    <option value="*">Toutes les institutions</option>
-                    {this.state.filteredInstitutions.map((institution) => (
-                      <option value={institution} key={institution}>
-                        {institution}
-                      </option>
-                    ))}
-                  </select>
-                )}
+            <div className="flex flex-gap flex-justify">
+              <div>
+              <div className="flex flex-gap">
+              {this.state.institutions && (
+                <select
+                  onChange={(e) => this.filterBenefits(e.target.value)}
+                  value={this.state.currentInstitutionType}
+                >
+                  {Config.institutionsType.map((type) => (
+                    <option value={type.value} key={type.value}>
+                      {type.label}
+                    </option>
+                  ))}
+                </select>
+              )}
 
-                {(this.state.currentInstitutionType != "*" ||
-                  this.state.currentInstitution != "*") && (
-                  <input type="reset" onClick={() => this.filterBenefits()} />
-                )}
-                  </div>
-                </div>
-                <div>
-                  <div className="flex flex-gap">
-                    <span>{this.state.filteredBenefits.length} aides</span>
-                    <ViewSwitch trigger={() => this.switchView()} />
-                  </div>
+              {this.state.filteredInstitutions && (
+                <select
+                  onChange={(e) =>
+                    this.filterBenefits(
+                      this.state.currentInstitutionType,
+                      e.target.value
+                    )
+                  }
+                  value={this.state.currentInstitution}
+                >
+                  <option value="*">Toutes les institutions</option>
+                  {this.state.filteredInstitutions.map((institution) => (
+                    <option value={institution} key={institution}>
+                      {institution}
+                    </option>
+                  ))}
+                </select>
+              )}
+
+              {(this.state.currentInstitutionType != "*" ||
+                this.state.currentInstitution != "*") && (
+                <input type="reset" onClick={() => this.filterBenefits()} />
+              )}
                 </div>
               </div>
+              <div>
+                <div className="flex flex-gap">
+                  <span>{this.state.filteredBenefits.length} aides</span>
+                  <ViewSwitch trigger={() => this.switchView()} />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex">
+            {this.state.showGraph && this.state.filteredBenefits.map((benefit) => (
+              
+                <div className="chart-container" key={benefit.id}>
+                    <h4>
+                        {benefit.id}
+                        <small>sur {benefit.total} réponses</small>
+                    </h4>
+                    <div className="chart">
+                        <ResponsiveBar
+                            axisLeft={{
+                              format: value =>
+                                `${Number(value)} %`,
+                            }}
+                            maxValue={100}
+                            label={({data}) => data.value }
+                            data={this.graphMap(benefit)}
+                            keys={["percentage"]}
+                            indexBy="category"
+                            colors={({ data }) =>
+                              Config.surveyLabels[data.label].lightColor
+                            }
+                            isInteractive={false}
+                            margin={{ top: 15, right: 10, bottom: 50, left: 60 }}
+                            padding={0.3}
+                            borderColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
+                            animate={false}
+                        />
+                    </div>
+                </div>
+              
+            ))}
+            </div>
+
             {!this.state.showGraph && (<div className="table-container">
               <table>
                 <thead>
@@ -193,40 +226,8 @@ class SurveyDetails extends Component {
                 </tbody>
               </table>
             </div>)}
-            
-            {this.state.showGraph && this.state.filteredBenefits.map((benefit) => (
-              <div className="cell" key={benefit.id}>
-                  <h4>
-                      {benefit.id}
-                      <small>sur {benefit.total} réponses</small>
-                  </h4>
-                  <div className="chart">
-                      <ResponsiveBar
-                          axisLeft={{
-                            format: value =>
-                              `${Number(value)} %`,
-                          }}
-                          maxValue={100}
-                          label={({data}) => data.value }
-                          data={this.graphMap(benefit)}
-                          keys={["percentage"]}
-                          indexBy="category"
-                          colors={({ data }) =>
-                            Config.surveyLabels[data.label].lightColor
-                          }
-                          isInteractive={false}
-                          margin={{ top: 15, right: 10, bottom: 50, left: 60 }}
-                          padding={0.3}
-                          borderColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
-                          animate={false}
-                      />
-                  </div>
-              </div>
-            ))}
 
           </div>
-        }
-      </div>
     )
   }
 }
