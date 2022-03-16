@@ -41,4 +41,8 @@ export const Config = {
       lightColor: "#e5e5e5",
     },
   },
+  pageEventColors: {
+    Visites: "#d4ebd4",
+    Sorties: "#f6d3d3"
+  }
 }

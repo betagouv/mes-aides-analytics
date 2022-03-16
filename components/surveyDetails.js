@@ -1,5 +1,7 @@
 import { Component } from "react"
 
+import ViewSwitch from "../components/viewSwitch.js"
+
 import { Config } from "../services/config.js"
 import Url from "../services/url.js"
 import DataFilter from "../services/dataFilter.js"
@@ -25,6 +27,7 @@ class SurveyDetails extends Component {
       filteredBenefits: [],
       sortBy: null,
       sortAscending: false,
+      showGraph: false
     }
   }
 
@@ -70,6 +73,10 @@ class SurveyDetails extends Component {
     })
   }
 
+  switchView() {
+    this.setState({showGraph: !this.state.showGraph})
+  }
+
   percent(n, t) {
     return `${Math.round(((n || 0) / (t || 1)) * 100)}%`
   }
@@ -81,8 +88,9 @@ class SurveyDetails extends Component {
         <br />
         {
           <div>
-            <div className="flex-justify">
-              <div className="flex flex-gap">
+              <div className="flex flex-gap flex-justify">
+                <div>
+                <div className="flex flex-gap">
                 {this.state.institutions && (
                   <select
                     onChange={(e) => this.filterBenefits(e.target.value)}
@@ -119,9 +127,15 @@ class SurveyDetails extends Component {
                   this.state.currentInstitution != "*") && (
                   <input type="reset" onClick={() => this.filterBenefits()} />
                 )}
-                  <span>{this.state.filteredBenefits.length} aides</span>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex flex-gap">
+                    <span>{this.state.filteredBenefits.length} aides</span>
+                    <ViewSwitch trigger={() => this.switchView()} />
+                  </div>
+                </div>
               </div>
-            </div>
             {<div className="table-container">
               <table>
                 <thead>

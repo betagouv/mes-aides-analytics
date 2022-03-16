@@ -1,5 +1,6 @@
 :root {
   --theme-color: #6fb2ac;
+  --light-gray: #f1f1f7;
   --page-width: 1300px;
   --text-color: #000;
   --border-radius: 4px;
@@ -103,10 +104,10 @@ main {
 }
 
 select {
-  background-color: #f2f2f2;
+  background-color: var(--light-gray);
   border: none;
   border-bottom: 2px solid var(--theme-color);
-  border-right: 5px solid #f2f2f2;
+  border-right: 5px solid var(--light-gray);
   padding: 10px 15px;
   max-width: 100%;
   box-sizing: border-box;
@@ -234,6 +235,46 @@ table .sortable-asc:after {
   display: flex;
   flex-wrap: wrap;
 }
+
+#switch-view { display: none; }
+
+#switch-view-label {
+  display: flex;
+  background-color: var(--light-gray);
+  padding: 2px;
+  border-radius: 18px;
+  cursor: pointer;
+}
+#switch-view-label div {
+  padding: 5px 12px;
+  border-radius: 18px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+}
+#switch-view-label div svg {
+  max-height: 16px;
+}
+
+#switch-view:not(:checked) + #switch-view-label div:first-child {
+  background: #fff !important;
+  color: var(--theme-color);
+}
+#switch-view:checked + #switch-view-label div:last-child {
+  background: #fff !important;
+  color: var(--theme-color);
+}
+
+
+.chart-container { width: 380px; }
+.chart-container h4 {
+  text-indent: 10px;
+}
+.chart {
+  width: 380px;
+  height: 280px;
+}
+
 
 @media (max-width: 1000px) {
   table thead {
