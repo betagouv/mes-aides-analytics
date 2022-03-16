@@ -120,7 +120,7 @@ class PagesVisits extends Component {
             </select>
           </label>
           <div>
-            <div class="flex flex-gap">
+            <div className="flex flex-gap">
               <span>{this.state.pagesStats.length} pages</span>
               <ViewSwitch trigger={() => this.switchView()} />
             </div>
@@ -134,14 +134,13 @@ class PagesVisits extends Component {
                     <h5>{page.label.replace("/", "/​")}</h5>
                     <div className="chart">
                       <ResponsiveBar
-                          keys={["Visites", "Sorties"]}
                           data={[
-                            {number: page.nb_visits, label: "Visites", percentage: ""},
-                            {number: page.exit_nb_visits, label: "Sorties", percentage: ""}
+                            {value: page.nb_visits, label: "Visites", percentage: ""},
+                            {value: page.exit_nb_visits, label: "Sorties", percentage: ""}
                           ]}
                           maxValue={page.nb_visits}
                           indexBy="label"
-                          keys={["number"]}
+                          keys={["value"]}
                           isInteractive={false}
                           margin={{ top: 15, right: 10, bottom: 50, left: 60 }}
                           padding={0.3}
