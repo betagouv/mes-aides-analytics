@@ -1,11 +1,14 @@
 import { Component } from "react"
 
+import ViewSwitch from "../components/viewSwitch.js"
+
 import { Config } from "../services/config.js"
 import Fetch from "../services/fetch.js"
 import Url from "../services/url.js"
 import DataFilter from "../services/dataFilter.js"
 import DateRange from "../services/date.js"
 
+import { ResponsiveBar } from '@nivo/bar'
 
 
 const sources = {
@@ -61,6 +64,7 @@ class Behaviours extends Component {
       undisplayedBenefits: [],
       sortBy: null,
       sortAscending: false,
+      showGraph: true
     }
   }
 
@@ -195,6 +199,10 @@ class Behaviours extends Component {
     return `${Math.round(((n || 0) / (t || 1)) * 100)}%`
   }
 
+  switchView() {
+    this.setState({showGraph: !this.state.showGraph})
+  }
+
   render() {
     return (
       <>
@@ -292,12 +300,53 @@ class Behaviours extends Component {
               this.state.currentInstitution != "*") && (
               <input type="reset" onClick={() => this.filterBenefits()} />
             )}
-            <span>{this.state.filteredBenefits.length} aides</span>
+            <div>
+            <div className="flex flex-gap">
+              <span>{this.state.filteredBenefits.length} aides</span>
+              <ViewSwitch trigger={() => this.switchView()} />
+            </div>
           </div>
-          
+          </div>
         </div>
 
-        <div className="table-container">
+        <div className="flex">
+        {console.log(this.state.filteredBenefits)}
+        {console.log(filteredCatMapping)}
+        {this.state.showGraph && this.state.filteredBenefits.map((benefit) => (
+          <div className="chart-container" key={benefit.label}>
+            <h4>
+                {benefit.label}
+            </h4>
+            {console.log("=>", Object.keys(benefit.events))}
+            {console.log(":>", Object.keys(benefit.events).map((event) => { return {
+                    "label": event,
+                    "value": 20,
+                    "cat": catMapping[event].cat,
+                    "color": catMapping[event].color,
+                  } }) )}
+            <div className="chart">
+              <ResponsiveBar
+                  data={[Object.keys(benefit.events).map((event) => { return {
+                    "label": event,
+                    "value": 20,
+                    "cat": catMapping[event].cat,
+                    "color": catMapping[event].color,
+                  } })]}
+                  maxValue={benefit.total}
+                  indexBy="label"
+                  keys={["value"]}
+                  isInteractive={false}
+                  margin={{ top: 15, right: 10, bottom: 50, left: 60 }}
+                  padding={0.3}
+                  borderColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
+                  animate={false}
+              />
+            </div>
+          </div>
+        ))}
+        </div>
+
+        {!this.state.showGraph && (<div className="table-container">
           <table className="collapsable">
             <thead>
               <tr>
@@ -343,7 +392,8 @@ class Behaviours extends Component {
               ))}
             </tbody>
           </table>
-        </div>
+        </div>)}
+
         <h2>Liste des aides non-affichées durant cette période</h2>
         <ul>
           {this.state.undisplayedBenefits.map((benefitName) => {

@@ -28,7 +28,7 @@ class SurveyDetails extends Component {
       filteredBenefits: [],
       sortBy: null,
       sortAscending: false,
-      showGraph: true
+      showGraph: false
     }
   }
 
