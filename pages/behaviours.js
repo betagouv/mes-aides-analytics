@@ -334,7 +334,7 @@ class Behaviours extends Component {
                   } })]}
                   maxValue={benefit.total}
                   indexBy="label"
-                  keys={["value"]}
+                  keys={["value", "cat"]}
                   isInteractive={false}
                   margin={{ top: 15, right: 10, bottom: 50, left: 60 }}
                   padding={0.3}
