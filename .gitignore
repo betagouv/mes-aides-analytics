@@ -4,5 +4,3 @@ node_modules
 __pycache__
 *.pyc
 .idea/*
-.DS_Store
-out/

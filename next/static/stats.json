@@ -1,0 +1,782 @@
+{
+  "basic": [
+    {
+      "metric": "simulation",
+      "datapoints": [
+        {
+          "date": "2019-09-13",
+          "value": 86
+        },
+        {
+          "date": "2019-09-14",
+          "value": 3294
+        },
+        {
+          "date": "2019-09-15",
+          "value": 3518
+        },
+        {
+          "date": "2019-09-16",
+          "value": 6555
+        },
+        {
+          "date": "2019-09-17",
+          "value": 6617
+        },
+        {
+          "date": "2019-09-18",
+          "value": 5957
+        },
+        {
+          "date": "2019-09-19",
+          "value": 6536
+        },
+        {
+          "date": "2019-09-20",
+          "value": 5340
+        },
+        {
+          "date": "2019-09-21",
+          "value": 3528
+        },
+        {
+          "date": "2019-09-22",
+          "value": 4205
+        },
+        {
+          "date": "2019-09-23",
+          "value": 6722
+        },
+        {
+          "date": "2019-09-24",
+          "value": 6938
+        },
+        {
+          "date": "2019-09-25",
+          "value": 6622
+        },
+        {
+          "date": "2019-09-26",
+          "value": 6580
+        },
+        {
+          "date": "2019-09-27",
+          "value": 5612
+        },
+        {
+          "date": "2019-09-28",
+          "value": 3600
+        },
+        {
+          "date": "2019-09-29",
+          "value": 4266
+        },
+        {
+          "date": "2019-09-30",
+          "value": 7630
+        },
+        {
+          "date": "2019-10-01",
+          "value": 8658
+        },
+        {
+          "date": "2019-10-02",
+          "value": 8260
+        },
+        {
+          "date": "2019-10-03",
+          "value": 7519
+        },
+        {
+          "date": "2019-10-04",
+          "value": 6032
+        },
+        {
+          "date": "2019-10-05",
+          "value": 3686
+        },
+        {
+          "date": "2019-10-06",
+          "value": 4165
+        },
+        {
+          "date": "2019-10-07",
+          "value": 7098
+        },
+        {
+          "date": "2019-10-08",
+          "value": 9118
+        },
+        {
+          "date": "2019-10-09",
+          "value": 8098
+        },
+        {
+          "date": "2019-10-10",
+          "value": 6837
+        },
+        {
+          "date": "2019-10-11",
+          "value": 5889
+        },
+        {
+          "date": "2019-10-12",
+          "value": 3613
+        },
+        {
+          "date": "2019-10-13",
+          "value": 4321
+        },
+        {
+          "date": "2019-10-14",
+          "value": 7049
+        },
+        {
+          "date": "2019-10-15",
+          "value": 7774
+        },
+        {
+          "date": "2019-10-16",
+          "value": 7432
+        },
+        {
+          "date": "2019-10-17",
+          "value": 7015
+        },
+        {
+          "date": "2019-10-18",
+          "value": 5745
+        },
+        {
+          "date": "2019-10-19",
+          "value": 3659
+        },
+        {
+          "date": "2019-10-20",
+          "value": 3999
+        },
+        {
+          "date": "2019-10-21",
+          "value": 6830
+        },
+        {
+          "date": "2019-10-22",
+          "value": 6905
+        },
+        {
+          "date": "2019-10-23",
+          "value": 6784
+        },
+        {
+          "date": "2019-10-24",
+          "value": 5976
+        },
+        {
+          "date": "2019-10-25",
+          "value": 5142
+        },
+        {
+          "date": "2019-10-26",
+          "value": 3235
+        },
+        {
+          "date": "2019-10-27",
+          "value": 3844
+        },
+        {
+          "date": "2019-10-28",
+          "value": 6961
+        },
+        {
+          "date": "2019-10-29",
+          "value": 7165
+        },
+        {
+          "date": "2019-10-30",
+          "value": 6638
+        },
+        {
+          "date": "2019-10-31",
+          "value": 6026
+        },
+        {
+          "date": "2019-11-01",
+          "value": 6068
+        },
+        {
+          "date": "2019-11-02",
+          "value": 4803
+        },
+        {
+          "date": "2019-11-03",
+          "value": 5405
+        },
+        {
+          "date": "2019-11-04",
+          "value": 9007
+        },
+        {
+          "date": "2019-11-05",
+          "value": 8820
+        },
+        {
+          "date": "2019-11-06",
+          "value": 8771
+        },
+        {
+          "date": "2019-11-07",
+          "value": 7967
+        },
+        {
+          "date": "2019-11-08",
+          "value": 6062
+        },
+        {
+          "date": "2019-11-09",
+          "value": 4158
+        },
+        {
+          "date": "2019-11-10",
+          "value": 3901
+        },
+        {
+          "date": "2019-11-11",
+          "value": 5181
+        },
+        {
+          "date": "2019-11-12",
+          "value": 8195
+        },
+        {
+          "date": "2019-11-13",
+          "value": 8416
+        },
+        {
+          "date": "2019-11-14",
+          "value": 7647
+        },
+        {
+          "date": "2019-11-15",
+          "value": 6270
+        }
+      ]
+    },
+    {
+      "metric": "visit",
+      "datapoints": [
+        {
+          "date": "2019-09-13",
+          "value": 27345
+        },
+        {
+          "date": "2019-09-14",
+          "value": 16586
+        },
+        {
+          "date": "2019-09-15",
+          "value": 16032
+        },
+        {
+          "date": "2019-09-16",
+          "value": 34859
+        },
+        {
+          "date": "2019-09-17",
+          "value": 35234
+        },
+        {
+          "date": "2019-09-18",
+          "value": 32613
+        },
+        {
+          "date": "2019-09-19",
+          "value": 35379
+        },
+        {
+          "date": "2019-09-20",
+          "value": 30213
+        },
+        {
+          "date": "2019-09-21",
+          "value": 17753
+        },
+        {
+          "date": "2019-09-22",
+          "value": 18165
+        },
+        {
+          "date": "2019-09-23",
+          "value": 34997
+        },
+        {
+          "date": "2019-09-24",
+          "value": 35730
+        },
+        {
+          "date": "2019-09-25",
+          "value": 34169
+        },
+        {
+          "date": "2019-09-26",
+          "value": 33160
+        },
+        {
+          "date": "2019-09-27",
+          "value": 29468
+        },
+        {
+          "date": "2019-09-28",
+          "value": 16985
+        },
+        {
+          "date": "2019-09-29",
+          "value": 18181
+        },
+        {
+          "date": "2019-09-30",
+          "value": 37609
+        },
+        {
+          "date": "2019-10-01",
+          "value": 44955
+        },
+        {
+          "date": "2019-10-02",
+          "value": 43243
+        },
+        {
+          "date": "2019-10-03",
+          "value": 38219
+        },
+        {
+          "date": "2019-10-04",
+          "value": 32526
+        },
+        {
+          "date": "2019-10-05",
+          "value": 17962
+        },
+        {
+          "date": "2019-10-06",
+          "value": 19459
+        },
+        {
+          "date": "2019-10-07",
+          "value": 38145
+        },
+        {
+          "date": "2019-10-08",
+          "value": 45769
+        },
+        {
+          "date": "2019-10-09",
+          "value": 40068
+        },
+        {
+          "date": "2019-10-10",
+          "value": 36307
+        },
+        {
+          "date": "2019-10-11",
+          "value": 30912
+        },
+        {
+          "date": "2019-10-12",
+          "value": 16960
+        },
+        {
+          "date": "2019-10-13",
+          "value": 18798
+        },
+        {
+          "date": "2019-10-14",
+          "value": 37779
+        },
+        {
+          "date": "2019-10-15",
+          "value": 38948
+        },
+        {
+          "date": "2019-10-16",
+          "value": 37138
+        },
+        {
+          "date": "2019-10-17",
+          "value": 35251
+        },
+        {
+          "date": "2019-10-18",
+          "value": 29207
+        },
+        {
+          "date": "2019-10-19",
+          "value": 17798
+        },
+        {
+          "date": "2019-10-20",
+          "value": 17976
+        },
+        {
+          "date": "2019-10-21",
+          "value": 34322
+        },
+        {
+          "date": "2019-10-22",
+          "value": 34895
+        },
+        {
+          "date": "2019-10-23",
+          "value": 36803
+        },
+        {
+          "date": "2019-10-24",
+          "value": 31484
+        },
+        {
+          "date": "2019-10-25",
+          "value": 26716
+        },
+        {
+          "date": "2019-10-26",
+          "value": 16595
+        },
+        {
+          "date": "2019-10-27",
+          "value": 17162
+        },
+        {
+          "date": "2019-10-28",
+          "value": 35483
+        },
+        {
+          "date": "2019-10-29",
+          "value": 35270
+        },
+        {
+          "date": "2019-10-30",
+          "value": 33259
+        },
+        {
+          "date": "2019-10-31",
+          "value": 29072
+        },
+        {
+          "date": "2019-11-01",
+          "value": 24991
+        },
+        {
+          "date": "2019-11-02",
+          "value": 21004
+        },
+        {
+          "date": "2019-11-03",
+          "value": 22430
+        },
+        {
+          "date": "2019-11-04",
+          "value": 46085
+        },
+        {
+          "date": "2019-11-05",
+          "value": 43069
+        },
+        {
+          "date": "2019-11-06",
+          "value": 41588
+        },
+        {
+          "date": "2019-11-07",
+          "value": 38474
+        },
+        {
+          "date": "2019-11-08",
+          "value": 31777
+        },
+        {
+          "date": "2019-11-09",
+          "value": 18281
+        },
+        {
+          "date": "2019-11-10",
+          "value": 16390
+        },
+        {
+          "date": "2019-11-11",
+          "value": 22673
+        },
+        {
+          "date": "2019-11-12",
+          "value": 42333
+        },
+        {
+          "date": "2019-11-13",
+          "value": 41172
+        },
+        {
+          "date": "2019-11-14",
+          "value": 38469
+        },
+        {
+          "date": "2019-11-15",
+          "value": 31907
+        }
+      ]
+    }
+  ],
+  "survey": {
+    "summary": {
+      "total": 590,
+      "already": 23,
+      "asked": 315,
+      "failed": 113,
+      "nothing": 139
+    },
+    "details": [
+      {
+        "id": "livret_epargne_populaire_taux",
+        "total": 561,
+        "already": 76,
+        "asked": 61,
+        "failed": 76,
+        "nothing": 348
+      },
+      {
+        "id": "logement_social_eligible",
+        "total": 438,
+        "already": 87,
+        "asked": 132,
+        "failed": 46,
+        "nothing": 173
+      },
+      {
+        "id": "cheque_energie",
+        "total": 265,
+        "already": 89,
+        "asked": 37,
+        "failed": 61,
+        "nothing": 78
+      },
+      {
+        "id": "cmu_c",
+        "total": 170,
+        "already": 52,
+        "asked": 54,
+        "failed": 32,
+        "nothing": 32
+      },
+      {
+        "id": "aide_logement",
+        "total": 136,
+        "already": 43,
+        "asked": 50,
+        "failed": 20,
+        "nothing": 23
+      },
+      {
+        "id": "rsa",
+        "total": 96,
+        "already": 4,
+        "asked": 26,
+        "failed": 23,
+        "nothing": 43
+      },
+      {
+        "id": "ppa",
+        "total": 77,
+        "already": 6,
+        "asked": 36,
+        "failed": 16,
+        "nothing": 19
+      },
+      {
+        "id": "asf",
+        "total": 72,
+        "already": 12,
+        "asked": 21,
+        "failed": 12,
+        "nothing": 27
+      },
+      {
+        "id": "css_participation_forfaitaire",
+        "total": 70,
+        "already": 16,
+        "asked": 18,
+        "failed": 9,
+        "nothing": 27
+      },
+      {
+        "id": "bourse_college",
+        "total": 57,
+        "already": 17,
+        "asked": 21,
+        "failed": 8,
+        "nothing": 11
+      },
+      {
+        "id": "acs",
+        "total": 50,
+        "already": 12,
+        "asked": 16,
+        "failed": 7,
+        "nothing": 15
+      },
+      {
+        "id": "af",
+        "total": 42,
+        "already": 23,
+        "asked": 8,
+        "failed": 6,
+        "nothing": 5
+      },
+      {
+        "id": "bourse_lycee",
+        "total": 38,
+        "already": 14,
+        "asked": 14,
+        "failed": 3,
+        "nothing": 7
+      },
+      {
+        "id": "paje_base",
+        "total": 33,
+        "already": 12,
+        "asked": 11,
+        "failed": 4,
+        "nothing": 6
+      },
+      {
+        "id": "garantie_jeunes",
+        "total": 31,
+        "already": 3,
+        "asked": 3,
+        "failed": 6,
+        "nothing": 19
+      },
+      {
+        "id": "aspa",
+        "total": 29,
+        "already": 3,
+        "asked": 12,
+        "failed": 2,
+        "nothing": 12
+      },
+      {
+        "id": "aah",
+        "total": 21,
+        "already": 6,
+        "asked": 8,
+        "failed": 1,
+        "nothing": 6
+      },
+      {
+        "id": "ass",
+        "total": 18,
+        "asked": 3,
+        "failed": 5,
+        "nothing": 10
+      },
+      {
+        "id": "apa_eligibilite",
+        "total": 18,
+        "already": 3,
+        "asked": 5,
+        "failed": 1,
+        "nothing": 9
+      },
+      {
+        "id": "cf",
+        "total": 15,
+        "already": 8,
+        "asked": 2,
+        "failed": 3,
+        "nothing": 2
+      },
+      {
+        "id": "asi",
+        "total": 13,
+        "already": 2,
+        "asked": 2,
+        "failed": 5,
+        "nothing": 4
+      },
+      {
+        "id": "caah",
+        "total": 12,
+        "already": 7,
+        "asked": 2,
+        "failed": 1,
+        "nothing": 2
+      },
+      {
+        "id": "paris_energie_familles",
+        "total": 11,
+        "already": 2,
+        "asked": 2,
+        "failed": 1,
+        "nothing": 6
+      },
+      {
+        "id": "paris_logement",
+        "total": 9,
+        "already": 1,
+        "asked": 2,
+        "failed": 4,
+        "nothing": 2
+      },
+      {
+        "id": "paris_pass_access",
+        "total": 9,
+        "already": 6,
+        "failed": 2,
+        "nothing": 1
+      },
+      {
+        "id": "paris_logement_psol",
+        "total": 8,
+        "already": 3,
+        "asked": 2,
+        "failed": 2,
+        "nothing": 1
+      },
+      {
+        "id": "rennes_metropole_transport",
+        "total": 4,
+        "already": 3,
+        "nothing": 1
+      },
+      {
+        "id": "paris_pass_seniors",
+        "total": 3,
+        "already": 1,
+        "failed": 1,
+        "nothing": 1
+      },
+      {
+        "id": "paris_logement_plfm",
+        "total": 2,
+        "already": 2
+      },
+      {
+        "id": "paris_complement_sante",
+        "total": 2,
+        "failed": 1,
+        "nothing": 1
+      },
+      {
+        "id": "paris_forfait_familles",
+        "total": 1,
+        "asked": 1
+      },
+      {
+        "id": "cotes_d_armor_fonds_solidarite_logement_energie_eligibilite",
+        "total": 1,
+        "nothing": 1
+      },
+      {
+        "id": "paris_logement_familles",
+        "total": 1,
+        "asked": 1
+      }
+    ]
+  }
+}
