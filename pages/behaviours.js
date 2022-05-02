@@ -64,7 +64,7 @@ class Behaviours extends Component {
       undisplayedBenefits: [],
       sortBy: null,
       sortAscending: false,
-      showGraph: true
+      showGraph: false
     }
   }
 
@@ -300,50 +300,8 @@ class Behaviours extends Component {
               this.state.currentInstitution != "*") && (
               <input type="reset" onClick={() => this.filterBenefits()} />
             )}
-            <div>
-            <div className="flex flex-gap">
-              <span>{this.state.filteredBenefits.length} aides</span>
-              <ViewSwitch trigger={() => this.switchView()} />
-            </div>
+            
           </div>
-          </div>
-        </div>
-
-        <div className="flex">
-        {console.log(this.state.filteredBenefits)}
-        {console.log(filteredCatMapping)}
-        {this.state.showGraph && this.state.filteredBenefits.map((benefit) => (
-          <div className="chart-container" key={benefit.label}>
-            <h4>
-                {benefit.label}
-            </h4>
-            {console.log("=>", Object.keys(benefit.events))}
-            {console.log(":>", Object.keys(benefit.events).map((event) => { return {
-                    "label": event,
-                    "value": 20,
-                    "cat": catMapping[event].cat,
-                    "color": catMapping[event].color,
-                  } }) )}
-            <div className="chart">
-              <ResponsiveBar
-                  data={[Object.keys(benefit.events).map((event) => { return {
-                    "label": event,
-                    "value": 20,
-                    "cat": catMapping[event].cat,
-                    "color": catMapping[event].color,
-                  } })]}
-                  maxValue={benefit.total}
-                  indexBy="label"
-                  keys={["value", "cat"]}
-                  isInteractive={false}
-                  margin={{ top: 15, right: 10, bottom: 50, left: 60 }}
-                  padding={0.3}
-                  borderColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
-                  animate={false}
-              />
-            </div>
-          </div>
-        ))}
         </div>
 
         {!this.state.showGraph && (<div className="table-container">
