@@ -95,7 +95,6 @@ class Behaviours extends Component {
       }
     })
     let benefitsList = {}
-    console.log(benefitsList)
     // Add benefits event to existing object or create it
     matomoEvents.map((benefit) => {
       if (!benefitsMap[benefit.label] && !benefitsLabelIdMap[benefit.label]) return
@@ -179,7 +178,6 @@ class Behaviours extends Component {
   }
 
   sortTable(sortingBy) {
-    console.log("!!", this.state.benefits)
     const { output, sortAscending } = DataFilter.sort(
       this.state.benefits,
       sortingBy,
