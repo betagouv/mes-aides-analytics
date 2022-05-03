@@ -1,11 +1,14 @@
 import { Component } from "react"
 
+import ViewSwitch from "../components/viewSwitch.js"
+
 import { Config } from "../services/config.js"
 import Fetch from "../services/fetch.js"
 import Url from "../services/url.js"
 import DataFilter from "../services/dataFilter.js"
 import DateRange from "../services/date.js"
 
+import { ResponsiveBar } from '@nivo/bar'
 
 
 const sources = {
@@ -50,7 +53,7 @@ class Behaviours extends Component {
     super(props)
     this.state = {
       value: null,
-      period: "year",
+      period: "day",
       source: "nb_visits",
       institutions: [],
       benefits: [],
@@ -59,6 +62,9 @@ class Behaviours extends Component {
       currentInstitution: "*",
       surveyDetails: [],
       undisplayedBenefits: [],
+      sortBy: null,
+      sortAscending: false,
+      showGraph: false
     }
   }
 
@@ -74,49 +80,54 @@ class Behaviours extends Component {
     const { benefits, institutions } = await Fetch.benefits()
 
     const benefitsMap = {}
+    const benefitsLabelIdMap = {}
     benefits.map((institutionGroup) => {
-      if (benefitsMap[institutionGroup.label]) {
-        benefitsMap[institutionGroup.label].institutions.push(
-          institutionGroup.institution.label
+      if (benefitsMap[institutionGroup.id]) {
+        benefitsMap[institutionGroup.id].institutions.push(
+          institutionGroup.institution.id
         )
       } else {
-        benefitsMap[institutionGroup.label] = {
-          institutions: [institutionGroup.institution.label],
-          type: institutionGroup.institution.type,
+        benefitsMap[institutionGroup.id] = {
+          institutions: [institutionGroup.institution.id],
+          type: institutionGroup.institution.type
         }
+        benefitsLabelIdMap[institutionGroup.label] = institutionGroup.id
       }
     })
     let benefitsList = {}
+    // Add benefits event to existing object or create it
     matomoEvents.map((benefit) => {
-      if (!benefitsMap[benefit.label]) return
-      if (benefitsList[benefit.label]) {
+      if (!benefitsMap[benefit.label] && !benefitsLabelIdMap[benefit.label]) return
+        // Normalize the use of benefit ID and benefit Label
+      let index = benefitsLabelIdMap[benefit.label] ? benefitsLabelIdMap[benefit.label] : benefit.label
+      if (benefitsList[index]) {
         for (let key in benefit.subtable) {
           let label = benefit.subtable[key].label
-          if (benefitsList[benefit.label].events[label]) {
-            benefitsList[benefit.label].events[label] +=
+          if (benefitsList[index].events[label]) {
+            benefitsList[index].events[label] +=
               benefit.subtable[key][this.state.source] || 0
           } else {
             if (catMapping[label] && benefit.subtable[key]) {
-              benefitsList[benefit.label].events[label] =
+              benefitsList[index].events[label] =
                 benefit.subtable[key][this.state.source] || 0
               filteredCatMapping[label] = catMapping[label]
             }
           }
-          benefitsList[benefit.label].total += benefit[this.state.source] || 0
+          benefitsList[index].total += benefit[this.state.source] || 0
         }
         return benefit[this.state.source]
       } else {
-        benefitsList[benefit.label] = benefitsMap[benefit.label]
-        benefitsList[benefit.label].events = {}
+        benefitsList[index] = benefitsMap[index]
+        benefitsList[index].events = {}
         for (let key in benefit.subtable) {
           let label = benefit.subtable[key].label
           if (catMapping[label] && benefit.subtable[key][this.state.source]) {
-            benefitsList[benefit.label].events[label] =
+            benefitsList[index].events[label] =
               benefit.subtable[key][this.state.source] || 0
             filteredCatMapping[label] = catMapping[label]
           }
         }
-        benefitsList[benefit.label].total = benefit[this.state.source] || 0
+        benefitsList[index].total = benefit[this.state.source] || 0
       }
       return benefit
     })
@@ -124,10 +135,11 @@ class Behaviours extends Component {
       benefitsList[key].label = key
       return benefitsList[key]
     })
-
     // Filter out displayed benefits
     benefitsList.map((benefit) => {
-      if (benefit.label && benefitsMap[benefit.label]) {
+      if (benefit.id && benefitsMap[benefit.id]) {
+        delete benefitsMap[benefit.id]
+      } else if (benefit.label && benefitsMap[benefit.label]) {
         delete benefitsMap[benefit.label]
       }
     })
@@ -165,8 +177,36 @@ class Behaviours extends Component {
     )
   }
 
+  sortTable(sortingBy) {
+    const { output, sortAscending } = DataFilter.sort(
+      this.state.benefits,
+      sortingBy,
+      this.state.sortBy,
+      this.state.sortAscending,
+      ["label"],
+      Object.keys(filteredCatMapping).map(k=>`events.${k}`)
+    )
+    
+    this.setState({
+      sortAscending: sortAscending,
+      sortBy: sortingBy,
+      filteredBenefits: output,
+    })
+    
+  }
+
+  sortState(sortingBy) {
+    if (sortingBy == this.state.sortBy) {
+      return this.state.sortAscending ? "sortable-asc" : "sortable-desc"
+    }
+  }
+
   percent(n, t) {
     return `${Math.round(((n || 0) / (t || 1)) * 100)}%`
+  }
+
+  switchView() {
+    this.setState({showGraph: !this.state.showGraph})
   }
 
   render() {
@@ -266,29 +306,32 @@ class Behaviours extends Component {
               this.state.currentInstitution != "*") && (
               <input type="reset" onClick={() => this.filterBenefits()} />
             )}
-            <span>{this.state.filteredBenefits.length} aides</span>
+            
           </div>
-          
         </div>
 
-        <div className="table-container">
+        {!this.state.showGraph && (<div className="table-container">
           <table className="collapsable">
             <thead>
               <tr>
-                <th>Nom de l'aide</th>
+                <th onClick={() => this.sortTable("label")}>
+                  <div className={`sortable ${this.sortState("label")}`}>Nom de l'aide</div>
+                </th>
                 {Object.keys(filteredCatMapping).map((key) => (
-                  <th key={key}>
-                    {filteredCatMapping[key].name ||
-                      filteredCatMapping[key].cat ||
-                      key}
+                  <th key={key} onClick={() => this.sortTable(`events.${key}`)}>
+                    <div className={`sortable ${this.sortState(`events.${key}`)}`}>
+                      {filteredCatMapping[key].name ||
+                        filteredCatMapping[key].cat ||
+                        key}
+                    </div>
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {this.state.filteredBenefits.map((benefit) => (
-                <tr key={benefit.label}>
-                  <td data-label="Aide" data-content="aide">{benefit.label}</td>
+                <tr key={benefit.id || benefit.label}>
+                  <td data-label="Aide" data-content="aide">{benefit.id || benefit.label}</td>
                   {Object.keys(filteredCatMapping).map((key) => (
                     <td data-label={filteredCatMapping[key].name || filteredCatMapping[key].cat} data-content={benefit.events[key]} className="text-right" key={key}>
                       <div
@@ -313,7 +356,8 @@ class Behaviours extends Component {
               ))}
             </tbody>
           </table>
-        </div>
+        </div>)}
+
         <h2>Liste des aides non-affichées durant cette période</h2>
         <ul>
           {this.state.undisplayedBenefits.map((benefitName) => {
