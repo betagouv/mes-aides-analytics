@@ -84,9 +84,10 @@ class SurveyDetails extends Component {
 
   graphMap(benefit) {
     return ["asked", "failed", "nothing", "already"].map((category) => {
+     const value = (benefit[category] || 0)
       return {
-      value: (benefit[category] || 0),
-      percentage: 100 * (benefit[category] || 0) / benefit["total"],
+      value,
+      percentage: 100 * value / benefit["total"],
       label: category,
       category: Config.surveyLabels[category].single
     }})
