@@ -1,0 +1,34 @@
+{
+  "name": "mes-aides-stats",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "start": "npm run build && next start",
+    "build": "NODE_ENV=production next build && NODE_ENV=production next export",
+    "deploy": "npm run build && npm run deploy:github",
+    "deploy:github": "touch out/.nojekyll && gh-pages -d out --dotfiles",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "prettier:check": "prettier --check .",
+    "prettier:fix": "prettier --write ."
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@nivo/bar": "^0.70.1",
+    "iframe-resizer": "^4.3.2",
+    "next": "^12.1.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.4.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.29.2",
+    "gh-pages": "^2.0.1",
+    "prettier": "^2.5.1"
+  }
+}
