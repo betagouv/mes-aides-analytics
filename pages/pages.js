@@ -62,7 +62,7 @@ class PagesVisits extends Component {
           nb_visits: element.nb_visits || 0,
           avg_page_load_time: element.avg_page_load_time,
           exit_nb_visits: element.exit_nb_visits || 0,
-          exit_rate: element.exit_rate.replace(/\s+%/g, ""),
+          exit_rate: element.exit_rate.replace(/%/g, ""),
         })
       }
     }

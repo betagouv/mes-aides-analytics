@@ -10,7 +10,7 @@ export default class Fetch {
     const institutions = {}
 
     const benefitsList = {}
-    benefitsData.map((benefit) => {
+    benefitsData["all"].map((benefit) => {
       benefitsList[benefit.id] = {
         institution: benefit.institution.label,
         type: benefit.institution.type,
@@ -39,7 +39,7 @@ export default class Fetch {
       return benefit
     })
     return {
-      benefits: benefitsData,
+      benefits: benefitsData["all"],
       benefitsList: benefitsList,
       institutions: institutions,
       summary: json.survey.summary,
