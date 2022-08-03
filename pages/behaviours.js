@@ -1,14 +1,10 @@
 import { Component } from "react"
 
-import ViewSwitch from "../components/viewSwitch.js"
-
 import { Config } from "../services/config.js"
 import Fetch from "../services/fetch.js"
 import Url from "../services/url.js"
 import DataFilter from "../services/dataFilter.js"
 import DateRange from "../services/date.js"
-
-import { ResponsiveBar } from "@nivo/bar"
 
 const sources = {
   //    nb_uniq_visitors: 'Visiteur unique', // Non fonctionnel avec les données mensuelles

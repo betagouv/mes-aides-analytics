@@ -205,6 +205,7 @@ class SurveyDetails extends Component {
                         <a
                           href={`${process.env.benefitDetailURL}${benefit.id}`}
                           target="_blank"
+                          rel="noreferrer"
                         >
                           {benefit.id.replace(/(-|_)/gm, " ")}
                         </a>
