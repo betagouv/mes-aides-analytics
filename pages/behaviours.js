@@ -8,8 +8,7 @@ import Url from "../services/url.js"
 import DataFilter from "../services/dataFilter.js"
 import DateRange from "../services/date.js"
 
-import { ResponsiveBar } from '@nivo/bar'
-
+import { ResponsiveBar } from "@nivo/bar"
 
 const sources = {
   //    nb_uniq_visitors: 'Visiteur unique', // Non fonctionnel avec les données mensuelles
@@ -64,7 +63,7 @@ class Behaviours extends Component {
       undisplayedBenefits: [],
       sortBy: null,
       sortAscending: false,
-      showGraph: false
+      showGraph: false,
     }
   }
 
@@ -74,7 +73,9 @@ class Behaviours extends Component {
 
   async fetchUsersBehavioursData() {
     let matomoEvents = await Fetch.getJSON(
-      `${process.env.matomoEvents}${periods[this.state.period].from},${DateRange.getPastDate(0)}`
+      `${process.env.matomoEvents}${
+        periods[this.state.period].from
+      },${DateRange.getPastDate(0)}`
     )
 
     const { benefits, institutions } = await Fetch.benefits()
@@ -89,7 +90,7 @@ class Behaviours extends Component {
       } else {
         benefitsMap[institutionGroup.id] = {
           institutions: [institutionGroup.institution.id],
-          type: institutionGroup.institution.type
+          type: institutionGroup.institution.type,
         }
         benefitsLabelIdMap[institutionGroup.label] = institutionGroup.id
       }
@@ -97,9 +98,12 @@ class Behaviours extends Component {
     let benefitsList = {}
     // Add benefits event to existing object or create it
     matomoEvents.map((benefit) => {
-      if (!benefitsMap[benefit.label] && !benefitsLabelIdMap[benefit.label]) return
-        // Normalize the use of benefit ID and benefit Label
-      let index = benefitsLabelIdMap[benefit.label] ? benefitsLabelIdMap[benefit.label] : benefit.label
+      if (!benefitsMap[benefit.label] && !benefitsLabelIdMap[benefit.label])
+        return
+      // Normalize the use of benefit ID and benefit Label
+      let index = benefitsLabelIdMap[benefit.label]
+        ? benefitsLabelIdMap[benefit.label]
+        : benefit.label
       if (benefitsList[index]) {
         for (let key in benefit.subtable) {
           let label = benefit.subtable[key].label
@@ -184,15 +188,14 @@ class Behaviours extends Component {
       this.state.sortBy,
       this.state.sortAscending,
       ["label"],
-      Object.keys(filteredCatMapping).map(k=>`events.${k}`)
+      Object.keys(filteredCatMapping).map((k) => `events.${k}`)
     )
-    
+
     this.setState({
       sortAscending: sortAscending,
       sortBy: sortingBy,
       filteredBenefits: output,
     })
-    
   }
 
   sortState(sortingBy) {
@@ -206,7 +209,7 @@ class Behaviours extends Component {
   }
 
   switchView() {
-    this.setState({showGraph: !this.state.showGraph})
+    this.setState({ showGraph: !this.state.showGraph })
   }
 
   render() {
@@ -306,57 +309,77 @@ class Behaviours extends Component {
               this.state.currentInstitution != "*") && (
               <input type="reset" onClick={() => this.filterBenefits()} />
             )}
-            
           </div>
         </div>
 
-        {!this.state.showGraph && (<div className="table-container">
-          <table className="collapsable">
-            <thead>
-              <tr>
-                <th onClick={() => this.sortTable("label")}>
-                  <div className={`sortable ${this.sortState("label")}`}>Nom de l'aide</div>
-                </th>
-                {Object.keys(filteredCatMapping).map((key) => (
-                  <th key={key} onClick={() => this.sortTable(`events.${key}`)}>
-                    <div className={`sortable ${this.sortState(`events.${key}`)}`}>
-                      {filteredCatMapping[key].name ||
-                        filteredCatMapping[key].cat ||
-                        key}
+        {!this.state.showGraph && (
+          <div className="table-container">
+            <table className="collapsable">
+              <thead>
+                <tr>
+                  <th onClick={() => this.sortTable("label")}>
+                    <div className={`sortable ${this.sortState("label")}`}>
+                      Nom de l'aide
                     </div>
                   </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.filteredBenefits.map((benefit) => (
-                <tr key={benefit.id || benefit.label}>
-                  <td data-label="Aide" data-content="aide">{benefit.id || benefit.label}</td>
                   {Object.keys(filteredCatMapping).map((key) => (
-                    <td data-label={filteredCatMapping[key].name || filteredCatMapping[key].cat} data-content={benefit.events[key]} className="text-right" key={key}>
+                    <th
+                      key={key}
+                      onClick={() => this.sortTable(`events.${key}`)}
+                    >
                       <div
-                        className="gauge"
-                        style={{
-                          width: this.percent(
-                            benefit.events[key],
-                            benefit.total
-                          ),
-                          background: filteredCatMapping[key].color,
-                        }}
-                      ></div>
-                      {benefit.events[key]}
-                      {benefit.events[key] && (
-                        <small>
-                          ({this.percent(benefit.events[key], benefit.total)})
-                        </small>
-                      )}
-                    </td>
+                        className={`sortable ${this.sortState(
+                          `events.${key}`
+                        )}`}
+                      >
+                        {filteredCatMapping[key].name ||
+                          filteredCatMapping[key].cat ||
+                          key}
+                      </div>
+                    </th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>)}
+              </thead>
+              <tbody>
+                {this.state.filteredBenefits.map((benefit) => (
+                  <tr key={benefit.id || benefit.label}>
+                    <td data-label="Aide" data-content="aide">
+                      {benefit.id || benefit.label}
+                    </td>
+                    {Object.keys(filteredCatMapping).map((key) => (
+                      <td
+                        data-label={
+                          filteredCatMapping[key].name ||
+                          filteredCatMapping[key].cat
+                        }
+                        data-content={benefit.events[key]}
+                        className="text-right"
+                        key={key}
+                      >
+                        <div
+                          className="gauge"
+                          style={{
+                            width: this.percent(
+                              benefit.events[key],
+                              benefit.total
+                            ),
+                            background: filteredCatMapping[key].color,
+                          }}
+                        ></div>
+                        {benefit.events[key]}
+                        {benefit.events[key] && (
+                          <small>
+                            ({this.percent(benefit.events[key], benefit.total)})
+                          </small>
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
 
         <h2>Liste des aides non-affichées durant cette période</h2>
         <ul>

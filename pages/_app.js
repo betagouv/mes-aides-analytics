@@ -26,9 +26,7 @@ export default function App({ Component, pageProps }) {
           content="Statistiques d'usage du simulateur d'aides sociales de 1Jeune1Solution"
         />
       </Head>
-      {!inIframe() && (
-        <Header />
-      )}
+      {!inIframe() && <Header />}
       <main>
         <Component {...pageProps} />
       </main>

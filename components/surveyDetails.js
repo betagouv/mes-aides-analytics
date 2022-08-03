@@ -1,5 +1,5 @@
 import { Component } from "react"
-import { ResponsiveBar } from '@nivo/bar'
+import { ResponsiveBar } from "@nivo/bar"
 
 import ViewSwitch from "../components/viewSwitch.js"
 
@@ -28,7 +28,7 @@ class SurveyDetails extends Component {
       filteredBenefits: [],
       sortBy: null,
       sortAscending: false,
-      showGraph: false
+      showGraph: false,
     }
   }
 
@@ -75,7 +75,7 @@ class SurveyDetails extends Component {
   }
 
   switchView() {
-    this.setState({showGraph: !this.state.showGraph})
+    this.setState({ showGraph: !this.state.showGraph })
   }
 
   percent(n, t) {
@@ -84,13 +84,14 @@ class SurveyDetails extends Component {
 
   graphMap(benefit) {
     return ["asked", "failed", "nothing", "already"].map((category) => {
-     const value = (benefit[category] || 0)
+      const value = benefit[category] || 0
       return {
-      value,
-      percentage: 100 * value / benefit["total"],
-      label: category,
-      category: Config.surveyLabels[category].single
-    }})
+        value,
+        percentage: (100 * value) / benefit["total"],
+        label: category,
+        category: Config.surveyLabels[category].single,
+      }
+    })
   }
 
   render() {
@@ -98,9 +99,9 @@ class SurveyDetails extends Component {
       <div>
         <h3>Détails des résultats du sondage par prestation</h3>
 
-            <div className="flex flex-gap flex-justify">
-              <div>
-              <div className="flex flex-gap">
+        <div className="flex flex-gap flex-justify">
+          <div>
+            <div className="flex flex-gap">
               {this.state.institutions && (
                 <select
                   onChange={(e) => this.filterBenefits(e.target.value)}
@@ -137,98 +138,111 @@ class SurveyDetails extends Component {
                 this.state.currentInstitution != "*") && (
                 <input type="reset" onClick={() => this.filterBenefits()} />
               )}
-                </div>
-              </div>
-              <div>
-                <div className="flex flex-gap">
-                  <span>{this.state.filteredBenefits.length} aides</span>
-                  <ViewSwitch trigger={() => this.switchView()} />
-                </div>
-              </div>
             </div>
+          </div>
+          <div>
+            <div className="flex flex-gap">
+              <span>{this.state.filteredBenefits.length} aides</span>
+              <ViewSwitch trigger={() => this.switchView()} />
+            </div>
+          </div>
+        </div>
 
-            <div className="flex">
-            {this.state.showGraph && this.state.filteredBenefits.map((benefit) => (
-              
-                <div className="chart-container" key={benefit.id}>
-                    <h4>
-                        {benefit.id}
-                        <small>sur {benefit.total} réponses</small>
-                    </h4>
-                    <div className="chart">
-                        <ResponsiveBar
-                            axisLeft={{
-                              format: value =>
-                                `${Number(value)} %`,
-                            }}
-                            maxValue={100}
-                            label={({data}) => data.value }
-                            data={this.graphMap(benefit)}
-                            keys={["percentage"]}
-                            indexBy="category"
-                            colors={({ data }) =>
-                              Config.surveyLabels[data.label].lightColor
-                            }
-                            isInteractive={false}
-                            margin={{ top: 15, right: 10, bottom: 50, left: 60 }}
-                            padding={0.3}
-                            borderColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
-                            animate={false}
-                        />
-                    </div>
+        <div className="flex">
+          {this.state.showGraph &&
+            this.state.filteredBenefits.map((benefit) => (
+              <div className="chart-container" key={benefit.id}>
+                <h4>
+                  {benefit.id}
+                  <small>sur {benefit.total} réponses</small>
+                </h4>
+                <div className="chart">
+                  <ResponsiveBar
+                    axisLeft={{
+                      format: (value) => `${Number(value)} %`,
+                    }}
+                    maxValue={100}
+                    label={({ data }) => data.value}
+                    data={this.graphMap(benefit)}
+                    keys={["percentage"]}
+                    indexBy="category"
+                    colors={({ data }) =>
+                      Config.surveyLabels[data.label].lightColor
+                    }
+                    isInteractive={false}
+                    margin={{ top: 15, right: 10, bottom: 50, left: 60 }}
+                    padding={0.3}
+                    borderColor={{
+                      from: "color",
+                      modifiers: [["darker", 1.6]],
+                    }}
+                    animate={false}
+                  />
                 </div>
-              
+              </div>
             ))}
-            </div>
+        </div>
 
-            {!this.state.showGraph && (<div className="table-container">
-              <table>
-                <thead>
-                  <tr>
-                    {Object.keys(categories).map((key) => (
-                      <th key={key} onClick={() => this.sortTable(key)}>
-                        <div className={`sortable ${this.sortState(key)}`}>
-                          {categories[key]}
-                        </div>
-                      </th>
+        {!this.state.showGraph && (
+          <div className="table-container">
+            <table>
+              <thead>
+                <tr>
+                  {Object.keys(categories).map((key) => (
+                    <th key={key} onClick={() => this.sortTable(key)}>
+                      <div className={`sortable ${this.sortState(key)}`}>
+                        {categories[key]}
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.filteredBenefits.map((benefit) => (
+                  <tr key={benefit.id}>
+                    <td data-label={categories["id"]}>
+                      {benefit.id && (
+                        <a
+                          href={`${process.env.benefitDetailURL}${benefit.id}`}
+                          target="_blank"
+                        >
+                          {benefit.id.replace(/(-|_)/gm, " ")}
+                        </a>
+                      )}
+                      {benefit.label && (
+                        <>{benefit.label.replace(/(-|_)/gm, " ")}</>
+                      )}
+                    </td>
+                    <td data-label={categories["total"]} className="text-right">
+                      {benefit.total} réponses
+                    </td>
+
+                    {Object.keys(Config.surveyLabels).map((key) => (
+                      <td
+                        data-label={categories[key]}
+                        key={key}
+                        className="text-right"
+                      >
+                        <div
+                          className="gauge"
+                          style={{
+                            width: this.percent(benefit[key], benefit.total),
+                            background: Config.surveyLabels[key].color,
+                          }}
+                        ></div>
+                        {benefit[key] || 0}
+                        <small>
+                          ({this.percent(benefit[key], benefit.total)})
+                        </small>
+                      </td>
                     ))}
                   </tr>
-                </thead>
-                <tbody>
-                  {this.state.filteredBenefits.map((benefit) => (
-                    <tr key={benefit.id}>
-                      <td data-label={categories["id"]}>
-                        {benefit.id && (
-                          <a href={`${process.env.benefitDetailURL}${benefit.id}`} target="_blank">{benefit.id.replace(/(-|_)/gm, " ")}</a>
-                        )}
-                        {benefit.label && (
-                          <>{benefit.label.replace(/(-|_)/gm, " ")}</>
-                        )}
-                      </td>
-                      <td data-label={categories["total"]} className="text-right">{benefit.total} réponses</td>
-
-                      {Object.keys(Config.surveyLabels).map((key) => (
-                        <td data-label={categories[key]} key={key} className="text-right">
-                          <div
-                            className="gauge"
-                            style={{
-                              width: this.percent(benefit[key], benefit.total),
-                              background: Config.surveyLabels[key].color,
-                            }}
-                          ></div>
-                          {benefit[key] || 0}
-                          <small>
-                            ({this.percent(benefit[key], benefit.total)})
-                          </small>
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>)}
-
+                ))}
+              </tbody>
+            </table>
           </div>
+        )}
+      </div>
     )
   }
 }

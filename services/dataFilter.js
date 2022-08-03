@@ -9,7 +9,7 @@ const numCompare = (a, b) => {
 function get(element, depth) {
   depth = depth.split(".")
   let current = depth[0]
-  if(depth.length > 1) {
+  if (depth.length > 1) {
     return get(element[current], depth.slice(1).join("."))
   } else {
     return element[current]
@@ -38,10 +38,11 @@ export default class DataFilter {
     let filteredBenefits = benefits.filter((benefit) => {
       return (
         (geographic == "*" || benefit.type == geographic) &&
-        (institution == "*" || benefit.institution == institution || (benefit.institutions && benefit.institutions.includes(institution)))
+        (institution == "*" ||
+          benefit.institution == institution ||
+          (benefit.institutions && benefit.institutions.includes(institution)))
       )
     })
-
 
     Url.setParameters({
       geographic: geographic,
@@ -80,9 +81,13 @@ export default class DataFilter {
       }
     } else if (numericals.includes(sortingBy)) {
       if (sortAscending) {
-        output = target.sort((a, b) => numCompare(get(b, sortingBy), get(a, sortingBy)))
+        output = target.sort((a, b) =>
+          numCompare(get(b, sortingBy), get(a, sortingBy))
+        )
       } else {
-        output = target.sort((a, b) => numCompare(get(a, sortingBy), get(b, sortingBy)))
+        output = target.sort((a, b) =>
+          numCompare(get(a, sortingBy), get(b, sortingBy))
+        )
       }
     }
     return { output, sortAscending }
