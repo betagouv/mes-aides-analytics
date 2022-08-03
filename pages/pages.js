@@ -7,7 +7,7 @@ import Fetch from "../services/fetch.js"
 import DataFilter from "../services/dataFilter.js"
 import DateRange from "../services/date.js"
 
-import { ResponsiveBar } from '@nivo/bar'
+import { ResponsiveBar } from "@nivo/bar"
 
 const periods = DateRange.getPeriods()
 
@@ -19,7 +19,7 @@ class PagesVisits extends Component {
       pagesStats: [],
       sortBy: null,
       sortAscending: false,
-      showGraph: false
+      showGraph: false,
     }
   }
 
@@ -32,7 +32,9 @@ class PagesVisits extends Component {
       { sortBy: null, sortAscending: false, pagesStats: [] },
       async () => {
         const pagesStats = await Fetch.getJSON(
-          `${process.env.pagesStatsURL}${periods[this.state.period].from},${DateRange.getPastDate(0)}`
+          `${process.env.pagesStatsURL}${
+            periods[this.state.period].from
+          },${DateRange.getPastDate(0)}`
         )
         for (let element of pagesStats) {
           if (element.label == "simulation") {
@@ -60,7 +62,7 @@ class PagesVisits extends Component {
           nb_visits: element.nb_visits || 0,
           avg_page_load_time: element.avg_page_load_time,
           exit_nb_visits: element.exit_nb_visits || 0,
-          exit_rate: element.exit_rate.replace(/\s+%/g, ""),
+          exit_rate: element.exit_rate.replace(/%/g, ""),
         })
       }
     }
@@ -89,7 +91,7 @@ class PagesVisits extends Component {
   }
 
   switchView() {
-    this.setState({showGraph: !this.state.showGraph})
+    this.setState({ showGraph: !this.state.showGraph })
   }
 
   changePeriod(value) {
@@ -128,81 +130,92 @@ class PagesVisits extends Component {
         </div>
 
         <div className="flex">
-          {this.state.showGraph && this.state.pagesStats.length > 0 &&
-              this.state.pagesStats.map((page) => (
-                <div key={page.label} className="chart-container">
-                    <h5>{page.label.replace("/", "/​")}</h5>
-                    <div className="chart">
-                      <ResponsiveBar
-                          data={[
-                            {value: page.nb_visits, label: "Visites", percentage: ""},
-                            {value: page.exit_nb_visits, label: "Sorties", percentage: ""}
-                          ]}
-                          maxValue={page.nb_visits}
-                          indexBy="label"
-                          keys={["value"]}
-                          isInteractive={false}
-                          margin={{ top: 15, right: 10, bottom: 50, left: 60 }}
-                          padding={0.3}
-                          colors={({ data }) =>
-                            Config.pageEventColors[data.label]
-                          }
-                          borderColor={{ from: 'color', modifiers: [ [ 'darker', 1.6 ] ] }}
-                          animate={false}
-                      />
-                    </div>
+          {this.state.showGraph &&
+            this.state.pagesStats.length > 0 &&
+            this.state.pagesStats.map((page) => (
+              <div key={page.label} className="chart-container">
+                <h5>{page.label.replace("/", "/​")}</h5>
+                <div className="chart">
+                  <ResponsiveBar
+                    data={[
+                      {
+                        value: page.nb_visits,
+                        label: "Visites",
+                        percentage: "",
+                      },
+                      {
+                        value: page.exit_nb_visits,
+                        label: "Sorties",
+                        percentage: "",
+                      },
+                    ]}
+                    maxValue={page.nb_visits}
+                    indexBy="label"
+                    keys={["value"]}
+                    isInteractive={false}
+                    margin={{ top: 15, right: 10, bottom: 50, left: 60 }}
+                    padding={0.3}
+                    colors={({ data }) => Config.pageEventColors[data.label]}
+                    borderColor={{
+                      from: "color",
+                      modifiers: [["darker", 1.6]],
+                    }}
+                    animate={false}
+                  />
                 </div>
-              )
-          )}
+              </div>
+            ))}
         </div>
 
         {!this.state.showGraph && (
-        <table>
-          <thead>
-            <tr>
-              <th onClick={() => this.sortTable("label")}>
-                <div className={`sortable ${this.sortState("label")}`}>
-                  Page
-                </div>
-              </th>
-              <th onClick={() => this.sortTable("nb_visits")}>
-                <div className={`sortable ${this.sortState("nb_visits")}`}>
-                  Nombre de visite
-                </div>
-              </th>
-              <th onClick={() => this.sortTable("exit_nb_visits")}>
-                <div className={`sortable ${this.sortState("exit_nb_visits")}`}>
-                  Nombre de sorties
-                </div>
-              </th>
-              <th onClick={() => this.sortTable("exit_rate")}>
-                <div className={`sortable ${this.sortState("exit_rate")}`}>
-                  Taux de sortie
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.pagesStats.length > 0 &&
-              this.state.pagesStats.map((page) => (
-                <tr key={page.label}>
-                  <td>{page.label}</td>
-                  <td className="text-right">{page.nb_visits}</td>
-                  <td className="text-right">{page.exit_nb_visits}</td>
-                  <td className="text-right">
-                    <div
-                      className="gauge"
-                      style={{
-                        width: `${page.exit_rate}%`,
-                        background: "#ff7f0e",
-                      }}
-                    ></div>
-                    {page.exit_rate}%
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+          <table>
+            <thead>
+              <tr>
+                <th onClick={() => this.sortTable("label")}>
+                  <div className={`sortable ${this.sortState("label")}`}>
+                    Page
+                  </div>
+                </th>
+                <th onClick={() => this.sortTable("nb_visits")}>
+                  <div className={`sortable ${this.sortState("nb_visits")}`}>
+                    Nombre de visite
+                  </div>
+                </th>
+                <th onClick={() => this.sortTable("exit_nb_visits")}>
+                  <div
+                    className={`sortable ${this.sortState("exit_nb_visits")}`}
+                  >
+                    Nombre de sorties
+                  </div>
+                </th>
+                <th onClick={() => this.sortTable("exit_rate")}>
+                  <div className={`sortable ${this.sortState("exit_rate")}`}>
+                    Taux de sortie
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.state.pagesStats.length > 0 &&
+                this.state.pagesStats.map((page) => (
+                  <tr key={page.label}>
+                    <td>{page.label}</td>
+                    <td className="text-right">{page.nb_visits}</td>
+                    <td className="text-right">{page.exit_nb_visits}</td>
+                    <td className="text-right">
+                      <div
+                        className="gauge"
+                        style={{
+                          width: `${page.exit_rate}%`,
+                          background: "#ff7f0e",
+                        }}
+                      ></div>
+                      {page.exit_rate}%
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
         )}
       </>
     )

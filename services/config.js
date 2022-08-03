@@ -43,6 +43,6 @@ export const Config = {
   },
   pageEventColors: {
     Visites: "#d4ebd4",
-    Sorties: "#f6d3d3"
-  }
+    Sorties: "#f6d3d3",
+  },
 }

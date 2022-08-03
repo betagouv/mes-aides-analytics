@@ -8,7 +8,6 @@ class Iframe extends Component {
     super(props)
   }
 
-
   render() {
     return (
       <>

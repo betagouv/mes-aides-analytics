@@ -9,7 +9,7 @@ const menu = [
 ]
 
 function closeMenu() {
-  document.getElementById("menu-checkbox").checked = false;
+  document.getElementById("menu-checkbox").checked = false
 }
 
 const Header = () => {
@@ -21,7 +21,12 @@ const Header = () => {
       <nav>
         {menu.map((item) => (
           <Link href={item.url} key={item.url}>
-            <a className={router == item.url ? "active" : ""} onClick={e => closeMenu()}>{item.label}</a>
+            <a
+              className={router == item.url ? "active" : ""}
+              onClick={(e) => closeMenu()}
+            >
+              {item.label}
+            </a>
           </Link>
         ))}
       </nav>
