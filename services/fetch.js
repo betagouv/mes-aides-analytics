@@ -1,3 +1,5 @@
+import Papaparse from 'papaparse';
+
 export default class Fetch {
   static getJSON = async (url) => {
     const data = await fetch(url)
@@ -45,5 +47,22 @@ export default class Fetch {
       summary: json.survey.summary,
       details: json.survey.details,
     }
+  }
+
+  static fetchCsv(url) {
+    return fetch(url).then(function (response) {
+      let reader = response.body.getReader();
+      let decoder = new TextDecoder('utf-8');
+
+      return reader.read().then(function (result) {
+        return decoder.decode(result.value);
+      });
+    });
+  }
+
+   static async getCsvData(url) {
+    let csvData = await this.fetchCsv(url);
+
+    return Papaparse.parse(csvData, {delimiter: ";"});
   }
 }

@@ -26,7 +26,6 @@ module.exports = {
     matomoEvents:
       "https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=-1&format=JSON&idSite=165&method=Events.getName&module=API&period=range&date=",
     benefitDetailURL: `${aidesJeunesUrl}aides/`,
-    countSimulationByBikeTypeNumberURL: `${aidesJeunesUrl}api/count-by-bike-types-number`,
-    countSimulationByBikeTypeNumberByBikeTypeURL: `${aidesJeunesUrl}api/count-simulation-by-bike-type-number-by-bike-type`,
+    _interetsAidesVeloCsvUrl: `${aidesJeunesUrl}documents/_interetsAidesVelo.csv`,
   },
 }
