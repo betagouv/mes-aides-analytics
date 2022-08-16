@@ -106,6 +106,16 @@ main {
   gap: 20px;
 }
 
+input[type="text"] {
+  background-color: var(--light-gray);
+  border: none;
+  border-bottom: 2px solid var(--theme-color);
+  border-right: 5px solid var(--light-gray);
+  padding: 10px 15px;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: block;
+}
 select {
   background-color: var(--light-gray);
   border: none;

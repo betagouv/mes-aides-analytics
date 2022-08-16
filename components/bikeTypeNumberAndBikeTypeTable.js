@@ -13,7 +13,31 @@ class BikeTypeNumberAndBikeTypeTable extends Component {
     this.state = {
       bikeData: props.bikeData,
       percentage: this.props.percentage,
+      countGroupByBikeTypeNumberAndByBikeType: null,
     }
+  }
+
+  componentDidMount() {
+    const countGroupByBikeTypeNumberAndByBikeType =
+      this.countGroupByBikeTypeNumberAndByBikeType(
+        this.state.bikeData,
+        this.props.depcom
+      )
+    this.setState({ countGroupByBikeTypeNumberAndByBikeType })
+  }
+
+  getSnapshotBeforeUpdate(prevProps) {
+    if (prevProps.depcom === this.props.depcom) {
+      return null
+    }
+
+    const countGroupByBikeTypeNumberAndByBikeType =
+      this.countGroupByBikeTypeNumberAndByBikeType(
+        this.state.bikeData,
+        this.props.depcom
+      )
+    this.setState({ countGroupByBikeTypeNumberAndByBikeType })
+    return null
   }
 
   countGroupByBikeTypeNumberAndByBikeType(bikeData, depcom) {
@@ -69,17 +93,20 @@ class BikeTypeNumberAndBikeTypeTable extends Component {
         result[bikeTypeNumber].totalPercentage
       )
     })
+
+    console.log({
+      categories,
+      result,
+    })
     return {
       categories,
       result,
     }
   }
   render() {
-    if (!this.state.bikeData) {
+    if (!this.state.countGroupByBikeTypeNumberAndByBikeType) {
       return <>Chargement...</>
     }
-    const countGroupByBikeTypeNumberAndByBikeType =
-      this.countGroupByBikeTypeNumberAndByBikeType(this.state.bikeData)
     return (
       <>
         <h3>
@@ -89,36 +116,34 @@ class BikeTypeNumberAndBikeTypeTable extends Component {
           <thead>
             <tr>
               <th>type</th>
-              {countGroupByBikeTypeNumberAndByBikeType.categories.map(
+              {this.state.countGroupByBikeTypeNumberAndByBikeType.categories.map(
                 (_, index) => (
-                  <th key={index}>Par {index + 1}</th>
+                  <th key={`category_${index}`}>Par {index + 1}</th>
                 )
               )}
             </tr>
           </thead>
           <tbody>
-            {countGroupByBikeTypeNumberAndByBikeType.categories.map(
+            {this.state.countGroupByBikeTypeNumberAndByBikeType.categories.map(
               (category) => (
                 <tr key={category}>
                   <td>{category}</td>
-                  {countGroupByBikeTypeNumberAndByBikeType.categories.map(
+                  {this.state.countGroupByBikeTypeNumberAndByBikeType.categories.map(
                     (_, index) => (
-                      <td key={index}>
+                      <td key={`${category}_${index}`}>
                         {this.state.percentage ? (
                           <>
                             {
-                              countGroupByBikeTypeNumberAndByBikeType.result[
-                                index + 1
-                              ][category].percentage
+                              this.state.countGroupByBikeTypeNumberAndByBikeType
+                                .result[index + 1]?.[category].percentage
                             }
                             &nbsp;%
                           </>
                         ) : (
                           <>
                             {
-                              countGroupByBikeTypeNumberAndByBikeType.result[
-                                index + 1
-                              ][category].count
+                              this.state.countGroupByBikeTypeNumberAndByBikeType
+                                .result[index + 1]?.[category].count
                             }
                           </>
                         )}
@@ -131,13 +156,12 @@ class BikeTypeNumberAndBikeTypeTable extends Component {
             {this.state.percentage && (
               <tr>
                 <td>Total</td>
-                {countGroupByBikeTypeNumberAndByBikeType.categories.map(
+                {this.state.countGroupByBikeTypeNumberAndByBikeType.categories.map(
                   (_, index) => (
                     <td key={index}>
                       {
-                        countGroupByBikeTypeNumberAndByBikeType.result[
-                          index + 1
-                        ].totalPercentage
+                        this.state.countGroupByBikeTypeNumberAndByBikeType
+                          .result[index + 1].totalPercentage
                       }
                       &nbsp;%
                     </td>

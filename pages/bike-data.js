@@ -9,15 +9,27 @@ class BikeData extends Component {
     super(props)
     this.state = {
       bikeData: [],
+      depcom: "",
+      timeout: null,
     }
   }
 
-  async componentDidMount() {
-    const bikeData = await Fetch.getCsvData(
-      process.env._interetsAidesVeloCsvUrl
-    )
+  componentDidMount() {
+    const vm = this
+    Fetch.getCsvData(process.env._interetsAidesVeloCsvUrl, (bikeData) => {
+      vm.setState({ bikeData: bikeData.data })
+    })
+  }
 
-    this.setState({ bikeData: bikeData.data })
+  onInput(depcom) {
+    if (this.state.timeout) {
+      clearTimeout(this.state.timeout)
+    }
+    const vm = this
+    const timeout = setTimeout(() => {
+      vm.setState({ depcom })
+    }, 500)
+    this.setState({ timeout })
   }
 
   render() {
@@ -26,12 +38,35 @@ class BikeData extends Component {
         {this.state.bikeData.length && (
           <>
             <h1>Statistiques d'aides aux vélos</h1>
-            <BikeTypeNumberTable bikeData={this.state.bikeData} />
+
+            <div className="flex-justify">
+              <div className="flex-bottom flex-gap">
+                <label>
+                  <span>Filtrer par code insee commune</span>
+                  <br />
+                  <input
+                    type="text"
+                    autoComplete="off"
+                    onInput={(e) => this.onInput(e.target.value)}
+                  />
+                </label>
+              </div>
+            </div>
+
+            <BikeTypeNumberTable
+              bikeData={this.state.bikeData}
+              depcom={this.state.depcom}
+            />
+
             <h2>Détails des types sélectionnées</h2>
-            <BikeTypeNumberAndBikeTypeTable bikeData={this.state.bikeData} />
+            <BikeTypeNumberAndBikeTypeTable
+              bikeData={this.state.bikeData}
+              depcom={this.state.depcom}
+            />
             <BikeTypeNumberAndBikeTypeTable
               bikeData={this.state.bikeData}
               percentage={true}
+              depcom={this.state.depcom}
             />
           </>
         )}
