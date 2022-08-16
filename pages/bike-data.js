@@ -47,9 +47,17 @@ class BikeData extends Component {
                   <input
                     type="text"
                     autoComplete="off"
+                    value={this.state.depcom}
                     onInput={(e) => this.onInput(e.target.value)}
                   />
                 </label>
+
+                {this.state.depcom && (
+                  <input
+                    type="reset"
+                    onClick={() => this.setState({ depcom: "" })}
+                  />
+                )}
               </div>
             </div>
 

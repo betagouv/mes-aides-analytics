@@ -73,7 +73,11 @@ class BikeTypeNumberAndBikeTypeTable extends Component {
         return accum
       }, {})
 
-    Object.keys(result).forEach((bikeTypeNumber) => {
+    Object.keys(categories).forEach((_, index) => {
+      const bikeTypeNumber = index + 1
+      if (!result[bikeTypeNumber]) {
+        result[bikeTypeNumber] = { total: 0 }
+      }
       result[bikeTypeNumber].totalPercentage = 0
       categories.forEach((bikeType) => {
         if (!result[bikeTypeNumber][bikeType]) {
@@ -130,7 +134,7 @@ class BikeTypeNumberAndBikeTypeTable extends Component {
                           <>
                             {
                               this.state.countGroupByBikeTypeNumberAndByBikeType
-                                .result[index + 1]?.[category].percentage
+                                .result[index + 1][category].percentage
                             }
                             &nbsp;%
                           </>
@@ -138,7 +142,7 @@ class BikeTypeNumberAndBikeTypeTable extends Component {
                           <>
                             {
                               this.state.countGroupByBikeTypeNumberAndByBikeType
-                                .result[index + 1]?.[category].count
+                                .result[index + 1][category].count
                             }
                           </>
                         )}
@@ -156,7 +160,7 @@ class BikeTypeNumberAndBikeTypeTable extends Component {
                     <td key={index}>
                       {
                         this.state.countGroupByBikeTypeNumberAndByBikeType
-                          .result[index + 1]?.totalPercentage
+                          .result[index + 1].totalPercentage
                       }
                       &nbsp;%
                     </td>
