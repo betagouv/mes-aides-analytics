@@ -1,4 +1,3 @@
-
 import { Component } from "react"
 
 const MONTH_INDEX = 0
@@ -17,50 +16,78 @@ class BikeTypeNumberTable extends Component {
   }
 
   getBikeTypeNumber(bikeType) {
-    return [undefined, "#N/A"].includes(bikeType) ? 0 : bikeType.split(",").length
+    return [undefined, "#N/A"].includes(bikeType)
+      ? 0
+      : bikeType.split(",").length
   }
 
   countGroupByBikeTypeNumber(bikeData, depcom) {
-    return bikeData?.filter(data => !depcom || depcom === data[DEPCOM_INDEX]).reduce((accum, data, index) => {
-      if (!index) {
+    let total = 0
+    const result = bikeData
+      .filter((data) => !depcom || depcom === data[DEPCOM_INDEX])
+      .reduce((accum, data, index) => {
+        if (!index) {
+          return accum
+        }
+        const bikeTypeNumber = this.getBikeTypeNumber(
+          data[BIKE_TYPE_INDEX]
+        ).toString()
+        if (!accum[bikeTypeNumber]) {
+          accum[bikeTypeNumber] = {
+            count: 0,
+          }
+        }
+        const count = isNaN(data[COUNT_INDEX]) ? 0 : parseInt(data[COUNT_INDEX])
+        accum[bikeTypeNumber].count += count
+        total += count
         return accum
-      }
-      const bikeTypeNumber = this.getBikeTypeNumber(data[BIKE_TYPE_INDEX]).toString()
-      const count = isNaN(data[COUNT_INDEX]) ? 0 : parseInt(data[COUNT_INDEX])
-      accum[bikeTypeNumber] = (accum[bikeTypeNumber] || 0) + count
+      }, {})
 
-      return accum
-    }, {})
+    Object.keys(result).forEach((bikeTypeNumber) => {
+      result[bikeTypeNumber].percentage = (
+        (result[bikeTypeNumber].count / total) *
+        100
+      ).toFixed(5)
+    })
+
+    return {
+      total,
+      result,
+    }
   }
   render() {
     if (!this.state.bikeData) {
       return <>Chargement...</>
     }
-    const countByBikeTypeNumber = this.countGroupByBikeTypeNumber(this.state.bikeData)
-    const total = Object.values(countByBikeTypeNumber).reduce((accum, value) => accum + value, 0)
+    const countByBikeTypeNumber = this.countGroupByBikeTypeNumber(
+      this.state.bikeData
+    )
     return (
-        <>
-          <h2>Nombre de simulations avec n types de vélo sélectionnés</h2>
-          <table>
-            <thead>
+      <>
+        <h2>Nombre de simulations avec n types de vélo sélectionnés</h2>
+        <table>
+          <thead>
             <tr>
               <th>Nombre de type sélectionnés</th>
               <th>count</th>
               <th>prop</th>
               <th>prop x zéro</th>
             </tr>
-            </thead>
-            <tbody>
-            {Object.entries(countByBikeTypeNumber).map(([bikeTypeNumber, count] ) => (<tr>
+          </thead>
+          <tbody>
+            {Object.entries(countByBikeTypeNumber.result).map(
+              ([bikeTypeNumber, value]) => (
+                <tr key={bikeTypeNumber}>
                   <td>{bikeTypeNumber}</td>
-                  <td>{count}</td>
-                  <td>{(count / total  * 100).toFixed(5)}&nbsp;%</td>
+                  <td>{value.count}</td>
+                  <td>{value.percentage}&nbsp;%</td>
                   <td>?</td>
-                </tr>)
+                </tr>
+              )
             )}
-            </tbody>
-          </table>
-        </>
+          </tbody>
+        </table>
+      </>
     )
   }
 }

@@ -18,86 +18,136 @@ class BikeTypeNumberAndBikeTypeTable extends Component {
 
   countGroupByBikeTypeNumberAndByBikeType(bikeData, depcom) {
     const categories = []
-    const result =  bikeData.filter(data => !depcom || depcom === data[DEPCOM_INDEX]).reduce((accum, data, index) => {
-      if (!index || [undefined, "#N/A", ""].includes(data[BIKE_TYPE_INDEX])) {
+    const result = bikeData
+      .filter((data) => !depcom || depcom === data[DEPCOM_INDEX])
+      .reduce((accum, data, index) => {
+        if (!index || [undefined, "#N/A", ""].includes(data[BIKE_TYPE_INDEX])) {
+          return accum
+        }
+        const bikeTypes = data[BIKE_TYPE_INDEX].split(",")
+        const bikeTypeNumber = bikeTypes.length.toString()
+        const count = isNaN(data[COUNT_INDEX]) ? 0 : parseInt(data[COUNT_INDEX])
+
+        if (!accum[bikeTypeNumber]) {
+          accum[bikeTypeNumber] = {
+            total: 0,
+          }
+        }
+
+        accum[bikeTypeNumber].total += count
+        bikeTypes.forEach((bikeType) => {
+          if (!categories.includes(bikeType)) {
+            categories.push(bikeType)
+          }
+          if (!accum[bikeTypeNumber][bikeType]) {
+            accum[bikeTypeNumber][bikeType] = {
+              count: 0,
+            }
+          }
+          accum[bikeTypeNumber][bikeType].count += count
+        })
         return accum
-      }
-      const bikeTypes = data[BIKE_TYPE_INDEX].split(",")
-      const bikeTypeNumber = bikeTypes.length.toString()
-      const count = isNaN(data[COUNT_INDEX]) ? 0 : parseInt(data[COUNT_INDEX])
+      }, {})
 
-      if (!accum[bikeTypeNumber]) {
-        accum[bikeTypeNumber] = {
-          total: 0
+    Object.keys(result).forEach((bikeTypeNumber) => {
+      result[bikeTypeNumber].totalPercentage = 0
+      categories.forEach((bikeType) => {
+        if (!result[bikeTypeNumber][bikeType]) {
+          result[bikeTypeNumber][bikeType] = {
+            count: 0,
+          }
         }
-      }
 
-      accum[bikeTypeNumber].total += count
-      bikeTypes.forEach((bikeType) => {
-        if (!categories.includes(bikeType)) {
-          categories.push(bikeType)
-        }
-        accum[bikeTypeNumber][bikeType] = (accum[bikeTypeNumber][bikeType] || 0) + count
+        const percentage =
+          (result[bikeTypeNumber][bikeType].count /
+            result[bikeTypeNumber].total) *
+          100
+        result[bikeTypeNumber][bikeType].percentage = percentage.toFixed(5)
+        result[bikeTypeNumber].totalPercentage += percentage
       })
-      return  accum
-    }, {})
-
-    // Object.keys((result)).forEach((key) => {
-    //   const totalPercentage = 0
-    //   categories.forEach((category) => {
-    //     result[key][category] = result[key][category] || 0
-    //   })
-    // })
-
+      result[bikeTypeNumber].totalPercentage = Math.round(
+        result[bikeTypeNumber].totalPercentage
+      )
+    })
     return {
       categories,
-      result
+      result,
     }
   }
   render() {
     if (!this.state.bikeData) {
       return <>Chargement...</>
     }
-    const countGroupByBikeTypeNumberAndByBikeType = this.countGroupByBikeTypeNumberAndByBikeType(this.state.bikeData)
+    const countGroupByBikeTypeNumberAndByBikeType =
+      this.countGroupByBikeTypeNumberAndByBikeType(this.state.bikeData)
     return (
-        <>
-          <h3>{this.state.percentage ? "Pourcentages (en colonne)" : "Brutes"}</h3>
-          <table>
-            <thead>
+      <>
+        <h3>
+          {this.state.percentage ? "Pourcentages (en colonne)" : "Brutes"}
+        </h3>
+        <table>
+          <thead>
             <tr>
               <th>type</th>
-              {countGroupByBikeTypeNumberAndByBikeType.categories.map((_, index) => <th>
-                Par {index + 1}
-              </th>)}
-            </tr>
-            </thead>
-            <tbody>
-            {countGroupByBikeTypeNumberAndByBikeType.categories.map((category) => (<tr>
-              <td>{category}</td>
-              {countGroupByBikeTypeNumberAndByBikeType.categories.map((_, index) => (
-                  <td>
-                    {this.state.percentage ? <>
-                      {((countGroupByBikeTypeNumberAndByBikeType.result[index + 1]?.[category] || 0) / countGroupByBikeTypeNumberAndByBikeType.result[index + 1]?.total * 100).toFixed(5) }&nbsp;%
-                    </> : <>
-                      {countGroupByBikeTypeNumberAndByBikeType.result[index + 1]?.[category] || 0}
-                    </>}
-                  </td>
-                  )
+              {countGroupByBikeTypeNumberAndByBikeType.categories.map(
+                (_, index) => (
+                  <th key={index}>Par {index + 1}</th>
+                )
               )}
-            </tr>)
+            </tr>
+          </thead>
+          <tbody>
+            {countGroupByBikeTypeNumberAndByBikeType.categories.map(
+              (category) => (
+                <tr key={category}>
+                  <td>{category}</td>
+                  {countGroupByBikeTypeNumberAndByBikeType.categories.map(
+                    (_, index) => (
+                      <td key={index}>
+                        {this.state.percentage ? (
+                          <>
+                            {
+                              countGroupByBikeTypeNumberAndByBikeType.result[
+                                index + 1
+                              ][category].percentage
+                            }
+                            &nbsp;%
+                          </>
+                        ) : (
+                          <>
+                            {
+                              countGroupByBikeTypeNumberAndByBikeType.result[
+                                index + 1
+                              ][category].count
+                            }
+                          </>
+                        )}
+                      </td>
+                    )
+                  )}
+                </tr>
+              )
             )}
-            {/*{this.state.percentage && <tr>*/}
-            {/*  <td>Total</td>*/}
-            {/*  {{countGroupByBikeTypeNumberAndByBikeType.categories.map((_, index) => (<td>*/}
-            {/*        {countGroupByBikeTypeNumberAndByBikeType.categories.map((category) => (*/}
-            {/*                    {((countGroupByBikeTypeNumberAndByBikeType.result[index + 1]?.[category] || 0) / countGroupByBikeTypeNumberAndByBikeType.result[index + 1]?.total * 100).toFixed(5) }&nbsp;%*/}
-            {/*        )}*/}
-            {/*      </td>)*/}
-            {/*  )}*/}
-            {/*</tr>}*/}
-            </tbody>
-          </table>
-        </>
+            {this.state.percentage && (
+              <tr>
+                <td>Total</td>
+                {countGroupByBikeTypeNumberAndByBikeType.categories.map(
+                  (_, index) => (
+                    <td key={index}>
+                      {
+                        countGroupByBikeTypeNumberAndByBikeType.result[
+                          index + 1
+                        ].totalPercentage
+                      }
+                      &nbsp;%
+                    </td>
+                  )
+                )}
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </>
     )
   }
 }
