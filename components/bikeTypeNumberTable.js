@@ -12,11 +12,33 @@ class BikeTypeNumberTable extends Component {
     super(props)
     this.state = {
       bikeData: props.bikeData,
+      countGroupByBikeTypeNumber: null,
     }
   }
 
+  componentDidMount() {
+    const countGroupByBikeTypeNumber = this.countGroupByBikeTypeNumber(
+      this.state.bikeData,
+      this.props.depcom
+    )
+    this.setState({ countGroupByBikeTypeNumber })
+  }
+
+  getSnapshotBeforeUpdate(prevProps) {
+    if (prevProps.depcom === this.props.depcom) {
+      return null
+    }
+
+    const countGroupByBikeTypeNumber = this.countGroupByBikeTypeNumber(
+      this.state.bikeData,
+      this.props.depcom
+    )
+    this.setState({ countGroupByBikeTypeNumber })
+    return null
+  }
+
   getBikeTypeNumber(bikeType) {
-    return [undefined, "#N/A"].includes(bikeType)
+    return [undefined, "#N/A", ""].includes(bikeType)
       ? 0
       : bikeType.split(",").length
   }
@@ -37,7 +59,9 @@ class BikeTypeNumberTable extends Component {
             count: 0,
           }
         }
-        const count = isNaN(data[COUNT_INDEX]) ? 0 : parseInt(data[COUNT_INDEX])
+        const count = isNaN(parseFloat(data[COUNT_INDEX]))
+          ? 0
+          : parseInt(data[COUNT_INDEX])
         accum[bikeTypeNumber].count += count
         total += count
         return accum
@@ -56,12 +80,9 @@ class BikeTypeNumberTable extends Component {
     }
   }
   render() {
-    if (!this.state.bikeData) {
+    if (!this.state.countGroupByBikeTypeNumber) {
       return <>Chargement...</>
     }
-    const countByBikeTypeNumber = this.countGroupByBikeTypeNumber(
-      this.state.bikeData
-    )
     return (
       <>
         <h2>Nombre de simulations avec n types de vélo sélectionnés</h2>
@@ -75,7 +96,7 @@ class BikeTypeNumberTable extends Component {
             </tr>
           </thead>
           <tbody>
-            {Object.entries(countByBikeTypeNumber.result).map(
+            {Object.entries(this.state.countGroupByBikeTypeNumber.result).map(
               ([bikeTypeNumber, value]) => (
                 <tr key={bikeTypeNumber}>
                   <td>{bikeTypeNumber}</td>

@@ -93,11 +93,6 @@ class BikeTypeNumberAndBikeTypeTable extends Component {
         result[bikeTypeNumber].totalPercentage
       )
     })
-
-    console.log({
-      categories,
-      result,
-    })
     return {
       categories,
       result,
