@@ -156,7 +156,7 @@ class BikeTypeNumberAndBikeTypeTable extends Component {
                     <td key={index}>
                       {
                         this.state.countGroupByBikeTypeNumberAndByBikeType
-                          .result[index + 1].totalPercentage
+                          .result[index + 1]?.totalPercentage
                       }
                       &nbsp;%
                     </td>
