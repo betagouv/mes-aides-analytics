@@ -2,10 +2,10 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 
 const menu = [
-  { url: "/", label: "Statistiques d'usage" },
-  { url: "/survey", label: "Résultats de sondage" },
-  { url: "/behaviours", label: "Comportements utilisateur" },
-  { url: "/pages", label: "Statistiques de visite" },
+  { url: ".", label: "Statistiques d'usage" },
+  { url: "survey", label: "Résultats de sondage" },
+  { url: "behaviours", label: "Comportements utilisateur" },
+  { url: "pages", label: "Statistiques de visite" },
 ]
 
 function closeMenu() {
@@ -22,7 +22,7 @@ const Header = () => {
         {menu.map((item) => (
           <Link href={item.url} key={item.url}>
             <a
-              className={router == item.url ? "active" : ""}
+              className={item.url.indexOf(router) >= 0 ? "active" : ""}
               onClick={(e) => closeMenu()}
             >
               {item.label}
