@@ -22,14 +22,7 @@ class BikeData extends Component {
   }
 
   onInput(depcom) {
-    if (this.state.timeout) {
-      clearTimeout(this.state.timeout)
-    }
-    const vm = this
-    const timeout = setTimeout(() => {
-      vm.setState({ depcom })
-    }, 500)
-    this.setState({ timeout })
+    this.setState({ depcom })
   }
 
   render() {

@@ -37,6 +37,8 @@ class BikeTypeNumberTable extends Component {
     return null
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {}
+
   getBikeTypeNumber(bikeType) {
     return [undefined, "#N/A", ""].includes(bikeType)
       ? 0

@@ -40,6 +40,8 @@ class BikeTypeNumberAndBikeTypeTable extends Component {
     return null
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {}
+
   countGroupByBikeTypeNumberAndByBikeType(bikeData, depcom) {
     const categories = []
     const result = bikeData
