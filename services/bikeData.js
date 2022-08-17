@@ -4,12 +4,14 @@ export default class BikeData {
   static getBikeTypeNumber(bikeType) {
     return NO_BIKE_VALUES.includes(bikeType) ? 0 : bikeType.split(",").length
   }
+  static filterDepcom(bikeData, depcom) {
+    return bikeData.filter((data) => !depcom || depcom === data.depcom100kp)
+  }
 
   static countGroupByBikeTypeNumber(bikeData, depcom) {
     let total = 0
-    const result = bikeData
-      .filter((data) => !depcom || depcom === data.depcom100kp)
-      .reduce((accum, data, index) => {
+    const result = BikeData.filterDepcom(bikeData, depcom).reduce(
+      (accum, data, index) => {
         if (!index) {
           return accum
         }
@@ -25,7 +27,9 @@ export default class BikeData {
         accum[bikeTypeNumber].count += count
         total += count
         return accum
-      }, {})
+      },
+      {}
+    )
 
     Object.keys(result).forEach((bikeTypeNumber) => {
       result[bikeTypeNumber].percentage = (
@@ -42,9 +46,8 @@ export default class BikeData {
 
   static countGroupByBikeTypeNumberAndByBikeType(bikeData, depcom) {
     const categories = []
-    const result = bikeData
-      .filter((data) => !depcom || depcom === data.depcom100kp)
-      .reduce((accum, data, index) => {
+    const result = BikeData.filterDepcom(bikeData, depcom).reduce(
+      (accum, data, index) => {
         if (!index || NO_BIKE_VALUES.includes(data._interetsAidesVelo)) {
           return accum
         }
@@ -71,7 +74,9 @@ export default class BikeData {
           accum[bikeTypeNumber][bikeType].count += count
         })
         return accum
-      }, {})
+      },
+      {}
+    )
 
     Object.keys(categories).forEach((_, index) => {
       const bikeTypeNumber = index + 1
