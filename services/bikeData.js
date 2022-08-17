@@ -10,7 +10,7 @@ export default class BikeData {
 
   static countGroupByBikeTypeNumber(bikeData, depcom) {
     let total = 0
-    const result = BikeData.filterDepcom(bikeData, depcom).reduce(
+    const result = this.filterDepcom(bikeData, depcom).reduce(
       (accum, data, index) => {
         if (!index) {
           return accum
@@ -46,7 +46,7 @@ export default class BikeData {
 
   static countGroupByBikeTypeNumberAndByBikeType(bikeData, depcom) {
     const categories = []
-    const result = BikeData.filterDepcom(bikeData, depcom).reduce(
+    const result = this.filterDepcom(bikeData, depcom).reduce(
       (accum, data, index) => {
         if (!index || NO_BIKE_VALUES.includes(data._interetsAidesVelo)) {
           return accum
