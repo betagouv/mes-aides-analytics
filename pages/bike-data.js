@@ -18,7 +18,7 @@ class BikeData extends Component {
 
   componentDidMount() {
     const vm = this
-    let { depcom } = Url.getParameters(["depcom"])
+    let depcom = Url.getParameters(["depcom"]).depcom || ""
     depcom = depcom === "*" ? "" : depcom
     Fetch.getCsvData(
       process.env._interetsAidesVeloCsvUrl,
