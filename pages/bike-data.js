@@ -16,9 +16,13 @@ class BikeData extends Component {
 
   componentDidMount() {
     const vm = this
-    Fetch.getCsvData(process.env._interetsAidesVeloCsvUrl, (bikeData) => {
-      vm.setState({ bikeData: bikeData.data })
-    })
+    Fetch.getCsvData(
+      process.env._interetsAidesVeloCsvUrl,
+      (bikeData) => {
+        vm.setState({ bikeData: bikeData.data })
+      },
+      { header: true, delimiter: ";" }
+    )
   }
 
   onInput(depcom) {

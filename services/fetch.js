@@ -60,9 +60,9 @@ export default class Fetch {
     });
   }
 
-   static async getCsvData(url, callback) {
+   static async getCsvData(url, callback, opt) {
     let csvData = await this.fetchCsv(url);
 
-    return await Papaparse.parse(csvData, {delimiter: ";", complete: callback});
+    return await Papaparse.parse(csvData, {complete: callback, ...opt});
   }
 }
