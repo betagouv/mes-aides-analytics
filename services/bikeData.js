@@ -1,10 +1,3 @@
-const MONTH_INDEX = 0
-const DEPCOM_INDEX = 1
-const DEPARTMENT_INDEX = 2
-const REGION_INDEX = 3
-const BIKE_TYPE_INDEX = 4
-const COUNT_INDEX = 5
-
 const NO_BIKE_VALUES = [undefined, "#N/A", ""]
 
 export default class BikeData {
