@@ -352,21 +352,32 @@ class Behaviours extends Component {
                         className="text-right"
                         key={key}
                       >
-                        <div
-                          className="gauge"
-                          style={{
-                            width: this.percent(
-                              benefit.events[key],
-                              benefit.total
-                            ),
-                            background: filteredCatMapping[key].color,
-                          }}
-                        ></div>
-                        {benefit.events[key]}
-                        {benefit.events[key] && (
-                          <small>
-                            ({this.percent(benefit.events[key], benefit.total)})
-                          </small>
+                        {key === "show" ? (
+                          <>{benefit.events.show}</>
+                        ) : (
+                          <>
+                            <div
+                              className="gauge"
+                              style={{
+                                width: this.percent(
+                                  benefit.events[key],
+                                  benefit.events.show
+                                ),
+                                background: filteredCatMapping[key].color,
+                              }}
+                            ></div>
+                            {benefit.events[key]}
+                            {benefit.events[key] && (
+                              <small>
+                                (
+                                {this.percent(
+                                  benefit.events[key],
+                                  benefit.events.show
+                                )}
+                                )
+                              </small>
+                            )}
+                          </>
                         )}
                       </td>
                     ))}
