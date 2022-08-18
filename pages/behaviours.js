@@ -119,6 +119,7 @@ class Behaviours extends Component {
       } else {
         benefitsList[index] = benefitsMap[index]
         benefitsList[index].events = {}
+        benefitsList[index].percentageOfEvents = {}
         for (let key in benefit.subtable) {
           let label = benefit.subtable[key].label
           if (catMapping[label] && benefit.subtable[key][this.state.source]) {
@@ -126,6 +127,12 @@ class Behaviours extends Component {
               benefit.subtable[key][this.state.source] || 0
             filteredCatMapping[label] = catMapping[label]
           }
+        }
+        for (let key of Object.keys(benefitsList[index].events)) {
+          benefitsList[index].percentageOfEvents[key] = this.percent(
+            benefitsList[index].events[key],
+            benefitsList[index].events.show
+          )
         }
         benefitsList[index].total = benefit[this.state.source] || 0
       }
@@ -177,14 +184,26 @@ class Behaviours extends Component {
     )
   }
 
+  eventSortName(eventName) {
+    return eventName === "show"
+      ? `events.${eventName}`
+      : `percentageOfEvents.${eventName}`
+  }
+
   sortTable(sortingBy) {
+    Object.keys(filteredCatMapping).map((eventName) =>
+      console.log(this.eventSortName(eventName))
+    )
+
     const { output, sortAscending } = DataFilter.sort(
       this.state.benefits,
       sortingBy,
       this.state.sortBy,
       this.state.sortAscending,
       ["label"],
-      Object.keys(filteredCatMapping).map((k) => `events.${k}`)
+      Object.keys(filteredCatMapping).map((eventName) =>
+        this.eventSortName(eventName)
+      )
     )
 
     this.setState({
@@ -201,7 +220,7 @@ class Behaviours extends Component {
   }
 
   percent(n, t) {
-    return `${Math.round(((n || 0) / (t || 1)) * 100)}%`
+    return Math.round(((n || 0) / (t || 1)) * 100)
   }
 
   switchView() {
@@ -321,11 +340,11 @@ class Behaviours extends Component {
                   {Object.keys(filteredCatMapping).map((key) => (
                     <th
                       key={key}
-                      onClick={() => this.sortTable(`events.${key}`)}
+                      onClick={() => this.sortTable(this.eventSortName(key))}
                     >
                       <div
                         className={`sortable ${this.sortState(
-                          `events.${key}`
+                          this.eventSortName(key)
                         )}`}
                       >
                         {filteredCatMapping[key].name ||
@@ -359,22 +378,14 @@ class Behaviours extends Component {
                             <div
                               className="gauge"
                               style={{
-                                width: this.percent(
-                                  benefit.events[key],
-                                  benefit.events.show
-                                ),
+                                width: `${benefit.percentageOfEvents[key]}%`,
                                 background: filteredCatMapping[key].color,
                               }}
                             ></div>
                             {benefit.events[key]}
                             {benefit.events[key] && (
                               <small>
-                                (
-                                {this.percent(
-                                  benefit.events[key],
-                                  benefit.events.show
-                                )}
-                                )
+                                ({benefit.percentageOfEvents[key]}%)
                               </small>
                             )}
                           </>
