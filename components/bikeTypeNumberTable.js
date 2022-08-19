@@ -44,9 +44,9 @@ class BikeTypeNumberTable extends Component {
           <thead>
             <tr>
               <th>Nombre de type sélectionnés</th>
-              <th>count</th>
-              <th>prop</th>
-              <th>prop x zéro</th>
+              <th>Nombre</th>
+              <th>Proportions</th>
+              <th>Proportions sans zéro</th>
             </tr>
           </thead>
           <tbody>
@@ -56,7 +56,11 @@ class BikeTypeNumberTable extends Component {
                   <td>{bikeTypeNumber}</td>
                   <td>{value.count}</td>
                   <td>{value.percentage}&nbsp;%</td>
-                  <td>?</td>
+                  {value.percentageWithoutZero === undefined ? (
+                    <td></td>
+                  ) : (
+                    <td>{value.percentageWithoutZero} %</td>
+                  )}
                 </tr>
               )
             )}

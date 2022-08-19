@@ -30,12 +30,19 @@ export default class BikeData {
       },
       {}
     )
-
+    const totalWithoutZero = total - result["0"].count
     Object.keys(result).forEach((bikeTypeNumber) => {
       result[bikeTypeNumber].percentage = (
         (result[bikeTypeNumber].count / total) *
         100
       ).toFixed(5)
+
+      if (bikeTypeNumber !== "0") {
+        result[bikeTypeNumber].percentageWithoutZero = (
+          (result[bikeTypeNumber].count / totalWithoutZero) *
+          100
+        ).toFixed(5)
+      }
     })
 
     return {
