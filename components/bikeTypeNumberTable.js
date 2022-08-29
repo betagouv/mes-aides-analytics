@@ -12,8 +12,7 @@ class BikeTypeNumberTable extends Component {
 
   componentDidMount() {
     const countGroupByBikeTypeNumber = BikeData.countGroupByBikeTypeNumber(
-      this.state.bikeData,
-      this.props.depcom
+      this.state.bikeData
     )
     this.setState({ countGroupByBikeTypeNumber })
   }

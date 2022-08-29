@@ -4,6 +4,7 @@ import Fetch from "../services/fetch.js"
 import BikeTypeNumberTable from "../components/bikeTypeNumberTable"
 import BikeTypeNumberAndBikeTypeTable from "../components/bikeTypeNumberAndBikeTypeTable"
 import Url from "../services/url"
+import BikeDataService from "../services/bikeData"
 
 class BikeData extends Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class BikeData extends Component {
       depcomInput: "",
       depcom: "",
       timeout: null,
+      loading: true,
     }
   }
 
@@ -23,7 +25,12 @@ class BikeData extends Component {
     Fetch.getCsvData(
       process.env._interetsAidesVeloCsvUrl,
       (bikeData) => {
-        vm.setState({ bikeData: bikeData.data, depcom, depcomInput: depcom })
+        vm.setState({
+          bikeData: bikeData.data,
+          depcom,
+          depcomInput: depcom,
+          loading: false,
+        })
       },
       { header: true, delimiter: ";" }
     )
@@ -46,12 +53,17 @@ class BikeData extends Component {
   }
 
   render() {
+    const bikeData = BikeDataService.filterDepcom(
+      this.state.bikeData,
+      this.state.depcom
+    )
     return (
       <>
-        {this.state.bikeData.length && (
+        <h1>Statistiques d'aides aux vélos</h1>
+        {this.state.loading ? (
+          <div>Chargement...</div>
+        ) : (
           <>
-            <h1>Statistiques d'aides aux vélos</h1>
-
             <form
               className="flex-justify"
               onSubmit={(e) => this.searchDepcom(e)}
@@ -78,21 +90,22 @@ class BikeData extends Component {
               </div>
             </form>
 
-            <BikeTypeNumberTable
-              bikeData={this.state.bikeData}
-              depcom={this.state.depcom}
-            />
+            {bikeData.length ? (
+              <>
+                <BikeTypeNumberTable bikeData={bikeData} />
 
-            <h2>Détails des types sélectionnées</h2>
-            <BikeTypeNumberAndBikeTypeTable
-              bikeData={this.state.bikeData}
-              depcom={this.state.depcom}
-            />
-            <BikeTypeNumberAndBikeTypeTable
-              bikeData={this.state.bikeData}
-              percentage={true}
-              depcom={this.state.depcom}
-            />
+                <h2>Détails des types sélectionnées</h2>
+                <BikeTypeNumberAndBikeTypeTable bikeData={bikeData} />
+                <BikeTypeNumberAndBikeTypeTable
+                  bikeData={bikeData}
+                  percentage={true}
+                />
+              </>
+            ) : (
+              <div className="no-result">
+                Pas de résultat pour votre recherche...
+              </div>
+            )}
           </>
         )}
       </>

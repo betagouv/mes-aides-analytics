@@ -281,6 +281,10 @@ table .sortable-asc:after {
   height: 280px;
 }
 
+.no-result {
+  margin-top: 2rem;
+}
+
 @media (max-width: 1000px) {
   table thead {
     position: relative;

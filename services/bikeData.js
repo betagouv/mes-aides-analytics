@@ -8,28 +8,25 @@ export default class BikeData {
     return bikeData.filter((data) => !depcom || depcom === data.depcom100kp)
   }
 
-  static countGroupByBikeTypeNumber(bikeData, depcom) {
+  static countGroupByBikeTypeNumber(bikeData) {
     let total = 0
-    const result = this.filterDepcom(bikeData, depcom).reduce(
-      (accum, data, index) => {
-        if (!index) {
-          return accum
-        }
-        const bikeTypeNumber = this.getBikeTypeNumber(
-          data._interetsAidesVelo
-        ).toString()
-        if (!accum[bikeTypeNumber]) {
-          accum[bikeTypeNumber] = {
-            count: 0,
-          }
-        }
-        const count = isNaN(parseFloat(data.count)) ? 0 : parseInt(data.count)
-        accum[bikeTypeNumber].count += count
-        total += count
+    const result = bikeData.reduce((accum, data, index) => {
+      if (!index) {
         return accum
-      },
-      {}
-    )
+      }
+      const bikeTypeNumber = this.getBikeTypeNumber(
+        data._interetsAidesVelo
+      ).toString()
+      if (!accum[bikeTypeNumber]) {
+        accum[bikeTypeNumber] = {
+          count: 0,
+        }
+      }
+      const count = isNaN(parseFloat(data.count)) ? 0 : parseInt(data.count)
+      accum[bikeTypeNumber].count += count
+      total += count
+      return accum
+    }, {})
     const totalWithoutZero = total - (result["0"] ? result["0"].count : 0)
     Object.keys(result).forEach((bikeTypeNumber) => {
       result[bikeTypeNumber].percentage = (
@@ -51,39 +48,36 @@ export default class BikeData {
     }
   }
 
-  static countGroupByBikeTypeNumberAndByBikeType(bikeData, depcom) {
+  static countGroupByBikeTypeNumberAndByBikeType(bikeData) {
     const categories = []
-    const result = this.filterDepcom(bikeData, depcom).reduce(
-      (accum, data, index) => {
-        if (!index || NO_BIKE_VALUES.includes(data._interetsAidesVelo)) {
-          return accum
-        }
-        const bikeTypes = data._interetsAidesVelo.split(",")
-        const bikeTypeNumber = bikeTypes.length.toString()
-        const count = isNaN(data.count) ? 0 : parseInt(data.count)
-
-        if (!accum[bikeTypeNumber]) {
-          accum[bikeTypeNumber] = {
-            total: 0,
-          }
-        }
-
-        accum[bikeTypeNumber].total += count
-        bikeTypes.forEach((bikeType) => {
-          if (!categories.includes(bikeType)) {
-            categories.push(bikeType)
-          }
-          if (!accum[bikeTypeNumber][bikeType]) {
-            accum[bikeTypeNumber][bikeType] = {
-              count: 0,
-            }
-          }
-          accum[bikeTypeNumber][bikeType].count += count
-        })
+    const result = bikeData.reduce((accum, data, index) => {
+      if (!index || NO_BIKE_VALUES.includes(data._interetsAidesVelo)) {
         return accum
-      },
-      {}
-    )
+      }
+      const bikeTypes = data._interetsAidesVelo.split(",")
+      const bikeTypeNumber = bikeTypes.length.toString()
+      const count = isNaN(data.count) ? 0 : parseInt(data.count)
+
+      if (!accum[bikeTypeNumber]) {
+        accum[bikeTypeNumber] = {
+          total: 0,
+        }
+      }
+
+      accum[bikeTypeNumber].total += count
+      bikeTypes.forEach((bikeType) => {
+        if (!categories.includes(bikeType)) {
+          categories.push(bikeType)
+        }
+        if (!accum[bikeTypeNumber][bikeType]) {
+          accum[bikeTypeNumber][bikeType] = {
+            count: 0,
+          }
+        }
+        accum[bikeTypeNumber][bikeType].count += count
+      })
+      return accum
+    }, {})
 
     Object.keys(categories).forEach((_, index) => {
       const bikeTypeNumber = index + 1
