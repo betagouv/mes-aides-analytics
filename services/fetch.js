@@ -1,10 +1,10 @@
 export default class Fetch {
-  static getJSON = async (url) => {
+  static async getJSON(url) {
     const data = await fetch(url)
     return await data.json()
   }
 
-  static benefits = async (rad) => {
+  static async benefits(rad) {
     const json = await this.getJSON(process.env.surveyStatisticsURL)
     const benefitsData = await this.getJSON(process.env.benefitsURL)
     const institutions = {}

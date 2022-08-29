@@ -12,33 +12,65 @@ const sources = {
   nb_events: "Évènement",
 }
 
+const SHOW_CATEGORY = "Affiché"
+const SHOW_DETAILS_CATEGORY = "Détails affichés"
+const ACTIONABLE_CATEGORY = "Actionné"
+const INELIGIBLE_ACTIONABLE_CATEGORY = "Actionné inélig."
+const MISUNDERSTOOD_CATEGORY = "Incompris"
+const EXPLAIN_CATEGORY = "Expliqué"
+
+const PERCENTAGE_ANNOTATION = {
+  [SHOW_DETAILS_CATEGORY]: {
+    annotation: "(1)",
+    description:
+      "Pourcentage calculé à partir du nombre de fois où l'aide a été affiché.",
+  },
+  [ACTIONABLE_CATEGORY]: {
+    annotation: "(2)",
+    description:
+      "Pourcentage calculé à partir du nombre de fois où le détail de l'aide a été affiché.",
+  },
+}
+
 const catMapping = {
-  show: { cat: "Affiché", color: "#1f77b4" },
-  showDetails: { cat: "Détails affichés", color: "#ff7f0e" },
-  form: { cat: "Actionné", name: "Formulaire", color: "#2ca02c" },
-  instructions: { cat: "Actionné", name: "Instructions", color: "#d62728" },
-  link: { cat: "Actionné", name: "Lien", color: "#9467bd" },
-  msa: { cat: "Actionné", name: "MSA", color: "#8c564b" },
-  "show-locations": { cat: "Actionné", name: "Agence", color: "#e377c2" },
-  teleservice: { cat: "Actionné", name: "Téléservice", color: "#7f7f7f" },
+  show: { cat: SHOW_CATEGORY, color: "#1f77b4" },
+  showDetails: { cat: SHOW_DETAILS_CATEGORY, color: "#ff7f0e" },
+  form: { cat: ACTIONABLE_CATEGORY, name: "Formulaire", color: "#2ca02c" },
+  instructions: {
+    cat: ACTIONABLE_CATEGORY,
+    name: "Instructions",
+    color: "#d62728",
+  },
+  link: { cat: ACTIONABLE_CATEGORY, name: "Lien", color: "#9467bd" },
+  msa: { cat: ACTIONABLE_CATEGORY, name: "MSA", color: "#8c564b" },
+  "show-locations": {
+    cat: ACTIONABLE_CATEGORY,
+    name: "Agence",
+    color: "#e377c2",
+  },
+  teleservice: {
+    cat: ACTIONABLE_CATEGORY,
+    name: "Téléservice",
+    color: "#7f7f7f",
+  },
   "link-ineligible": {
-    cat: "Actionné inélig.",
+    cat: INELIGIBLE_ACTIONABLE_CATEGORY,
     name: "Lien sans éligibilité",
     color: "#bcbd22",
   },
-  "show-unexpected": { cat: "Incompris", color: "#17becf" },
-  close: { cat: "Expliqué", name: "Fermé", color: "#1f77b4" },
+  "show-unexpected": { cat: MISUNDERSTOOD_CATEGORY, color: "#17becf" },
+  close: { cat: EXPLAIN_CATEGORY, name: "Fermé", color: "#1f77b4" },
   "retour-logement": {
-    cat: "Expliqué",
+    cat: EXPLAIN_CATEGORY,
     name: "Retour page logement",
     color: "#ff7f0e",
   },
   "simulation-caf": {
-    cat: "Expliqué",
+    cat: EXPLAIN_CATEGORY,
     name: "Simulateur CAF",
     color: "#2ca02c",
   },
-  email: { cat: "Expliqué", name: "Email", color: "#d62728" },
+  email: { cat: EXPLAIN_CATEGORY, name: "Email", color: "#d62728" },
 }
 const filteredCatMapping = {}
 const periods = DateRange.getPeriods()
@@ -93,7 +125,7 @@ class Behaviours extends Component {
     })
     let benefitsList = {}
     // Add benefits event to existing object or create it
-    matomoEvents.map((benefit) => {
+    matomoEvents.forEach((benefit) => {
       if (!benefitsMap[benefit.label] && !benefitsLabelIdMap[benefit.label])
         return
       // Normalize the use of benefit ID and benefit Label
@@ -115,7 +147,7 @@ class Behaviours extends Component {
           }
           benefitsList[index].total += benefit[this.state.source] || 0
         }
-        return benefit[this.state.source]
+        return
       } else {
         benefitsList[index] = benefitsMap[index]
         benefitsList[index].events = {}
@@ -128,27 +160,45 @@ class Behaviours extends Component {
             filteredCatMapping[label] = catMapping[label]
           }
         }
-        for (let key of Object.keys(benefitsList[index].events)) {
-          benefitsList[index].percentageOfEvents[key] = this.percent(
-            benefitsList[index].events[key],
-            benefitsList[index].events.show
-          )
-        }
-        benefitsList[index].total = benefit[this.state.source] || 0
       }
-      return benefit
+      benefitsList[index].total = benefit[this.state.source] || 0
+      return
     })
+
     benefitsList = Object.keys(benefitsList).map((key) => {
       benefitsList[key].label = key
       return benefitsList[key]
     })
+
     // Filter out displayed benefits
-    benefitsList.map((benefit) => {
+    benefitsList.forEach((benefit) => {
       if (benefit.id && benefitsMap[benefit.id]) {
         delete benefitsMap[benefit.id]
       } else if (benefit.label && benefitsMap[benefit.label]) {
         delete benefitsMap[benefit.label]
       }
+    })
+
+    benefitsList.forEach((_, index) => {
+      Object.keys(benefitsList[index].events).forEach((key) => {
+        switch (catMapping[key].cat) {
+          case SHOW_CATEGORY:
+            break
+          case SHOW_DETAILS_CATEGORY:
+            benefitsList[index].percentageOfEvents[key] = this.percent(
+              benefitsList[index].events[key],
+              benefitsList[index].events.show
+            )
+            break
+          case ACTIONABLE_CATEGORY:
+            benefitsList[index].percentageOfEvents[key] = this.percent(
+              benefitsList[index].events[key],
+              benefitsList[index].events.showDetails
+            )
+            break
+          default:
+        }
+      })
     })
 
     this.setState({
@@ -220,7 +270,7 @@ class Behaviours extends Component {
   }
 
   percent(n, t) {
-    return Math.round(((n || 0) / (t || 1)) * 100)
+    return Math.min(Math.round(((n || 0) / (t || 1)) * 100), 100)
   }
 
   switchView() {
@@ -350,6 +400,14 @@ class Behaviours extends Component {
                         {filteredCatMapping[key].name ||
                           filteredCatMapping[key].cat ||
                           key}
+                        {PERCENTAGE_ANNOTATION[catMapping[key].cat] && (
+                          <sup>
+                            {
+                              PERCENTAGE_ANNOTATION[catMapping[key].cat]
+                                .annotation
+                            }
+                          </sup>
+                        )}
                       </div>
                     </th>
                   ))}
@@ -398,6 +456,16 @@ class Behaviours extends Component {
             </table>
           </div>
         )}
+
+        {Object.values(PERCENTAGE_ANNOTATION).map((annotation) => {
+          return (
+            <div key={annotation.annotation}>
+              <i>
+                {annotation.annotation} {annotation.description}
+              </i>
+            </div>
+          )
+        })}
 
         <h2>Liste des aides non-affichées durant cette période</h2>
         <ul>
