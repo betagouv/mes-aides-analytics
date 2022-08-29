@@ -33,18 +33,14 @@ class BikeData extends Component {
     this.setState({ depcomInput: depcom })
   }
 
-  handleKeyDown(e) {
-    if (e.key === "Enter") {
-      this.searchDepcom(e.target.value)
-    }
-  }
-
   onReset() {
     this.setState({ depcomInput: "", depcom: "" })
     Url.setParameters({ depcom: "*" })
   }
 
-  searchDepcom(depcom) {
+  searchDepcom(e) {
+    e.preventDefault()
+    const depcom = this.state.depcomInput
     this.setState({ depcom })
     Url.setParameters({ depcom: depcom ? depcom : "*" })
   }
@@ -56,7 +52,10 @@ class BikeData extends Component {
           <>
             <h1>Statistiques d'aides aux vélos</h1>
 
-            <div className="flex-justify">
+            <form
+              className="flex-justify"
+              onSubmit={(e) => this.searchDepcom(e)}
+            >
               <div className="flex-bottom flex-gap">
                 <label>
                   <span>Filtrer par code insee commune</span>
@@ -64,23 +63,20 @@ class BikeData extends Component {
                   <input
                     type="text"
                     autoComplete="off"
+                    pattern="\d{5}"
+                    inputMode="numeric"
                     value={this.state.depcomInput}
                     onInput={(e) => this.onInput(e.target.value)}
-                    onKeyUp={(e) => this.handleKeyDown(e)}
                   />
                 </label>
 
-                <button
-                  onClick={() => this.searchDepcom(this.state.depcomInput)}
-                >
-                  Ok
-                </button>
+                <button type="submit">Ok</button>
 
                 {this.state.depcom && (
                   <input type="reset" onClick={() => this.onReset()} />
                 )}
               </div>
-            </div>
+            </form>
 
             <BikeTypeNumberTable
               bikeData={this.state.bikeData}
