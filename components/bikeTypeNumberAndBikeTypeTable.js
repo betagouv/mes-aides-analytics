@@ -5,7 +5,6 @@ class BikeTypeNumberAndBikeTypeTable extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      bikeData: props.bikeData,
       percentage: this.props.percentage,
       countGroupByBikeTypeNumberAndByBikeType: null,
     }
@@ -13,23 +12,17 @@ class BikeTypeNumberAndBikeTypeTable extends Component {
 
   componentDidMount() {
     const countGroupByBikeTypeNumberAndByBikeType =
-      BikeData.countGroupByBikeTypeNumberAndByBikeType(
-        this.state.bikeData,
-        this.props.depcom
-      )
+      BikeData.countGroupByBikeTypeNumberAndByBikeType(this.props.bikeData)
     this.setState({ countGroupByBikeTypeNumberAndByBikeType })
   }
 
   getSnapshotBeforeUpdate(prevProps) {
-    if (prevProps.depcom === this.props.depcom) {
+    if (prevProps.bikeData === this.props.bikeData) {
       return null
     }
 
     const countGroupByBikeTypeNumberAndByBikeType =
-      BikeData.countGroupByBikeTypeNumberAndByBikeType(
-        this.state.bikeData,
-        this.props.depcom
-      )
+      BikeData.countGroupByBikeTypeNumberAndByBikeType(this.props.bikeData)
     this.setState({ countGroupByBikeTypeNumberAndByBikeType })
     return null
   }

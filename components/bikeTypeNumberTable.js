@@ -5,26 +5,23 @@ class BikeTypeNumberTable extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      bikeData: props.bikeData,
       countGroupByBikeTypeNumber: null,
     }
   }
 
   componentDidMount() {
     const countGroupByBikeTypeNumber = BikeData.countGroupByBikeTypeNumber(
-      this.state.bikeData
+      this.props.bikeData
     )
     this.setState({ countGroupByBikeTypeNumber })
   }
 
   getSnapshotBeforeUpdate(prevProps) {
-    if (prevProps.depcom === this.props.depcom) {
+    if (prevProps.bikeData === this.props.bikeData) {
       return null
     }
-
     const countGroupByBikeTypeNumber = BikeData.countGroupByBikeTypeNumber(
-      this.state.bikeData,
-      this.props.depcom
+      this.props.bikeData
     )
     this.setState({ countGroupByBikeTypeNumber })
     return null
