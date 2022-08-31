@@ -46,4 +46,33 @@ export default class Fetch {
       details: json.survey.details,
     }
   }
+
+  static async fetchCsv(url) {
+    const response = await fetch(url)
+    let reader = response.body.getReader();
+    let decoder = new TextDecoder('utf-8');
+    const result = await reader.read()
+    return decoder.decode(result.value);
+  }
+
+  static parseCsv(csv) {
+    const rows = csv.split("\n")
+    const headers = rows.shift().split(";")
+    const result = []
+
+    for (const row of rows) {
+      const rowSplit = row.split(";")
+      const rowResult = {}
+      for (const index in headers) {
+        rowResult[headers[index]] = rowSplit[index]
+      }
+      result.push(rowResult)
+    }
+    return result
+  }
+
+   static async getCsvData(url) {
+    let csvData = await this.fetchCsv(url);
+    return this.parseCsv(csvData)
+  }
 }
