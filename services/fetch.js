@@ -47,15 +47,12 @@ export default class Fetch {
     }
   }
 
-  static fetchCsv(url) {
-    return fetch(url).then(function (response) {
-      let reader = response.body.getReader();
-      let decoder = new TextDecoder('utf-8');
-
-      return reader.read().then(function (result) {
-        return decoder.decode(result.value);
-      });
-    });
+  static async fetchCsv(url) {
+    const response = await fetch(url)
+    let reader = response.body.getReader();
+    let decoder = new TextDecoder('utf-8');
+    const result = await reader.read()
+    return decoder.decode(result.value);
   }
 
   static parseCsv(csv) {
