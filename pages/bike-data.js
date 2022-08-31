@@ -22,18 +22,14 @@ class BikeData extends Component {
     const vm = this
     let depcom = Url.getParameters(["depcom"]).depcom || ""
     depcom = depcom === "*" ? "" : depcom
-    Fetch.getCsvData(
-      process.env._interetsAidesVeloCsvUrl,
-      (bikeData) => {
-        vm.setState({
-          bikeData: bikeData.data,
-          depcom,
-          depcomInput: depcom,
-          loading: false,
-        })
-      },
-      { header: true, delimiter: ";" }
-    )
+    Fetch.getCsvData(process.env._interetsAidesVeloCsvUrl).then((bikeData) => {
+      vm.setState({
+        bikeData: bikeData,
+        depcom,
+        depcomInput: depcom,
+        loading: false,
+      })
+    })
   }
 
   onInput(depcom) {

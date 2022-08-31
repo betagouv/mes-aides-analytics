@@ -1,5 +1,3 @@
-import Papaparse from 'papaparse';
-
 export default class Fetch {
   static getJSON = async (url) => {
     const data = await fetch(url)
@@ -60,9 +58,24 @@ export default class Fetch {
     });
   }
 
-   static async getCsvData(url, callback, opt) {
-    let csvData = await this.fetchCsv(url);
+  static parseCsv(csv) {
+    const rows = csv.split("\n")
+    const headers = rows.shift().split(";")
+    const result = []
 
-    return await Papaparse.parse(csvData, {complete: callback, ...opt});
+    for (const row of rows) {
+      const rowSplit = row.split(";")
+      const rowResult = {}
+      for (const index in headers) {
+        rowResult[headers[index]] = rowSplit[index]
+      }
+      result.push(rowResult)
+    }
+    return result
+  }
+
+   static async getCsvData(url) {
+    let csvData = await this.fetchCsv(url);
+    return this.parseCsv(csvData)
   }
 }
