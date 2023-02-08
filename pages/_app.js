@@ -16,8 +16,8 @@ export default function App({ Component, pageProps }) {
         <title>
           Statistiques d'usage du simulateur d'aides 1Jeune1Solution
         </title>
-        <link rel="shortcut icon" href="static/favicon.png" />
-        <link rel="stylesheet preload" href="static/style.css" />
+        <link rel="shortcut icon" href="static/favicon.png" as="image" />
+        <link rel="stylesheet preload" href="static/style.css" as="style" />
         <meta charSet="utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width,initial-scale=1.0" />

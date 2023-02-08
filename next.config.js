@@ -2,15 +2,11 @@ const isProduction = "production" === process.env.NODE_ENV
 
 const aidesJeunesUrl = "https://mes-aides.1jeune1solution.beta.gouv.fr/"
 
-const base = {}
-if (isProduction) {
-  Object.assign(base, {
-    assetPrefix: "/mes-aides-analytics/",
-    basePath: "/mes-aides-analytics",
-  })
-}
-
 module.exports = {
+  assetPrefix: isProduction
+    ? "https://betagouv.github.io/mes-aides-analytics/"
+    : undefined,
+  basePath: isProduction ? "/mes-aides-analytics" : undefined,
   env: {
     usageStatisticsURL:
       "https://stats.data.gouv.fr/index.php?date=2021-01-01,yesterday&expanded=1&filter_limit=100&force_api_session=1&format=JSON&format_metrics=1&idSite=165&method=API.get&module=API&period=month&token_auth=anonymous",
