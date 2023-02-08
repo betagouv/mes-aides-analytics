@@ -27,7 +27,7 @@ module.exports = {
     "react/no-unescaped-entities": "off",
     "react/prop-types": "off",
     "no-unused-vars": "off",
-    "no-undef": "off"
+    "no-undef": "off",
   },
   ignorePatterns: [".next/*"],
 }

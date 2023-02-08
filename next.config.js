@@ -23,5 +23,6 @@ module.exports = {
       "https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=-1&format=JSON&idSite=165&method=Events.getName&module=API&period=range&date=",
     benefitDetailURL: `${aidesJeunesUrl}aides/`,
     _interetsAidesVeloCsvUrl: `${aidesJeunesUrl}documents/_interetsAidesVelo.csv`,
+    commitSHA: process.env.GITHUB_SHA || "local",
   },
 }

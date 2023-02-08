@@ -29,6 +29,13 @@ export default function App({ Component, pageProps }) {
       {!inIframe() && <Header />}
       <main>
         <Component {...pageProps} />
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href={`https://github.com/betagouv/mes-aides-analytics/commit/${process.env.commitSHA}`}
+        >
+          {process.env.commitSHA}
+        </a>
       </main>
     </>
   )
