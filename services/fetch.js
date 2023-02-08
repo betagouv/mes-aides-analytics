@@ -49,10 +49,10 @@ export default class Fetch {
 
   static async fetchCsv(url) {
     const response = await fetch(url)
-    let reader = response.body.getReader();
-    let decoder = new TextDecoder('utf-8');
+    let reader = response.body.getReader()
+    let decoder = new TextDecoder("utf-8")
     const result = await reader.read()
-    return decoder.decode(result.value);
+    return decoder.decode(result.value)
   }
 
   static parseCsv(csv) {
@@ -71,8 +71,8 @@ export default class Fetch {
     return result
   }
 
-   static async getCsvData(url) {
-    let csvData = await this.fetchCsv(url);
+  static async getCsvData(url) {
+    let csvData = await this.fetchCsv(url)
     return this.parseCsv(csvData)
   }
 }
