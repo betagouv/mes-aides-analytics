@@ -3,7 +3,7 @@ name: Deploy to github pages https://betagouv.github.io/mes-aides-analytics/
 on:
   push:
     branches:
-      - test-deploiement-continu
+      - master
 jobs:
   deploy:
     runs-on: ubuntu-latest
