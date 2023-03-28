@@ -27,7 +27,7 @@ module.exports = {
     "prettier/prettier": "error",
     "no-irregular-whitespace": 0,
     "no-param-reassign": "off",
-    "no-unused-vars": ["error", { argsIgnorePattern: "next" }],
+    "no-unused-vars": "off", //["error", { argsIgnorePattern: "next" }],
     "react/react-in-jsx-scope": "off",
     "react/no-unescaped-entities": "off",
     "react/prop-types": "off",
