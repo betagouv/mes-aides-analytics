@@ -24,7 +24,7 @@ const Header = () => {
           <Link href={item.url} key={item.url}>
             <a
               className={item.url.indexOf(router) >= 0 ? "active" : ""}
-              onClick={(e) => closeMenu()}
+              onClick={() => closeMenu()}
             >
               {item.label}
             </a>
