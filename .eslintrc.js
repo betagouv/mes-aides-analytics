@@ -18,6 +18,11 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: "module",
   },
+  settings: {
+    react: {
+      version: "17.0.2",
+    },
+  },
   rules: {
     "prettier/prettier": "error",
     "no-irregular-whitespace": 0,
