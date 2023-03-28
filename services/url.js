@@ -1,5 +1,5 @@
 export default class Url {
-  static getParameters = (parameters) => {
+  static getParameters(parameters) {
     const urlSearch = new URLSearchParams(document.location.search)
     const output = {}
     for (let key of parameters) {
@@ -8,7 +8,7 @@ export default class Url {
     return output
   }
 
-  static setParameters = (parameters) => {
+  static setParameters(parameters) {
     const urlSearch = new URLSearchParams(document.location.search)
     for (let key in parameters) {
       urlSearch.set(key, parameters[key])
