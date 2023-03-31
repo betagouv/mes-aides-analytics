@@ -1,12 +1,12 @@
 export default class DateRange {
-  static getPastDate = (days) => {
+  static getPastDate(days) {
     const date = new Date()
     return `${
       new Date(date.setDate(date.getDate() - days)).toISOString().split("T")[0]
     }`
   }
 
-  static getPeriods = (parameters) => {
+  static getPeriods() {
     return {
       day: { label: "Dernière 24 heures", from: this.getPastDate(1) },
       week: { label: "7 derniers jours", from: this.getPastDate(7) },

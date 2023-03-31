@@ -27,8 +27,6 @@ class BikeTypeNumberTable extends Component {
     return null
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {}
-
   render() {
     if (!this.state.countGroupByBikeTypeNumber) {
       return <>Chargement...</>

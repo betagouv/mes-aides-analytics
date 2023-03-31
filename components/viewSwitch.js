@@ -12,7 +12,7 @@ class ViewSwitch extends Component {
     return (
       <>
         <input
-          onChange={(e) => this.state.trigger()}
+          onChange={() => this.state.trigger()}
           type="checkbox"
           id="switch-view"
         />

@@ -17,12 +17,7 @@ function get(element, depth) {
 }
 
 export default class DataFilter {
-  static benefits = (
-    benefits,
-    institutions,
-    geographic = "*",
-    institution = "*"
-  ) => {
+  static benefits(benefits, institutions, geographic = "*", institution = "*") {
     let filteredInstitutions = []
     if (geographic == "*") {
       filteredInstitutions = Object.values(institutions).reduce((accum, el) => {
@@ -56,14 +51,14 @@ export default class DataFilter {
     }
   }
 
-  static sort = (
+  static sort(
     target,
     sortingBy,
     previousSort,
     ascending,
     alphabeticals = [],
     numericals = []
-  ) => {
+  ) {
     let sortAscending = true
     let output = target
     if (previousSort == sortingBy) {
