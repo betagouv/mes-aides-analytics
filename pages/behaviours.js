@@ -18,7 +18,6 @@ class Behaviours extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      value: null,
       period: "day",
       source: "nb_visits",
       institutions: [],
@@ -26,11 +25,9 @@ class Behaviours extends Component {
       filteredBenefits: [],
       currentInstitutionType: "*",
       currentInstitution: "*",
-      surveyDetails: [],
       undisplayedBenefits: [],
       sortBy: null,
       sortAscending: false,
-      showGraph: false,
     }
   }
 
@@ -205,12 +202,11 @@ class Behaviours extends Component {
     }
   }
 
-  percent(n, t) {
-    return Math.min(Math.round(((n || 0) / (t || 1)) * 100), 100)
-  }
-
-  switchView() {
-    this.setState({ showGraph: !this.state.showGraph })
+  percent(numerator, denominator) {
+    return Math.min(
+      Math.round(((numerator || 0) / (denominator || 1)) * 100),
+      100
+    )
   }
 
   render() {
@@ -313,92 +309,84 @@ class Behaviours extends Component {
           </div>
         </div>
 
-        {!this.state.showGraph && (
-          <div className="table-container">
-            <table className="collapsable">
-              <thead>
-                <tr>
-                  <th onClick={() => this.sortTable("label")}>
-                    <div className={`sortable ${this.sortState("label")}`}>
-                      Nom de l'aide
+        <div className="table-container">
+          <table className="collapsable">
+            <thead>
+              <tr>
+                <th onClick={() => this.sortTable("label")}>
+                  <div className={`sortable ${this.sortState("label")}`}>
+                    Nom de l'aide
+                  </div>
+                </th>
+                {Object.keys(EventTypeCategoryMapping).map((key) => (
+                  <th
+                    key={key}
+                    onClick={() => this.sortTable(this.eventSortName(key))}
+                  >
+                    <div
+                      className={`sortable ${this.sortState(
+                        this.eventSortName(key)
+                      )}`}
+                    >
+                      {EventTypeCategoryMapping[key].name ||
+                        EventTypeCategoryMapping[key].cat ||
+                        key}
+                      {PercentageAnnotation[
+                        EventTypeCategoryMapping[key].cat
+                      ] && (
+                        <sup>
+                          {
+                            PercentageAnnotation[
+                              EventTypeCategoryMapping[key].cat
+                            ].annotation
+                          }
+                        </sup>
+                      )}
                     </div>
                   </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {this.state.filteredBenefits.map((benefit) => (
+                <tr key={benefit.id || benefit.label}>
+                  <td data-label="Aide" data-content="aide">
+                    {benefit.id || benefit.label}
+                  </td>
                   {Object.keys(EventTypeCategoryMapping).map((key) => (
-                    <th
+                    <td
+                      data-label={
+                        EventTypeCategoryMapping[key].name ||
+                        EventTypeCategoryMapping[key].cat
+                      }
+                      data-content={benefit.events[key]}
+                      className="text-right"
                       key={key}
-                      onClick={() => this.sortTable(this.eventSortName(key))}
                     >
-                      <div
-                        className={`sortable ${this.sortState(
-                          this.eventSortName(key)
-                        )}`}
-                      >
-                        {EventTypeCategoryMapping[key].name ||
-                          EventTypeCategoryMapping[key].cat ||
-                          key}
-                        {PercentageAnnotation[
-                          EventTypeCategoryMapping[key].cat
-                        ] && (
-                          <sup>
-                            {
-                              PercentageAnnotation[
-                                EventTypeCategoryMapping[key].cat
-                              ].annotation
-                            }
-                          </sup>
-                        )}
-                      </div>
-                    </th>
+                      {key === "show" ? (
+                        <>{benefit.events.show}</>
+                      ) : (
+                        <>
+                          <div
+                            className="gauge"
+                            style={{
+                              width: `${benefit.percentageOfEvents[key]}%`,
+                              background: EventTypeCategoryMapping[key].color,
+                            }}
+                          ></div>
+                          {benefit.events[key]}
+                          {benefit.events[key] && (
+                            <small>({benefit.percentageOfEvents[key]}%)</small>
+                          )}
+                        </>
+                      )}
+                    </td>
                   ))}
                 </tr>
-              </thead>
-              <tbody>
-                {this.state.filteredBenefits.map((benefit) => (
-                  <tr key={benefit.id || benefit.label}>
-                    <td data-label="Aide" data-content="aide">
-                      {benefit.id || benefit.label}
-                    </td>
-                    {Object.keys(EventTypeCategoryMapping).map(
-                      (key) => (
-                        <td
-                          data-label={
-                            EventTypeCategoryMapping[key].name ||
-                            EventTypeCategoryMapping[key].cat
-                          }
-                          data-content={benefit.events[key]}
-                          className="text-right"
-                          key={key}
-                        >
-                          {key === "show" ? (
-                            <>{benefit.events.show}</>
-                          ) : (
-                            <>
-                              <div
-                                className="gauge"
-                                style={{
-                                  width: `${benefit.percentageOfEvents[key]}%`,
-                                  background:
-                                    EventTypeCategoryMapping[key]
-                                      .color,
-                                }}
-                              ></div>
-                              {benefit.events[key]}
-                              {benefit.events[key] && (
-                                <small>
-                                  ({benefit.percentageOfEvents[key]}%)
-                                </small>
-                              )}
-                            </>
-                          )}
-                        </td>
-                      )
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {Object.values(PercentageAnnotation).map((annotation) => {
           return (
