@@ -1,78 +1,17 @@
 import { Component } from "react"
 
-import { Config } from "../services/config.js"
+import {
+  Config,
+  DataSources,
+  EventCategories,
+  PercentageAnnotation,
+  EventTypeCategoryMapping,
+} from "../services/config.js"
 import Fetch from "../services/fetch.js"
 import Url from "../services/url.js"
 import DataFilter from "../services/dataFilter.js"
 import DateRange from "../services/date.js"
 
-const sources = {
-  //    nb_uniq_visitors: 'Visiteur unique', // Non fonctionnel avec les données mensuelles
-  nb_visits: "Visite",
-  nb_events: "Évènement",
-}
-
-const SHOW_CATEGORY = "Affiché"
-const SHOW_DETAILS_CATEGORY = "Détails affichés"
-const ACTIONABLE_CATEGORY = "Actionné"
-const INELIGIBLE_ACTIONABLE_CATEGORY = "Actionné inélig."
-const MISUNDERSTOOD_CATEGORY = "Incompris"
-const EXPLAIN_CATEGORY = "Expliqué"
-
-const PERCENTAGE_ANNOTATION = {
-  [SHOW_DETAILS_CATEGORY]: {
-    annotation: "(1)",
-    description:
-      "Pourcentage calculé à partir du nombre de fois où l'aide a été affiché.",
-  },
-  [ACTIONABLE_CATEGORY]: {
-    annotation: "(2)",
-    description:
-      "Pourcentage calculé à partir du nombre de fois où le détail de l'aide a été affiché.",
-  },
-}
-
-const catMapping = {
-  show: { cat: SHOW_CATEGORY, color: "#1f77b4" },
-  showDetails: { cat: SHOW_DETAILS_CATEGORY, color: "#ff7f0e" },
-  form: { cat: ACTIONABLE_CATEGORY, name: "Formulaire", color: "#2ca02c" },
-  instructions: {
-    cat: ACTIONABLE_CATEGORY,
-    name: "Instructions",
-    color: "#d62728",
-  },
-  link: { cat: ACTIONABLE_CATEGORY, name: "Lien", color: "#9467bd" },
-  msa: { cat: ACTIONABLE_CATEGORY, name: "MSA", color: "#8c564b" },
-  "show-locations": {
-    cat: ACTIONABLE_CATEGORY,
-    name: "Agence",
-    color: "#e377c2",
-  },
-  teleservice: {
-    cat: ACTIONABLE_CATEGORY,
-    name: "Téléservice",
-    color: "#7f7f7f",
-  },
-  "link-ineligible": {
-    cat: INELIGIBLE_ACTIONABLE_CATEGORY,
-    name: "Lien sans éligibilité",
-    color: "#bcbd22",
-  },
-  "show-unexpected": { cat: MISUNDERSTOOD_CATEGORY, color: "#17becf" },
-  close: { cat: EXPLAIN_CATEGORY, name: "Fermé", color: "#1f77b4" },
-  "retour-logement": {
-    cat: EXPLAIN_CATEGORY,
-    name: "Retour page logement",
-    color: "#ff7f0e",
-  },
-  "simulation-caf": {
-    cat: EXPLAIN_CATEGORY,
-    name: "Simulateur CAF",
-    color: "#2ca02c",
-  },
-  email: { cat: EXPLAIN_CATEGORY, name: "Email", color: "#d62728" },
-}
-const filteredCatMapping = {}
 const periods = DateRange.getPeriods()
 
 class Behaviours extends Component {
@@ -139,10 +78,9 @@ class Behaviours extends Component {
             benefitsList[index].events[label] +=
               benefit.subtable[key][this.state.source] || 0
           } else {
-            if (catMapping[label] && benefit.subtable[key]) {
+            if (EventTypeCategoryMapping[label] && benefit.subtable[key]) {
               benefitsList[index].events[label] =
                 benefit.subtable[key][this.state.source] || 0
-              filteredCatMapping[label] = catMapping[label]
             }
           }
           benefitsList[index].total += benefit[this.state.source] || 0
@@ -154,10 +92,12 @@ class Behaviours extends Component {
         benefitsList[index].percentageOfEvents = {}
         for (let key in benefit.subtable) {
           let label = benefit.subtable[key].label
-          if (catMapping[label] && benefit.subtable[key][this.state.source]) {
+          if (
+            EventTypeCategoryMapping[label] &&
+            benefit.subtable[key][this.state.source]
+          ) {
             benefitsList[index].events[label] =
               benefit.subtable[key][this.state.source] || 0
-            filteredCatMapping[label] = catMapping[label]
           }
         }
       }
@@ -181,16 +121,16 @@ class Behaviours extends Component {
 
     benefitsList.forEach((_, index) => {
       Object.keys(benefitsList[index].events).forEach((key) => {
-        switch (catMapping[key].cat) {
-          case SHOW_CATEGORY:
+        switch (EventTypeCategoryMapping[key].cat) {
+          case EventCategories.SHOW:
             break
-          case SHOW_DETAILS_CATEGORY:
+          case EventCategories.SHOW_DETAILS:
             benefitsList[index].percentageOfEvents[key] = this.percent(
               benefitsList[index].events[key],
               benefitsList[index].events.show
             )
             break
-          case ACTIONABLE_CATEGORY:
+          case EventCategories.ACTIONABLE:
             benefitsList[index].percentageOfEvents[key] = this.percent(
               benefitsList[index].events[key],
               benefitsList[index].events.showDetails
@@ -241,17 +181,13 @@ class Behaviours extends Component {
   }
 
   sortTable(sortingBy) {
-    Object.keys(filteredCatMapping).map((eventName) =>
-      console.log(this.eventSortName(eventName))
-    )
-
     const { output, sortAscending } = DataFilter.sort(
       this.state.benefits,
       sortingBy,
       this.state.sortBy,
       this.state.sortAscending,
       ["label"],
-      Object.keys(filteredCatMapping).map((eventName) =>
+      Object.keys(EventTypeCategoryMapping).map((eventName) =>
         this.eventSortName(eventName)
       )
     )
@@ -320,10 +256,10 @@ class Behaviours extends Component {
                 }
                 value={this.state.source}
               >
-                {Object.keys(sources).map((k) => {
+                {Object.keys(DataSources).map((k) => {
                   return (
                     <option key={k} value={k}>
-                      {sources[k]}
+                      {DataSources[k]}
                     </option>
                   )
                 })}
@@ -387,7 +323,7 @@ class Behaviours extends Component {
                       Nom de l'aide
                     </div>
                   </th>
-                  {Object.keys(filteredCatMapping).map((key) => (
+                  {Object.keys(EventTypeCategoryMapping).map((key) => (
                     <th
                       key={key}
                       onClick={() => this.sortTable(this.eventSortName(key))}
@@ -397,14 +333,17 @@ class Behaviours extends Component {
                           this.eventSortName(key)
                         )}`}
                       >
-                        {filteredCatMapping[key].name ||
-                          filteredCatMapping[key].cat ||
+                        {EventTypeCategoryMapping[key].name ||
+                          EventTypeCategoryMapping[key].cat ||
                           key}
-                        {PERCENTAGE_ANNOTATION[catMapping[key].cat] && (
+                        {PercentageAnnotation[
+                          EventTypeCategoryMapping[key].cat
+                        ] && (
                           <sup>
                             {
-                              PERCENTAGE_ANNOTATION[catMapping[key].cat]
-                                .annotation
+                              PercentageAnnotation[
+                                EventTypeCategoryMapping[key].cat
+                              ].annotation
                             }
                           </sup>
                         )}
@@ -419,37 +358,41 @@ class Behaviours extends Component {
                     <td data-label="Aide" data-content="aide">
                       {benefit.id || benefit.label}
                     </td>
-                    {Object.keys(filteredCatMapping).map((key) => (
-                      <td
-                        data-label={
-                          filteredCatMapping[key].name ||
-                          filteredCatMapping[key].cat
-                        }
-                        data-content={benefit.events[key]}
-                        className="text-right"
-                        key={key}
-                      >
-                        {key === "show" ? (
-                          <>{benefit.events.show}</>
-                        ) : (
-                          <>
-                            <div
-                              className="gauge"
-                              style={{
-                                width: `${benefit.percentageOfEvents[key]}%`,
-                                background: filteredCatMapping[key].color,
-                              }}
-                            ></div>
-                            {benefit.events[key]}
-                            {benefit.events[key] && (
-                              <small>
-                                ({benefit.percentageOfEvents[key]}%)
-                              </small>
-                            )}
-                          </>
-                        )}
-                      </td>
-                    ))}
+                    {Object.keys(EventTypeCategoryMapping).map(
+                      (key) => (
+                        <td
+                          data-label={
+                            EventTypeCategoryMapping[key].name ||
+                            EventTypeCategoryMapping[key].cat
+                          }
+                          data-content={benefit.events[key]}
+                          className="text-right"
+                          key={key}
+                        >
+                          {key === "show" ? (
+                            <>{benefit.events.show}</>
+                          ) : (
+                            <>
+                              <div
+                                className="gauge"
+                                style={{
+                                  width: `${benefit.percentageOfEvents[key]}%`,
+                                  background:
+                                    EventTypeCategoryMapping[key]
+                                      .color,
+                                }}
+                              ></div>
+                              {benefit.events[key]}
+                              {benefit.events[key] && (
+                                <small>
+                                  ({benefit.percentageOfEvents[key]}%)
+                                </small>
+                              )}
+                            </>
+                          )}
+                        </td>
+                      )
+                    )}
                   </tr>
                 ))}
               </tbody>
@@ -457,7 +400,7 @@ class Behaviours extends Component {
           </div>
         )}
 
-        {Object.values(PERCENTAGE_ANNOTATION).map((annotation) => {
+        {Object.values(PercentageAnnotation).map((annotation) => {
           return (
             <div key={annotation.annotation}>
               <i>
