@@ -4,6 +4,62 @@ export default class Fetch {
     return await data.json()
   }
 
+  static async getSurveyStatistics() {
+    const surveyStatiastics = await this.getJSON(
+      process.env.surveyStatisticsURL
+    )
+    const { benefitInstitutionMapping, institutions } =
+      await this.getBenefitsAndInstitutions()
+
+    surveyStatiastics.survey.details.forEach((benefitDetail) => {
+      if (benefitInstitutionMapping[benefitDetail.id]) {
+        benefitDetail.institution =
+          benefitInstitutionMapping[benefitDetail.id].label
+        benefitDetail.type = benefitInstitutionMapping[benefitDetail.id].type
+      }
+    })
+
+    return {
+      summary: surveyStatiastics.survey.summary,
+      details: surveyStatiastics.survey.details,
+      institutions: institutions,
+    }
+  }
+
+  static async getBenefits() {
+    const benefits = await this.getJSON(process.env.benefitsURL)
+
+    return benefits
+  }
+
+  static async getBenefitsAndInstitutions() {
+    const benefits = await this.getBenefits()
+    const institutions = {}
+    const benefitInstitutionMapping = {}
+
+    benefits.forEach((benefit) => {
+      benefitInstitutionMapping[benefit.id] = benefit.institution
+
+      if (!institutions[benefit.institution.type]) {
+        institutions[benefit.institution.type] = [benefit.institution.label]
+      } else {
+        if (
+          !institutions[benefit.institution.type].includes(
+            benefit.institution.label
+          )
+        ) {
+          institutions[benefit.institution.type].push(benefit.institution.label)
+        }
+      }
+    })
+
+    return {
+      benefits: benefits,
+      benefitInstitutionMapping: benefitInstitutionMapping,
+      institutions: institutions,
+    }
+  }
+
   static async benefits() {
     const json = await this.getJSON(process.env.surveyStatisticsURL)
     const benefitsData = await this.getJSON(process.env.benefitsURL)

@@ -15,7 +15,7 @@ class Survey extends Component {
   }
 
   async componentDidMount() {
-    const { institutions, summary, details } = await Fetch.benefits()
+    const { institutions, summary, details } = await Fetch.getSurveyStatistics()
     this.setState({
       institutions: institutions,
       summary: summary,
@@ -28,11 +28,7 @@ class Survey extends Component {
       <>
         {this.state.survey.length && (
           <>
-            <SurveyResults
-              survey={this.state.survey}
-              summary={this.state.summary}
-              institutions={this.state.institutions}
-            />
+            <SurveyResults summary={this.state.summary} />
 
             <SurveyDetails
               survey={this.state.survey}
