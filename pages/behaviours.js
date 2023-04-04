@@ -41,8 +41,9 @@ class Behaviours extends Component {
         periods[this.state.period].from
       },${DateRange.getPastDate(0)}`
     )
+    const { benefits, benefitInstitutionMapping, institutions } =
+      await Fetch.getBenefitsAndInstitutions()
 
-    const { benefits, institutions } = await Fetch.benefits()
 
     const benefitsMap = {}
     const benefitsLabelIdMap = {}
