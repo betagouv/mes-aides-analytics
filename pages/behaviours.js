@@ -36,114 +36,55 @@ class Behaviours extends Component {
   }
 
   async fetchUsersBehavioursData() {
-    let matomoEvents = await Fetch.getJSON(
-      `${process.env.matomoEvents}${
-        periods[this.state.period].from
-      },${DateRange.getPastDate(0)}`
+    let recorderStatistics = await Fetch.getRecorderStatistics(
+      periods[this.state.period].from
     )
     const { benefits, benefitInstitutionMapping, institutions } =
       await Fetch.getBenefitsAndInstitutions()
 
+    const displayedBenefits = recorderStatistics.map((benefit) => benefit.id)
+    const undisplayedBenefits = benefits
+      .map((benefit) => benefit.id)
+      .filter((benefit) => displayedBenefits.indexOf(benefit) === -1)
 
-    const benefitsMap = {}
-    const benefitsLabelIdMap = {}
-    benefits.map((institutionGroup) => {
-      if (benefitsMap[institutionGroup.id]) {
-        benefitsMap[institutionGroup.id].institutions.push(
-          institutionGroup.institution.id
-        )
-      } else {
-        benefitsMap[institutionGroup.id] = {
-          institutions: [institutionGroup.institution.id],
-          type: institutionGroup.institution.type,
-        }
-        benefitsLabelIdMap[institutionGroup.label] = institutionGroup.id
-      }
-    })
-    let benefitsList = {}
-    // Add benefits event to existing object or create it
-    matomoEvents.forEach((benefit) => {
-      if (!benefitsMap[benefit.label] && !benefitsLabelIdMap[benefit.label])
-        return
-      // Normalize the use of benefit ID and benefit Label
-      let index = benefitsLabelIdMap[benefit.label]
-        ? benefitsLabelIdMap[benefit.label]
-        : benefit.label
-      if (benefitsList[index]) {
-        for (let key in benefit.subtable) {
-          let label = benefit.subtable[key].label
-          if (benefitsList[index].events[label]) {
-            benefitsList[index].events[label] +=
-              benefit.subtable[key][this.state.source] || 0
-          } else {
-            if (EventTypeCategoryMapping[label] && benefit.subtable[key]) {
-              benefitsList[index].events[label] =
-                benefit.subtable[key][this.state.source] || 0
-            }
-          }
-          benefitsList[index].total += benefit[this.state.source] || 0
-        }
-        return
-      } else {
-        benefitsList[index] = benefitsMap[index]
-        benefitsList[index].events = {}
-        benefitsList[index].percentageOfEvents = {}
-        for (let key in benefit.subtable) {
-          let label = benefit.subtable[key].label
-          if (
-            EventTypeCategoryMapping[label] &&
-            benefit.subtable[key][this.state.source]
-          ) {
-            benefitsList[index].events[label] =
-              benefit.subtable[key][this.state.source] || 0
-          }
-        }
-      }
-      benefitsList[index].total = benefit[this.state.source] || 0
-      return
-    })
+    recorderStatistics = recorderStatistics.map((benefitStatistic) => {
+      const { events } = benefitStatistic
+      const institution = benefitInstitutionMapping[benefitStatistic.id]
+      const percentageOfEvents = {}
 
-    benefitsList = Object.keys(benefitsList).map((key) => {
-      benefitsList[key].label = key
-      return benefitsList[key]
-    })
-
-    // Filter out displayed benefits
-    benefitsList.forEach((benefit) => {
-      if (benefit.id && benefitsMap[benefit.id]) {
-        delete benefitsMap[benefit.id]
-      } else if (benefit.label && benefitsMap[benefit.label]) {
-        delete benefitsMap[benefit.label]
-      }
-    })
-
-    benefitsList.forEach((_, index) => {
-      Object.keys(benefitsList[index].events).forEach((key) => {
-        switch (EventTypeCategoryMapping[key].cat) {
-          case EventCategories.SHOW:
-            break
+      Object.keys(events).forEach((event_name) => {
+        switch (EventTypeCategoryMapping[event_name].cat) {
           case EventCategories.SHOW_DETAILS:
-            benefitsList[index].percentageOfEvents[key] = this.percent(
-              benefitsList[index].events[key],
-              benefitsList[index].events.show
+            percentageOfEvents[event_name] = this.percent(
+              events[event_name],
+              events.show
             )
             break
           case EventCategories.ACTIONABLE:
-            benefitsList[index].percentageOfEvents[key] = this.percent(
-              benefitsList[index].events[key],
-              benefitsList[index].events.showDetails
+            percentageOfEvents[event_name] = this.percent(
+              events[event_name],
+              events.showDetails
             )
             break
           default:
+            break
         }
       })
+
+      return {
+        label: benefitStatistic.id,
+        events: events,
+        institution: institution.label,
+        type: institution.type,
+        percentageOfEvents,
+      }
     })
 
     this.setState({
-      benefits: benefitsList,
-      filteredBenefits: benefitsList,
+      benefits: recorderStatistics,
+      filteredBenefits: recorderStatistics,
       institutions: institutions,
-      undisplayedBenefits: Object.keys(benefitsMap),
+      undisplayedBenefits,
     })
 
     const parameters = Url.getParameters(["geographic", "institution"])
