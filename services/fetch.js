@@ -60,6 +60,13 @@ export default class Fetch {
     }
   }
 
+  static async getRecorderStatistics(startAt) {
+    const url = `${process.env.recorderStatisticsURL}/benefits?start_at=${startAt}`
+    const recorderStatistics = await this.getJSON(url)
+
+    return recorderStatistics
+  }
+
   static async benefits() {
     const json = await this.getJSON(process.env.surveyStatisticsURL)
     const benefitsData = await this.getJSON(process.env.benefitsURL)
