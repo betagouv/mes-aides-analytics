@@ -2,7 +2,6 @@ import { Component } from "react"
 
 import {
   Config,
-  DataSources,
   EventCategories,
   PercentageAnnotation,
   EventTypeCategoryMapping,
@@ -19,7 +18,6 @@ class Behaviours extends Component {
     super(props)
     this.state = {
       period: "day",
-      source: "nb_visits",
       institutions: [],
       benefits: [],
       filteredBenefits: [],
@@ -96,10 +94,6 @@ class Behaviours extends Component {
 
   handlePeriodChange(period) {
     this.setState({ period: period }, this.fetchUsersBehavioursData)
-  }
-
-  handleSourceChange(source) {
-    this.setState({ source: source }, this.fetchUsersBehavioursData)
   }
 
   filterBenefits(geographic = "*", institution = "*") {
@@ -179,25 +173,6 @@ class Behaviours extends Component {
                   return (
                     <option key={k} value={k}>
                       {periods[k].label}
-                    </option>
-                  )
-                })}
-              </select>
-            </label>
-
-            <label>
-              <span>Source des données</span>
-              <br />
-              <select
-                onChange={(event) =>
-                  this.handleSourceChange(event.target.value)
-                }
-                value={this.state.source}
-              >
-                {Object.keys(DataSources).map((k) => {
-                  return (
-                    <option key={k} value={k}>
-                      {DataSources[k]}
                     </option>
                   )
                 })}

@@ -47,11 +47,6 @@ export const Config = {
   },
 }
 
-export const DataSources = {
-  nb_visits: "Visite",
-  nb_events: "Évènement",
-}
-
 export const EventCategories = {
   SHOW: "Affiché",
   SHOW_DETAILS: "Détails affichés",
