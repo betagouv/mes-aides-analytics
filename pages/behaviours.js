@@ -40,10 +40,15 @@ class Behaviours extends Component {
     const { benefits, benefitInstitutionMapping, institutions } =
       await Fetch.getBenefitsAndInstitutions()
 
+    const benefitIds = benefits.map((benefit) => benefit.id)
+    recorderStatistics = recorderStatistics.filter((benefitStatistic) =>
+      benefitIds.includes(benefitStatistic.id)
+    )
+
     const displayedBenefits = recorderStatistics.map((benefit) => benefit.id)
-    const undisplayedBenefits = benefits
-      .map((benefit) => benefit.id)
-      .filter((benefit) => displayedBenefits.indexOf(benefit) === -1)
+    const undisplayedBenefits = benefitIds.filter(
+      (benefit) => displayedBenefits.indexOf(benefit) === -1
+    )
 
     recorderStatistics = recorderStatistics.map((benefitStatistic) => {
       const { events } = benefitStatistic
