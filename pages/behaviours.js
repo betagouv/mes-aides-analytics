@@ -99,6 +99,8 @@ class Behaviours extends Component {
       parameters.geographic || "*",
       parameters.institution || "*"
     )
+
+    this.sortTable("events.show")
   }
 
   handlePeriodChange(period) {
