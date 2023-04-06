@@ -56,6 +56,10 @@ class Behaviours extends Component {
       const percentageOfEvents = {}
 
       Object.keys(events).forEach((event_name) => {
+        if (!EventTypeCategoryMapping[event_name]) {
+          return
+        }
+
         switch (EventTypeCategoryMapping[event_name].cat) {
           case EventCategories.SHOW_DETAILS:
             percentageOfEvents[event_name] = this.percent(

@@ -99,6 +99,11 @@ export const EventTypeCategoryMapping = {
     name: "Lien sans éligibilité",
     color: "#bcbd22",
   },
+  "show-unexpected-amount-link": {
+    cat: EventCategories.MISUNDERSTOOD,
+    name: "Display Lien Incompris",
+    color: "#17becf",
+  },
   "show-unexpected": { cat: EventCategories.MISUNDERSTOOD, color: "#17becf" },
   close: { cat: EventCategories.EXPLAIN, name: "Fermé", color: "#1f77b4" },
   "retour-logement": {
