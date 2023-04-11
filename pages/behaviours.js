@@ -100,7 +100,7 @@ class Behaviours extends Component {
       parameters.institution || "*"
     )
 
-    this.sortTable("events.show")
+    this.sortTable("events.show", false)
   }
 
   handlePeriodChange(period) {
@@ -124,12 +124,14 @@ class Behaviours extends Component {
       : `percentageOfEvents.${eventName}`
   }
 
-  sortTable(sortingBy) {
-    const sortAscending = DataFilter.getSortAscending(
-      sortingBy,
-      this.state.sortBy,
-      this.state.sortAscending
-    )
+  sortTable(sortingBy, autoSwtichAscending = true) {
+    const sortAscending = autoSwtichAscending
+      ? DataFilter.getSortAscending(
+          sortingBy,
+          this.state.sortBy,
+          this.state.sortAscending
+        )
+      : this.state.sortAscending
 
     const output = DataFilter.sort(
       this.state.benefits,
@@ -138,7 +140,7 @@ class Behaviours extends Component {
       ["label"],
       Object.keys(EventTypeCategoryMapping).map((eventName) =>
         this.eventSortName(eventName)
-      ),
+      )
     )
 
     this.setState({
