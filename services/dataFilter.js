@@ -72,11 +72,11 @@ export default class DataFilter {
     } else if (numericals.includes(sortingBy)) {
       if (sortAscending) {
         output = target.sort((a, b) =>
-          numCompare(get(b, sortingBy), get(a, sortingBy))
+          numCompare(get(a, sortingBy), get(b, sortingBy))
         )
       } else {
         output = target.sort((a, b) =>
-          numCompare(get(a, sortingBy), get(b, sortingBy))
+          numCompare(get(b, sortingBy), get(a, sortingBy))
         )
       }
     }
