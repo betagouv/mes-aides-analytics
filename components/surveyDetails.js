@@ -59,14 +59,20 @@ class SurveyDetails extends Component {
   }
 
   sortTable(sortingBy) {
-    const { output, sortAscending } = DataFilter.sort(
-      this.state.filteredBenefits,
+    const sortAscending = DataFilter.getSortAscending(
       sortingBy,
       this.state.sortBy,
-      this.state.sortAscending,
+      this.state.sortAscending
+    )
+
+    const output = DataFilter.sort(
+      this.state.filteredBenefits,
+      sortingBy,
+      sortAscending,
       ["id"],
       ["total", "asked", "failed", "nothing", "already"]
     )
+
     this.setState({
       sortAscending: sortAscending,
       sortBy: sortingBy,

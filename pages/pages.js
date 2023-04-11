@@ -69,14 +69,20 @@ class PagesVisits extends Component {
   }
 
   sortTable(sortingBy) {
-    const { output, sortAscending } = DataFilter.sort(
-      this.state.pagesStats,
+    const sortAscending = DataFilter.getSortAscending(
       sortingBy,
       this.state.sortBy,
-      this.state.sortAscending,
+      this.state.sortAscending
+    )
+
+    const output = DataFilter.sort(
+      this.state.pagesStats,
+      sortingBy,
+      sortAscending,
       ["label"],
       ["nb_visits", "exit_nb_visits", "exit_rate"]
     )
+
     this.setState({
       sortAscending: sortAscending,
       sortBy: sortingBy,

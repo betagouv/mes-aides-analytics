@@ -125,15 +125,20 @@ class Behaviours extends Component {
   }
 
   sortTable(sortingBy) {
-    const { output, sortAscending } = DataFilter.sort(
-      this.state.benefits,
+    const sortAscending = DataFilter.getSortAscending(
       sortingBy,
       this.state.sortBy,
-      this.state.sortAscending,
+      this.state.sortAscending
+    )
+
+    const output = DataFilter.sort(
+      this.state.benefits,
+      sortingBy,
+      sortAscending,
       ["label"],
       Object.keys(EventTypeCategoryMapping).map((eventName) =>
         this.eventSortName(eventName)
-      )
+      ),
     )
 
     this.setState({
