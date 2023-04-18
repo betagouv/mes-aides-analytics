@@ -54,16 +54,11 @@ export default class DataFilter {
   static sort(
     target,
     sortingBy,
-    previousSort,
-    ascending,
+    sortAscending,
     alphabeticals = [],
     numericals = []
   ) {
-    let sortAscending = true
     let output = target
-    if (previousSort == sortingBy) {
-      sortAscending = !ascending
-    }
     if (alphabeticals.includes(sortingBy)) {
       if (sortAscending) {
         output = target.sort((a, b) =>
@@ -77,14 +72,23 @@ export default class DataFilter {
     } else if (numericals.includes(sortingBy)) {
       if (sortAscending) {
         output = target.sort((a, b) =>
-          numCompare(get(b, sortingBy), get(a, sortingBy))
+          numCompare(get(a, sortingBy), get(b, sortingBy))
         )
       } else {
         output = target.sort((a, b) =>
-          numCompare(get(a, sortingBy), get(b, sortingBy))
+          numCompare(get(b, sortingBy), get(a, sortingBy))
         )
       }
     }
-    return { output, sortAscending }
+    return output
+  }
+
+  static getSortAscending(sortingBy, previousSort, ascending) {
+    let sortAscending = false
+    if (previousSort == sortingBy) {
+      sortAscending = !ascending
+    }
+
+    return sortAscending
   }
 }

@@ -46,3 +46,75 @@ export const Config = {
     Sorties: "#f6d3d3",
   },
 }
+
+export const EventCategories = {
+  SHOW: "Affiché",
+  SHOW_DETAILS: "Détails affichés",
+  ACTIONABLE: "Actionné",
+  INELIGIBLE_ACTIONABLE: "Actionné inélig.",
+  MISUNDERSTOOD: "Incompris",
+  EXPLAIN: "Expliqué",
+}
+
+export const PercentageAnnotation = {
+  [EventCategories.SHOW_DETAILS]: {
+    annotation: "(1)",
+    description:
+      "Pourcentage calculé à partir du nombre de fois où l'aide a été affiché.",
+  },
+  [EventCategories.ACTIONABLE]: {
+    annotation: "(2)",
+    description:
+      "Pourcentage calculé à partir du nombre de fois où le détail de l'aide a été affiché.",
+  },
+}
+
+export const EventTypeCategoryMapping = {
+  show: { cat: EventCategories.SHOW, color: "#1f77b4" },
+  showDetails: { cat: EventCategories.SHOW_DETAILS, color: "#ff7f0e" },
+  form: {
+    cat: EventCategories.ACTIONABLE,
+    name: "Formulaire",
+    color: "#2ca02c",
+  },
+  instructions: {
+    cat: EventCategories.ACTIONABLE,
+    name: "Instructions",
+    color: "#d62728",
+  },
+  link: { cat: EventCategories.ACTIONABLE, name: "Lien", color: "#9467bd" },
+  msa: { cat: EventCategories.ACTIONABLE, name: "MSA", color: "#8c564b" },
+  "show-locations": {
+    cat: EventCategories.ACTIONABLE,
+    name: "Agence",
+    color: "#e377c2",
+  },
+  teleservice: {
+    cat: EventCategories.ACTIONABLE,
+    name: "Téléservice",
+    color: "#7f7f7f",
+  },
+  "link-ineligible": {
+    cat: EventCategories.INELIGIBLE_ACTIONABLE,
+    name: "Lien sans éligibilité",
+    color: "#bcbd22",
+  },
+  "show-unexpected-amount-link": {
+    cat: EventCategories.MISUNDERSTOOD,
+    name: "Display Lien Incompris",
+    color: "#17becf",
+  },
+  "show-unexpected": { cat: EventCategories.MISUNDERSTOOD, color: "#17becf" },
+  close: { cat: EventCategories.EXPLAIN, name: "Fermé", color: "#1f77b4" },
+  "retour-logement": {
+    cat: EventCategories.EXPLAIN,
+    name: "Retour page logement",
+    color: "#ff7f0e",
+  },
+  "simulation-caf": {
+    cat: EventCategories.EXPLAIN,
+    name: "Simulateur CAF",
+    color: "#2ca02c",
+  },
+  email: { cat: EventCategories.EXPLAIN, name: "Email", color: "#d62728" },
+}

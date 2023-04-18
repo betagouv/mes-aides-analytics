@@ -8,8 +8,6 @@ class SurveyResults extends Component {
     super(props)
     this.state = {
       summary: props.summary,
-      survey: props.survey,
-      institutions: props.institutions,
     }
   }
 

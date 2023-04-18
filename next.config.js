@@ -22,6 +22,9 @@ module.exports = {
     matomoEvents:
       "https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=-1&format=JSON&idSite=165&method=Events.getName&module=API&period=range&date=",
     benefitDetailURL: `${aidesJeunesUrl}aides/`,
+    recorderStatisticsURL:
+      process.env.RECORDER_STATISTICS_URL ||
+      "https://aides-jeunes-stats-recorder.osc-fr1.scalingo.io",
     _interetsAidesVeloCsvUrl: `${aidesJeunesUrl}documents/_interetsAidesVelo.csv`,
     commitSHA: process.env.GITHUB_SHA || "local",
   },

@@ -4,21 +4,42 @@ export default class Fetch {
     return await data.json()
   }
 
-  static async benefits() {
-    const json = await this.getJSON(process.env.surveyStatisticsURL)
-    const benefitsData = await this.getJSON(process.env.benefitsURL)
-    const institutions = {}
+  static async getSurveyStatistics() {
+    const surveyStatiastics = await this.getJSON(
+      process.env.surveyStatisticsURL
+    )
+    const { benefitInstitutionMapping, institutions } =
+      await this.getBenefitsAndInstitutions()
 
-    const benefitsList = {}
-    benefitsData.map((benefit) => {
-      benefitsList[benefit.id] = {
-        institution: benefit.institution.label,
-        type: benefit.institution.type,
+    surveyStatiastics.survey.details.forEach((benefitDetail) => {
+      if (benefitInstitutionMapping[benefitDetail.id]) {
+        benefitDetail.institution =
+          benefitInstitutionMapping[benefitDetail.id].label
+        benefitDetail.type = benefitInstitutionMapping[benefitDetail.id].type
       }
-      benefitsList[benefit.slug] = {
-        institution: benefit.institution.label,
-        type: benefit.institution.type,
-      }
+    })
+
+    return {
+      summary: surveyStatiastics.survey.summary,
+      details: surveyStatiastics.survey.details,
+      institutions: institutions,
+    }
+  }
+
+  static async getBenefits() {
+    const benefits = await this.getJSON(process.env.benefitsURL)
+
+    return benefits
+  }
+
+  static async getBenefitsAndInstitutions() {
+    const benefits = await this.getBenefits()
+    const institutions = {}
+    const benefitInstitutionMapping = {}
+
+    benefits.forEach((benefit) => {
+      benefitInstitutionMapping[benefit.id] = benefit.institution
+
       if (!institutions[benefit.institution.type]) {
         institutions[benefit.institution.type] = [benefit.institution.label]
       } else {
@@ -31,20 +52,19 @@ export default class Fetch {
         }
       }
     })
-    json.survey.details.map((benefit) => {
-      if (benefitsList[benefit.id]) {
-        benefit.institution = benefitsList[benefit.id].institution
-        benefit.type = benefitsList[benefit.id].type
-      }
-      return benefit
-    })
+
     return {
-      benefits: benefitsData,
-      benefitsList: benefitsList,
+      benefits: benefits,
+      benefitInstitutionMapping: benefitInstitutionMapping,
       institutions: institutions,
-      summary: json.survey.summary,
-      details: json.survey.details,
     }
+  }
+
+  static async getRecorderStatistics(startAt) {
+    const url = `${process.env.recorderStatisticsURL}/benefits?start_at=${startAt}`
+    const recorderStatistics = await this.getJSON(url)
+
+    return recorderStatistics
   }
 
   static async fetchCsv(url) {
