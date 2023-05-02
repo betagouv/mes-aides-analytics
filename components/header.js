@@ -22,12 +22,12 @@ const Header = () => {
       <nav>
         {menu.map((item) => (
           <Link href={item.url} key={item.url}>
-            <a
+            <span
               className={item.url.indexOf(router) >= 0 ? "active" : ""}
               onClick={() => closeMenu()}
             >
               {item.label}
-            </a>
+            </span>
           </Link>
         ))}
       </nav>
