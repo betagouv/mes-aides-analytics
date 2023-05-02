@@ -8,6 +8,7 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:prettier/recommended",
     "prettier",
+    "next",
   ],
   plugins: ["prettier"],
   globals: {

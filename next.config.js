@@ -2,7 +2,7 @@ const isProduction = "production" === process.env.NODE_ENV
 
 const aidesJeunesUrl = "https://mes-aides.1jeune1solution.beta.gouv.fr/"
 
-module.exports = {
+export default {
   assetPrefix: isProduction
     ? "https://betagouv.github.io/mes-aides-analytics/"
     : undefined,
