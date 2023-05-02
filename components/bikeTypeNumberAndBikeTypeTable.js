@@ -16,7 +16,7 @@ class BikeTypeNumberAndBikeTypeTable extends Component {
     this.setState({ countGroupByBikeTypeNumberAndByBikeType })
   }
 
-  getSnapshotBeforeUpdate(prevProps) {
+  componentDidUpdate(prevProps) {
     if (prevProps.bikeData === this.props.bikeData) {
       return null
     }
