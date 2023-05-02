@@ -26,7 +26,7 @@ jobs:
           npm run build
           touch out/.nojekyll
 
-      - name: Export buildg
+      - name: Export build
         uses: actions/upload-pages-artifact@v1
         with:
           path: ./out
