@@ -3,7 +3,7 @@ name: Continuous deployment to github pages https://betagouv.github.io/mes-aides
 on:
   push:
     branches:
-      - master
+      - main
 jobs:
   deploy:
     runs-on: ubuntu-latest
