@@ -2,7 +2,7 @@ const isProduction = "production" === process.env.NODE_ENV
 
 const aidesJeunesUrl = "https://mes-aides.1jeune1solution.beta.gouv.fr/"
 
-export default {
+const configuration = {
   assetPrefix: isProduction
     ? "https://betagouv.github.io/mes-aides-analytics/"
     : undefined,
@@ -29,3 +29,4 @@ export default {
     commitSHA: process.env.GITHUB_SHA || "local",
   },
 }
+export default configuration
