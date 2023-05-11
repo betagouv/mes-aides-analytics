@@ -5,7 +5,7 @@ import Header from "../components/header.js"
 
 import { useRouter } from "next/router"
 
-function inIframe() {
+function InIframe() {
   return useRouter().asPath.split("?")[0] == "/iframe"
 }
 
@@ -26,7 +26,7 @@ export default function App({ Component, pageProps }) {
           content="Statistiques d'usage du simulateur d'aides sociales de 1Jeune1Solution"
         />
       </Head>
-      {!inIframe() && <Header />}
+      {!InIframe() && <Header />}
       <main>
         <Component {...pageProps} />
         <a
