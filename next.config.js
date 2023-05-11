@@ -28,5 +28,9 @@ const configuration = {
     _interetsAidesVeloCsvUrl: `${aidesJeunesUrl}documents/_interetsAidesVelo.csv`,
     commitSHA: process.env.GITHUB_SHA || "local",
   },
+  transpilePackages: ["@nivo"],
+  experimental: {
+    esmExternals: "loose",
+  },
 }
 export default configuration
