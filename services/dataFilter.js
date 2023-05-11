@@ -51,13 +51,7 @@ export default class DataFilter {
     }
   }
 
-  static sort(
-    target,
-    sortingBy,
-    sortAscending,
-    alphabeticals = [],
-    numericals = []
-  ) {
+  static sort(target, sortingBy, sortAscending, alphabeticals = []) {
     let output = target
     if (alphabeticals.includes(sortingBy)) {
       if (sortAscending) {
@@ -69,7 +63,7 @@ export default class DataFilter {
           get(b, sortingBy).localeCompare(get(a, sortingBy), "fi")
         )
       }
-    } else if (numericals.includes(sortingBy)) {
+    } else {
       if (sortAscending) {
         output = target.sort((a, b) =>
           numCompare(get(a, sortingBy), get(b, sortingBy))

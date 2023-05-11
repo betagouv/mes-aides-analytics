@@ -137,10 +137,7 @@ class Behaviours extends Component {
       this.state.benefits,
       sortingBy,
       sortAscending,
-      ["label"],
-      Object.keys(EventTypeCategoryMapping).map((eventName) =>
-        this.eventSortName(eventName)
-      )
+      ["label"]
     )
 
     this.setState({

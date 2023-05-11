@@ -69,8 +69,7 @@ class SurveyDetails extends Component {
       this.state.filteredBenefits,
       sortingBy,
       sortAscending,
-      ["id"],
-      ["total", "asked", "failed", "nothing", "already"]
+      ["id"]
     )
 
     this.setState({
