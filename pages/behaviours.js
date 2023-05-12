@@ -29,6 +29,7 @@ class Behaviours extends Component {
       undisplayedBenefits: [],
       sortBy: null,
       sortAscending: false,
+      loading: true,
     }
   }
 
@@ -37,6 +38,8 @@ class Behaviours extends Component {
   }
 
   async fetchUsersBehavioursData() {
+    this.setState({ loading: true })
+
     let recorderStatistics = await Fetch.getRecorderStatistics(
       periods[this.state.period].from
     )
@@ -311,42 +314,54 @@ class Behaviours extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.filteredBenefits.map((benefit) => (
-                <tr key={benefit.id || benefit.label}>
-                  <td data-label="Aide" data-content="aide">
-                    {benefit.id || benefit.label}
+              {this.state.loading && (
+                <tr>
+                  <td
+                    colSpan={Object.keys(EventTypeCategoryMapping).length + 1}
+                  >
+                    <span className="loading">Chargement en cours...</span>
                   </td>
-                  {Object.keys(EventTypeCategoryMapping).map((key) => (
-                    <td
-                      data-label={
-                        EventTypeCategoryMapping[key].name ||
-                        EventTypeCategoryMapping[key].cat
-                      }
-                      data-content={benefit.events[key]}
-                      className="text-right"
-                      key={key}
-                    >
-                      {key === "show" ? (
-                        <>{benefit.events.show}</>
-                      ) : (
-                        <>
-                          <div
-                            className="gauge"
-                            style={{
-                              width: `${benefit.percentageOfEvents[key]}%`,
-                              background: EventTypeCategoryMapping[key].color,
-                            }}
-                          ></div>
-                          {benefit.events[key]}
-                          {benefit.events[key] && (
-                            <small>({benefit.percentageOfEvents[key]}%)</small>
-                          )}
-                        </>
-                      )}
-                    </td>
-                  ))}
                 </tr>
-              ))}
+              )}
+              {!this.state.loading &&
+                this.state.filteredBenefits.map((benefit) => (
+                  <tr key={benefit.id || benefit.label}>
+                    <td data-label="Aide" data-content="aide">
+                      {benefit.id || benefit.label}
+                    </td>
+                    {Object.keys(EventTypeCategoryMapping).map((key) => (
+                      <td
+                        data-label={
+                          EventTypeCategoryMapping[key].name ||
+                          EventTypeCategoryMapping[key].cat
+                        }
+                        data-content={benefit.events[key]}
+                        className="text-right"
+                        key={key}
+                      >
+                        {key === "show" ? (
+                          <>{benefit.events.show}</>
+                        ) : (
+                          <>
+                            <div
+                              className="gauge"
+                              style={{
+                                width: `${benefit.percentageOfEvents[key]}%`,
+                                background: EventTypeCategoryMapping[key].color,
+                              }}
+                            ></div>
+                            {benefit.events[key]}
+                            {benefit.events[key] && (
+                              <small>
+                                ({benefit.percentageOfEvents[key]}%)
+                              </small>
+                            )}
+                          </>
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
