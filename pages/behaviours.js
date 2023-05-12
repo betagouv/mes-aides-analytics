@@ -107,12 +107,12 @@ class Behaviours extends Component {
     this.setState({ period: period }, this.fetchUsersBehavioursData)
   }
 
-  filterBenefits(geographic = "*", institution = "*") {
+  filterBenefits(institution_type = "*", institution = "*") {
     this.setState(
       DataFilter.benefits(
         this.state.benefits,
         this.state.institutions,
-        geographic,
+        institution_type,
         institution
       )
     )
@@ -196,7 +196,7 @@ class Behaviours extends Component {
 
             {this.state.institutions && (
               <label>
-                <span>Filtrer par géographie</span>
+                <span>Filtrer par type d'institution</span>
                 <br />
                 <select
                   onChange={(e) => this.filterBenefits(e.target.value)}

@@ -33,19 +33,19 @@ class SurveyDetails extends Component {
   }
 
   async componentDidMount() {
-    const parameters = Url.getParameters(["geographic", "institution"])
+    const parameters = Url.getParameters(["institution_type", "institution"])
     this.filterBenefits(
-      parameters.geographic || "*",
+      parameters.institution_type || "*",
       parameters.institution || "*"
     )
   }
 
-  filterBenefits(geographic = "*", institution = "*") {
+  filterBenefits(institution_type = "*", institution = "*") {
     this.setState(
       DataFilter.benefits(
         this.state.surveyDetails,
         this.state.institutions,
-        geographic,
+        institution_type,
         institution
       ),
       () => this.sortTable("total")

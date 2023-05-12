@@ -17,14 +17,19 @@ function get(element, depth) {
 }
 
 export default class DataFilter {
-  static benefits(benefits, institutions, geographic = "*", institution = "*") {
+  static benefits(
+    benefits,
+    institutions,
+    institution_type = "*",
+    institution = "*"
+  ) {
     let filteredInstitutions = []
-    if (geographic == "*") {
+    if (institution_type == "*") {
       filteredInstitutions = Object.values(institutions).reduce((accum, el) => {
         return accum.concat(el)
       }, [])
     } else {
-      filteredInstitutions = institutions[geographic]
+      filteredInstitutions = institutions[institution_type]
     }
     filteredInstitutions = filteredInstitutions.sort((a, b) =>
       a.localeCompare(b, "fi")
@@ -32,7 +37,7 @@ export default class DataFilter {
 
     let filteredBenefits = benefits.filter((benefit) => {
       return (
-        (geographic == "*" || benefit.type == geographic) &&
+        (institution_type == "*" || benefit.type == institution_type) &&
         (institution == "*" ||
           benefit.institution == institution ||
           (benefit.institutions && benefit.institutions.includes(institution)))
@@ -40,13 +45,14 @@ export default class DataFilter {
     })
 
     Url.setParameters({
-      geographic: geographic,
-      institution: institution,
+      institution_type,
+      institution,
     })
+
     return {
       filteredInstitutions: filteredInstitutions,
       filteredBenefits: filteredBenefits,
-      currentInstitutionType: geographic,
+      currentInstitutionType: institution_type,
       currentInstitution: institution,
     }
   }
