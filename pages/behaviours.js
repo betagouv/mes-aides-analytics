@@ -21,8 +21,8 @@ class Behaviours extends Component {
       institutions: [],
       benefits: [],
       filteredBenefits: [],
-      currentInstitutionType: "*",
-      currentInstitution: "*",
+      currentInstitutionType: DataFilter.DEFAULT_FILTER_VALUE,
+      currentInstitution: DataFilter.DEFAULT_FILTER_VALUE,
       undisplayedBenefits: [],
       sortBy: null,
       sortAscending: false,
@@ -94,10 +94,10 @@ class Behaviours extends Component {
       undisplayedBenefits,
     })
 
-    const parameters = Url.getParameters(["geographic", "institution"])
+    const parameters = Url.getParameters(["institution_type", "institution"])
     this.filterBenefits(
-      parameters.geographic || "*",
-      parameters.institution || "*"
+      parameters.institution_type || DataFilter.DEFAULT_FILTER_VALUE,
+      parameters.institution || DataFilter.DEFAULT_FILTER_VALUE
     )
 
     this.sortTable("events.show", false)
@@ -107,7 +107,10 @@ class Behaviours extends Component {
     this.setState({ period: period }, this.fetchUsersBehavioursData)
   }
 
-  filterBenefits(institution_type = "*", institution = "*") {
+  filterBenefits(
+    institution_type = DataFilter.DEFAULT_FILTER_VALUE,
+    institution = DataFilter.DEFAULT_FILTER_VALUE
+  ) {
     this.setState(
       DataFilter.benefits(
         this.state.benefits,
@@ -157,6 +160,13 @@ class Behaviours extends Component {
     return Math.min(
       Math.round(((numerator || 0) / (denominator || 1)) * 100),
       100
+    )
+  }
+
+  displayResetButton() {
+    return (
+      this.state.currentInstitutionType !== DataFilter.DEFAULT_FILTER_VALUE ||
+      this.state.currentInstitution !== DataFilter.DEFAULT_FILTER_VALUE
     )
   }
 
@@ -224,7 +234,9 @@ class Behaviours extends Component {
                   }
                   value={this.state.currentInstitution}
                 >
-                  <option value="*">Toutes les institutions</option>
+                  <option value="{DataFilter.DEFAULT_FILTER_VALUE}">
+                    Toutes les institutions
+                  </option>
                   {this.state.filteredInstitutions.map((institution) => (
                     <option value={institution} key={institution}>
                       {institution}
@@ -234,8 +246,7 @@ class Behaviours extends Component {
               </label>
             )}
 
-            {(this.state.currentInstitutionType != "*" ||
-              this.state.currentInstitution != "*") && (
+            {this.displayResetButton() && (
               <input type="reset" onClick={() => this.filterBenefits()} />
             )}
           </div>

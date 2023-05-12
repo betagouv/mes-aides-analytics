@@ -16,15 +16,17 @@ function get(element, depth) {
   }
 }
 
+const DEFAULT_FILTER_VALUE = "*"
+
 export default class DataFilter {
   static benefits(
     benefits,
     institutions,
-    institution_type = "*",
-    institution = "*"
+    institution_type = DEFAULT_FILTER_VALUE,
+    institution = DEFAULT_FILTER_VALUE
   ) {
     let filteredInstitutions = []
-    if (institution_type == "*") {
+    if (institution_type == DEFAULT_FILTER_VALUE) {
       filteredInstitutions = Object.values(institutions).reduce((accum, el) => {
         return accum.concat(el)
       }, [])
@@ -37,8 +39,9 @@ export default class DataFilter {
 
     let filteredBenefits = benefits.filter((benefit) => {
       return (
-        (institution_type == "*" || benefit.type == institution_type) &&
-        (institution == "*" ||
+        (institution_type == DEFAULT_FILTER_VALUE ||
+          benefit.type == institution_type) &&
+        (institution == DEFAULT_FILTER_VALUE ||
           benefit.institution == institution ||
           (benefit.institutions && benefit.institutions.includes(institution)))
       )
@@ -90,5 +93,9 @@ export default class DataFilter {
     }
 
     return sortAscending
+  }
+
+  static get DEFAULT_FILTER_VALUE() {
+    return DEFAULT_FILTER_VALUE
   }
 }
