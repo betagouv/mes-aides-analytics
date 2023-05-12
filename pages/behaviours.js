@@ -12,6 +12,9 @@ import DataFilter from "../services/dataFilter.js"
 import DateRange from "../services/date.js"
 
 const periods = DateRange.getPeriods()
+const DEFAULT_SORT_BY = "events.show"
+const DEFAULT_SORT_ASCENDING = false
+const ALPHABETICAL_COLUMNS = ["label"]
 
 class Behaviours extends Component {
   constructor(props) {
@@ -87,20 +90,37 @@ class Behaviours extends Component {
       }
     })
 
-    this.setState({
-      benefits: recorderStatistics,
-      filteredBenefits: recorderStatistics,
-      institutions: institutions,
-      undisplayedBenefits,
-    })
-
     const parameters = Url.getParameters(["institution_type", "institution"])
-    this.filterBenefits(
-      parameters.institution_type || DataFilter.DEFAULT_FILTER_VALUE,
-      parameters.institution || DataFilter.DEFAULT_FILTER_VALUE
+
+    const {
+      institution_type,
+      institution,
+    } = parameters
+
+    const filterState = DataFilter.benefits(
+      recorderStatistics,
+      institutions,
+      institution_type || DataFilter.DEFAULT_FILTER_VALUE,
+      institution || DataFilter.DEFAULT_FILTER_VALUE
     )
 
-    this.sortTable("events.show", false)
+    const sortedFilteredBenefits = DataFilter.sort(
+      filterState.filteredBenefits,
+      DEFAULT_SORT_BY,
+      DEFAULT_SORT_ASCENDING,
+      ALPHABETICAL_COLUMNS
+    )
+
+    this.setState({
+      benefits: recorderStatistics,
+      institutions: institutions,
+      undisplayedBenefits,
+      loading: false,
+      ...filterState,
+      filteredBenefits: sortedFilteredBenefits,
+      sortBy: DEFAULT_SORT_BY,
+      sortAscending: DEFAULT_SORT_ASCENDING,
+    })
   }
 
   handlePeriodChange(period) {
@@ -137,10 +157,10 @@ class Behaviours extends Component {
       : this.state.sortAscending
 
     const output = DataFilter.sort(
-      this.state.benefits,
+      this.state.filteredBenefits,
       sortingBy,
       sortAscending,
-      ["label"]
+      ALPHABETICAL_COLUMNS
     )
 
     this.setState({
