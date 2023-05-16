@@ -1,5 +1,8 @@
 import { Component } from "react"
 
+import BehavioursHeader from "../components/behaviourHeader.js"
+import UndisplayedBenefits from "../components/undisplayedBenefits.js"
+
 import {
   Config,
   EventCategories,
@@ -196,16 +199,7 @@ class Behaviours extends Component {
   render() {
     return (
       <>
-        <h2>Comportements utilisateur sur la page de résultats</h2>
-        <div>
-          <p>
-            Les graphiques suivants représentent les taux de conversion sur la
-            page de présentation de résultats sur le simulateur. Différents
-            évènements sont capturés pour mieux évaluer l'impact du simulateur
-            sur le non-recours aux dispositifs présentés aux usagers.
-          </p>
-        </div>
-
+        <BehavioursHeader />
         <div className="flex-justify">
           <div className="flex-bottom flex-gap">
             <label>
@@ -376,12 +370,9 @@ class Behaviours extends Component {
           )
         })}
 
-        <h2>Liste des aides non-affichées durant cette période</h2>
-        <ul>
-          {this.state.undisplayedBenefits.map((benefitName) => {
-            return <li key={benefitName}>{benefitName}</li>
-          })}
-        </ul>
+        <UndisplayedBenefits
+          undisplayedBenefits={this.state.undisplayedBenefits}
+        />
       </>
     )
   }
