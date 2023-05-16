@@ -43,12 +43,55 @@ class Behaviours extends Component {
   async fetchUsersBehavioursData() {
     this.setState({ loading: true })
 
+    const fetchedData = await this.fetchData()
+    const { institutions } = fetchedData
+    const { recorderStatistics, undisplayedBenefits } =
+      this.processData(fetchedData)
+
+    const { institution_type, institution } = this.getFilterParameters()
+
+    const filterState = DataFilter.benefits(
+      recorderStatistics,
+      institutions,
+      institution_type,
+      institution
+    )
+
+    const sortedFilteredBenefits = DataFilter.sort(
+      filterState.filteredBenefits,
+      DEFAULT_SORT_BY,
+      DEFAULT_SORT_ASCENDING,
+      ALPHABETICAL_COLUMNS
+    )
+
+    this.setState({
+      benefits: recorderStatistics,
+      institutions,
+      undisplayedBenefits,
+      loading: false,
+      ...filterState,
+      filteredBenefits: sortedFilteredBenefits,
+      sortBy: DEFAULT_SORT_BY,
+      sortAscending: DEFAULT_SORT_ASCENDING,
+    })
+  }
+
+  async fetchData() {
     let recorderStatistics = await Fetch.getRecorderStatistics(
       periods[this.state.period].from
     )
     const { benefits, benefitInstitutionMapping, institutions } =
       await Fetch.getBenefitsAndInstitutions()
 
+    return {
+      recorderStatistics,
+      benefits,
+      benefitInstitutionMapping,
+      institutions,
+    }
+  }
+
+  processData({ recorderStatistics, benefits, benefitInstitutionMapping }) {
     const benefitIds = benefits.map((benefit) => benefit.id)
     recorderStatistics = recorderStatistics.filter((benefitStatistic) =>
       benefitIds.includes(benefitStatistic.id)
@@ -96,37 +139,17 @@ class Behaviours extends Component {
       }
     })
 
+    return { recorderStatistics, undisplayedBenefits }
+  }
+
+  getFilterParameters() {
     const parameters = Url.getParameters(["institution_type", "institution"])
 
-    const {
-      institution_type,
-      institution,
-    } = parameters
-
-    const filterState = DataFilter.benefits(
-      recorderStatistics,
-      institutions,
-      institution_type || DataFilter.DEFAULT_FILTER_VALUE,
-      institution || DataFilter.DEFAULT_FILTER_VALUE
-    )
-
-    const sortedFilteredBenefits = DataFilter.sort(
-      filterState.filteredBenefits,
-      DEFAULT_SORT_BY,
-      DEFAULT_SORT_ASCENDING,
-      ALPHABETICAL_COLUMNS
-    )
-
-    this.setState({
-      benefits: recorderStatistics,
-      institutions: institutions,
-      undisplayedBenefits,
-      loading: false,
-      ...filterState,
-      filteredBenefits: sortedFilteredBenefits,
-      sortBy: DEFAULT_SORT_BY,
-      sortAscending: DEFAULT_SORT_ASCENDING,
-    })
+    return {
+      institution_type:
+        parameters.institution_type || DataFilter.DEFAULT_FILTER_VALUE,
+      institution: parameters.institution || DataFilter.DEFAULT_FILTER_VALUE,
+    }
   }
 
   handlePeriodChange(period) {
