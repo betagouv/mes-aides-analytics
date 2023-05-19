@@ -271,9 +271,6 @@ table .sortable-asc:after {
   color: var(--theme-color);
 }
 
-.chart-container {
-  width: 380px;
-}
 .chart-container h4 {
   text-indent: 10px;
 }

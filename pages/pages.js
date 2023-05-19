@@ -141,7 +141,7 @@ class PagesVisits extends Component {
           </div>
         </div>
 
-        <div className="flex">
+        <div className="flex flex-gap">
           {this.state.showGraph &&
             this.state.pagesStats.length > 0 &&
             this.state.pagesStats.map((page) => (
