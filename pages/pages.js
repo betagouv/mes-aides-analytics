@@ -40,10 +40,12 @@ class PagesVisits extends Component {
           if (element.label == "simulation") {
             const result = []
             this.flatten(result, element.subtable)
-            this.setState({ pagesStats: result })
+            this.setState(
+              { pagesStats: result },
+              this.sortTable("exit_nb_visits")
+            )
           }
         }
-        this.sortTable("exit_nb_visits")
       }
     )
   }
