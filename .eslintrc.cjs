@@ -34,5 +34,5 @@ module.exports = {
     "react/prop-types": "off",
     "no-undef": "off",
   },
-  ignorePatterns: [".next/*"],
+  ignorePatterns: [".next/*", "out/*"],
 }

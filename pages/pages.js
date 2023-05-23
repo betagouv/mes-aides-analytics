@@ -27,25 +27,26 @@ class PagesVisits extends Component {
     this.fetchPagesStats()
   }
 
+  getDataUrl = () => {
+    const { period } = this.state
+    return `${process.env.pagesStatsURL}${
+      periods[period].from
+    },${DateRange.getPastDate(0)}`
+  }
+
   async fetchPagesStats() {
-    this.setState(
-      { sortBy: null, sortAscending: false, pagesStats: [] },
-      async () => {
-        const pagesStats = await Fetch.getJSON(
-          `${process.env.pagesStatsURL}${
-            periods[this.state.period].from
-          },${DateRange.getPastDate(0)}`
+    const pagesStats = await Fetch.getJSON(this.getDataUrl())
+
+    for (const element of pagesStats) {
+      if (element.label == "simulation") {
+        const result = []
+        this.flatten(result, element.subtable)
+        this.setState(
+          { pagesStats: result },
+          this.sortTable("exit_nb_visits", false)
         )
-        for (let element of pagesStats) {
-          if (element.label == "simulation") {
-            const result = []
-            this.flatten(result, element.subtable)
-            this.setState({ pagesStats: result })
-          }
-        }
-        this.sortTable("exit_nb_visits")
       }
-    )
+    }
   }
 
   flatten(output, array, depth = "") {
@@ -68,12 +69,17 @@ class PagesVisits extends Component {
     }
   }
 
-  sortTable(sortingBy) {
-    const sortAscending = DataFilter.getSortAscending(
-      sortingBy,
-      this.state.sortBy,
-      this.state.sortAscending
-    )
+  sortTable(sortingBy, forcedSortAscending) {
+    let sortAscending
+    if (forcedSortAscending !== undefined) {
+      sortAscending = forcedSortAscending
+    } else {
+      sortAscending = DataFilter.getSortAscending(
+        sortingBy,
+        this.state.sortBy,
+        this.state.sortAscending
+      )
+    }
 
     const output = DataFilter.sort(
       this.state.pagesStats,
@@ -135,7 +141,7 @@ class PagesVisits extends Component {
           </div>
         </div>
 
-        <div className="flex">
+        <div className="flex flex-gap">
           {this.state.showGraph &&
             this.state.pagesStats.length > 0 &&
             this.state.pagesStats.map((page) => (
