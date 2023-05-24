@@ -1,5 +1,8 @@
 import { Component } from "react"
 
+import BehavioursHeader from "../components/behaviourHeader.js"
+import UndisplayedBenefits from "../components/undisplayedBenefits.js"
+
 import {
   Config,
   EventCategories,
@@ -12,6 +15,9 @@ import DataFilter from "../services/dataFilter.js"
 import DateRange from "../services/date.js"
 
 const periods = DateRange.getPeriods()
+const DEFAULT_SORT_BY = "events.show"
+const DEFAULT_SORT_ASCENDING = false
+const ALPHABETICAL_COLUMNS = ["label"]
 
 class Behaviours extends Component {
   constructor(props) {
@@ -21,11 +27,12 @@ class Behaviours extends Component {
       institutions: [],
       benefits: [],
       filteredBenefits: [],
-      currentInstitutionType: "*",
-      currentInstitution: "*",
+      currentInstitutionType: DataFilter.DEFAULT_FILTER_VALUE,
+      currentInstitution: DataFilter.DEFAULT_FILTER_VALUE,
       undisplayedBenefits: [],
       sortBy: null,
       sortAscending: false,
+      loading: true,
     }
   }
 
@@ -34,12 +41,57 @@ class Behaviours extends Component {
   }
 
   async fetchUsersBehavioursData() {
+    this.setState({ loading: true })
+
+    const fetchedData = await this.fetchData()
+    const { institutions } = fetchedData
+    const { recorderStatistics, undisplayedBenefits } =
+      this.processData(fetchedData)
+
+    const { institution_type, institution } = this.getFilterParameters()
+
+    const filterState = DataFilter.benefits(
+      recorderStatistics,
+      institutions,
+      institution_type,
+      institution
+    )
+
+    const sortedFilteredBenefits = DataFilter.sort(
+      filterState.filteredBenefits,
+      DEFAULT_SORT_BY,
+      DEFAULT_SORT_ASCENDING,
+      ALPHABETICAL_COLUMNS
+    )
+
+    this.setState({
+      benefits: recorderStatistics,
+      institutions,
+      undisplayedBenefits,
+      loading: false,
+      ...filterState,
+      filteredBenefits: sortedFilteredBenefits,
+      sortBy: DEFAULT_SORT_BY,
+      sortAscending: DEFAULT_SORT_ASCENDING,
+    })
+  }
+
+  async fetchData() {
     let recorderStatistics = await Fetch.getRecorderStatistics(
       periods[this.state.period].from
     )
     const { benefits, benefitInstitutionMapping, institutions } =
       await Fetch.getBenefitsAndInstitutions()
 
+    return {
+      recorderStatistics,
+      benefits,
+      benefitInstitutionMapping,
+      institutions,
+    }
+  }
+
+  processData({ recorderStatistics, benefits, benefitInstitutionMapping }) {
     const benefitIds = benefits.map((benefit) => benefit.id)
     recorderStatistics = recorderStatistics.filter((benefitStatistic) =>
       benefitIds.includes(benefitStatistic.id)
@@ -87,32 +139,32 @@ class Behaviours extends Component {
       }
     })
 
-    this.setState({
-      benefits: recorderStatistics,
-      filteredBenefits: recorderStatistics,
-      institutions: institutions,
-      undisplayedBenefits,
-    })
+    return { recorderStatistics, undisplayedBenefits }
+  }
 
-    const parameters = Url.getParameters(["geographic", "institution"])
-    this.filterBenefits(
-      parameters.geographic || "*",
-      parameters.institution || "*"
-    )
+  getFilterParameters() {
+    const parameters = Url.getParameters(["institution_type", "institution"])
 
-    this.sortTable("events.show", false)
+    return {
+      institution_type:
+        parameters.institution_type || DataFilter.DEFAULT_FILTER_VALUE,
+      institution: parameters.institution || DataFilter.DEFAULT_FILTER_VALUE,
+    }
   }
 
   handlePeriodChange(period) {
     this.setState({ period: period }, this.fetchUsersBehavioursData)
   }
 
-  filterBenefits(geographic = "*", institution = "*") {
+  filterBenefits(
+    institution_type = DataFilter.DEFAULT_FILTER_VALUE,
+    institution = DataFilter.DEFAULT_FILTER_VALUE
+  ) {
     this.setState(
       DataFilter.benefits(
         this.state.benefits,
         this.state.institutions,
-        geographic,
+        institution_type,
         institution
       )
     )
@@ -134,13 +186,10 @@ class Behaviours extends Component {
       : this.state.sortAscending
 
     const output = DataFilter.sort(
-      this.state.benefits,
+      this.state.filteredBenefits,
       sortingBy,
       sortAscending,
-      ["label"],
-      Object.keys(EventTypeCategoryMapping).map((eventName) =>
-        this.eventSortName(eventName)
-      )
+      ALPHABETICAL_COLUMNS
     )
 
     this.setState({
@@ -163,19 +212,17 @@ class Behaviours extends Component {
     )
   }
 
+  displayResetButton() {
+    return (
+      this.state.currentInstitutionType !== DataFilter.DEFAULT_FILTER_VALUE ||
+      this.state.currentInstitution !== DataFilter.DEFAULT_FILTER_VALUE
+    )
+  }
+
   render() {
     return (
       <>
-        <h2>Comportements utilisateur sur la page de résultats</h2>
-        <div>
-          <p>
-            Les graphiques suivants représentent les taux de conversion sur la
-            page de présentation de résultats sur le simulateur. Différents
-            évènements sont capturés pour mieux évaluer l'impact du simulateur
-            sur le non-recours aux dispositifs présentés aux usagers.
-          </p>
-        </div>
-
+        <BehavioursHeader />
         <div className="flex-justify">
           <div className="flex-bottom flex-gap">
             <label>
@@ -199,7 +246,7 @@ class Behaviours extends Component {
 
             {this.state.institutions && (
               <label>
-                <span>Filtrer par géographie</span>
+                <span>Filtrer par type d'institution</span>
                 <br />
                 <select
                   onChange={(e) => this.filterBenefits(e.target.value)}
@@ -227,7 +274,9 @@ class Behaviours extends Component {
                   }
                   value={this.state.currentInstitution}
                 >
-                  <option value="*">Toutes les institutions</option>
+                  <option value="{DataFilter.DEFAULT_FILTER_VALUE}">
+                    Toutes les institutions
+                  </option>
                   {this.state.filteredInstitutions.map((institution) => (
                     <option value={institution} key={institution}>
                       {institution}
@@ -237,8 +286,7 @@ class Behaviours extends Component {
               </label>
             )}
 
-            {(this.state.currentInstitutionType != "*" ||
-              this.state.currentInstitution != "*") && (
+            {this.displayResetButton() && (
               <input type="reset" onClick={() => this.filterBenefits()} />
             )}
           </div>
@@ -283,42 +331,54 @@ class Behaviours extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.filteredBenefits.map((benefit) => (
-                <tr key={benefit.id || benefit.label}>
-                  <td data-label="Aide" data-content="aide">
-                    {benefit.id || benefit.label}
+              {this.state.loading && (
+                <tr>
+                  <td
+                    colSpan={Object.keys(EventTypeCategoryMapping).length + 1}
+                  >
+                    <span className="loading">Chargement en cours...</span>
                   </td>
-                  {Object.keys(EventTypeCategoryMapping).map((key) => (
-                    <td
-                      data-label={
-                        EventTypeCategoryMapping[key].name ||
-                        EventTypeCategoryMapping[key].cat
-                      }
-                      data-content={benefit.events[key]}
-                      className="text-right"
-                      key={key}
-                    >
-                      {key === "show" ? (
-                        <>{benefit.events.show}</>
-                      ) : (
-                        <>
-                          <div
-                            className="gauge"
-                            style={{
-                              width: `${benefit.percentageOfEvents[key]}%`,
-                              background: EventTypeCategoryMapping[key].color,
-                            }}
-                          ></div>
-                          {benefit.events[key]}
-                          {benefit.events[key] && (
-                            <small>({benefit.percentageOfEvents[key]}%)</small>
-                          )}
-                        </>
-                      )}
-                    </td>
-                  ))}
                 </tr>
-              ))}
+              )}
+              {!this.state.loading &&
+                this.state.filteredBenefits.map((benefit) => (
+                  <tr key={benefit.id || benefit.label}>
+                    <td data-label="Aide" data-content="aide">
+                      {benefit.id || benefit.label}
+                    </td>
+                    {Object.keys(EventTypeCategoryMapping).map((key) => (
+                      <td
+                        data-label={
+                          EventTypeCategoryMapping[key].name ||
+                          EventTypeCategoryMapping[key].cat
+                        }
+                        data-content={benefit.events[key]}
+                        className="text-right"
+                        key={key}
+                      >
+                        {key === "show" ? (
+                          <>{benefit.events.show}</>
+                        ) : (
+                          <>
+                            <div
+                              className="gauge"
+                              style={{
+                                width: `${benefit.percentageOfEvents[key]}%`,
+                                background: EventTypeCategoryMapping[key].color,
+                              }}
+                            ></div>
+                            {benefit.events[key]}
+                            {benefit.events[key] && (
+                              <small>
+                                ({benefit.percentageOfEvents[key]}%)
+                              </small>
+                            )}
+                          </>
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
@@ -333,12 +393,9 @@ class Behaviours extends Component {
           )
         })}
 
-        <h2>Liste des aides non-affichées durant cette période</h2>
-        <ul>
-          {this.state.undisplayedBenefits.map((benefitName) => {
-            return <li key={benefitName}>{benefitName}</li>
-          })}
-        </ul>
+        <UndisplayedBenefits
+          undisplayedBenefits={this.state.undisplayedBenefits}
+        />
       </>
     )
   }

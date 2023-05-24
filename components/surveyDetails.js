@@ -22,8 +22,8 @@ class SurveyDetails extends Component {
     this.state = {
       surveyDetails: props.survey,
       institutions: props.institutions,
-      currentInstitutionType: "*",
-      currentInstitution: "*",
+      currentInstitutionType: DataFilter.DEFAULT_FILTER_VALUE,
+      currentInstitution: DataFilter.DEFAULT_FILTER_VALUE,
       filteredInstitutions: [],
       filteredBenefits: [],
       sortBy: null,
@@ -33,19 +33,24 @@ class SurveyDetails extends Component {
   }
 
   async componentDidMount() {
-    const parameters = Url.getParameters(["geographic", "institution"])
-    this.filterBenefits(
-      parameters.geographic || "*",
-      parameters.institution || "*"
-    )
+    const parameters = Url.getParameters(["institution_type", "institution"])
+    const {
+      institution_type = DataFilter.DEFAULT_FILTER_VALUE,
+      institution = DataFilter.DEFAULT_FILTER_VALUE,
+    } = parameters
+
+    this.filterBenefits(institution_type, institution)
   }
 
-  filterBenefits(geographic = "*", institution = "*") {
+  filterBenefits(
+    institution_type = DataFilter.DEFAULT_FILTER_VALUE,
+    institution = DataFilter.DEFAULT_FILTER_VALUE
+  ) {
     this.setState(
       DataFilter.benefits(
         this.state.surveyDetails,
         this.state.institutions,
-        geographic,
+        institution_type,
         institution
       ),
       () => this.sortTable("total")
@@ -69,8 +74,7 @@ class SurveyDetails extends Component {
       this.state.filteredBenefits,
       sortingBy,
       sortAscending,
-      ["id"],
-      ["total", "asked", "failed", "nothing", "already"]
+      ["id"]
     )
 
     this.setState({
@@ -98,6 +102,13 @@ class SurveyDetails extends Component {
         category: Config.surveyLabels[category].single,
       }
     })
+  }
+
+  displayResetButton() {
+    return (
+      this.state.currentInstitutionType != DataFilter.DEFAULT_FILTER_VALUE ||
+      this.state.currentInstitution != DataFilter.DEFAULT_FILTER_VALUE
+    )
   }
 
   render() {
@@ -131,7 +142,9 @@ class SurveyDetails extends Component {
                   }
                   value={this.state.currentInstitution}
                 >
-                  <option value="*">Toutes les institutions</option>
+                  <option value="{DataFilter.DEFAULT_FILTER_VALUE}">
+                    Toutes les institutions
+                  </option>
                   {this.state.filteredInstitutions.map((institution) => (
                     <option value={institution} key={institution}>
                       {institution}
@@ -140,8 +153,7 @@ class SurveyDetails extends Component {
                 </select>
               )}
 
-              {(this.state.currentInstitutionType != "*" ||
-                this.state.currentInstitution != "*") && (
+              {this.displayResetButton() && (
                 <input type="reset" onClick={() => this.filterBenefits()} />
               )}
             </div>

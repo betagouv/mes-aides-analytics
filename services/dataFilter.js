@@ -16,15 +16,22 @@ function get(element, depth) {
   }
 }
 
+const DEFAULT_FILTER_VALUE = "*"
+
 export default class DataFilter {
-  static benefits(benefits, institutions, geographic = "*", institution = "*") {
+  static benefits(
+    benefits,
+    institutions,
+    institution_type = DEFAULT_FILTER_VALUE,
+    institution = DEFAULT_FILTER_VALUE
+  ) {
     let filteredInstitutions = []
-    if (geographic == "*") {
+    if (institution_type == DEFAULT_FILTER_VALUE) {
       filteredInstitutions = Object.values(institutions).reduce((accum, el) => {
         return accum.concat(el)
       }, [])
     } else {
-      filteredInstitutions = institutions[geographic]
+      filteredInstitutions = institutions[institution_type]
     }
     filteredInstitutions = filteredInstitutions.sort((a, b) =>
       a.localeCompare(b, "fi")
@@ -32,32 +39,28 @@ export default class DataFilter {
 
     let filteredBenefits = benefits.filter((benefit) => {
       return (
-        (geographic == "*" || benefit.type == geographic) &&
-        (institution == "*" ||
+        (institution_type == DEFAULT_FILTER_VALUE ||
+          benefit.type == institution_type) &&
+        (institution == DEFAULT_FILTER_VALUE ||
           benefit.institution == institution ||
           (benefit.institutions && benefit.institutions.includes(institution)))
       )
     })
 
     Url.setParameters({
-      geographic: geographic,
-      institution: institution,
+      institution_type,
+      institution,
     })
+
     return {
       filteredInstitutions: filteredInstitutions,
       filteredBenefits: filteredBenefits,
-      currentInstitutionType: geographic,
+      currentInstitutionType: institution_type,
       currentInstitution: institution,
     }
   }
 
-  static sort(
-    target,
-    sortingBy,
-    sortAscending,
-    alphabeticals = [],
-    numericals = []
-  ) {
+  static sort(target, sortingBy, sortAscending, alphabeticals = []) {
     let output = target
     if (alphabeticals.includes(sortingBy)) {
       if (sortAscending) {
@@ -69,7 +72,7 @@ export default class DataFilter {
           get(b, sortingBy).localeCompare(get(a, sortingBy), "fi")
         )
       }
-    } else if (numericals.includes(sortingBy)) {
+    } else {
       if (sortAscending) {
         output = target.sort((a, b) =>
           numCompare(get(a, sortingBy), get(b, sortingBy))
@@ -90,5 +93,9 @@ export default class DataFilter {
     }
 
     return sortAscending
+  }
+
+  static get DEFAULT_FILTER_VALUE() {
+    return DEFAULT_FILTER_VALUE
   }
 }

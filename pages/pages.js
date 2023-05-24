@@ -85,8 +85,7 @@ class PagesVisits extends Component {
       this.state.pagesStats,
       sortingBy,
       sortAscending,
-      ["label"],
-      ["nb_visits", "exit_nb_visits", "exit_rate"]
+      ["label"]
     )
 
     this.setState({
