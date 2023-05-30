@@ -33,13 +33,19 @@ class SurveyDetails extends Component {
   }
 
   async componentDidMount() {
-    const parameters = Url.getParameters(["institution_type", "institution"])
-    const {
-      institution_type = DataFilter.DEFAULT_FILTER_VALUE,
-      institution = DataFilter.DEFAULT_FILTER_VALUE,
-    } = parameters
+    const { institution_type, institution } = this.retrieveFilterParameters()
 
     this.filterBenefits(institution_type, institution)
+  }
+
+  retrieveFilterParameters() {
+    const parameters = Url.getParameters(["institution_type", "institution"])
+    const { institution_type, institution } = parameters
+
+    return {
+      institution_type: institution_type || DataFilter.DEFAULT_FILTER_VALUE,
+      institution: institution || DataFilter.DEFAULT_FILTER_VALUE,
+    }
   }
 
   filterBenefits(
