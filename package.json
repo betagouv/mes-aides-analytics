@@ -13,7 +13,10 @@
     "lint": "eslint --ext js  --max-warnings 0 .",
     "lint:fix": "eslint --fix .",
     "prettier:check": "prettier --check .",
-    "prettier:fix": "prettier --write ."
+    "prettier:fix": "prettier --write .",
+    "cypress:open": "cypress open",
+    "test:e2e": "cypress run",
+    "ci:e2e": "start-server-and-test dev http://localhost:3000 test:e2e"
   },
   "author": "",
   "license": "MIT",
