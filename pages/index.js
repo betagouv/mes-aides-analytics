@@ -37,7 +37,7 @@ class Index extends Component {
   render() {
     return (
       <>
-        <h1>
+        <h1 data-testid="title">
           Statistiques d'impact et d'aide à l'amélioration du produit Mes Aides
         </h1>
         <h2>Statistiques d'usage</h2>
@@ -47,7 +47,7 @@ class Index extends Component {
             <div key={key} className="flex-column">
               <h3>{statsTypes[key]}</h3>
 
-              <div className="responsive-chart">
+              <div className="responsive-chart" data-testid={key}>
                 <ResponsiveBar
                   data={this.state.visitData}
                   indexBy="month"
