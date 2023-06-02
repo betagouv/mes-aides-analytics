@@ -16,7 +16,11 @@ class ViewSwitch extends Component {
           type="checkbox"
           id="switch-view"
         />
-        <label htmlFor="switch-view" id="switch-view-label">
+        <label
+          htmlFor="switch-view"
+          id="switch-view-label"
+          data-testid="switch-view"
+        >
           <div>
             <svg
               xmlns="http://www.w3.org/2000/svg"

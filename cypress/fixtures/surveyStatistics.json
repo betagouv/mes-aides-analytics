@@ -1,0 +1,37 @@
+{
+  "survey": {
+    "summary": {
+      "total": 2756,
+      "already": 39,
+      "asked": 1329,
+      "failed": 617,
+      "nothing": 771
+    },
+    "details": [
+      {
+        "id": "depart1825_montant_maximum",
+        "total": 1652,
+        "already": 47,
+        "asked": 213,
+        "failed": 330,
+        "nothing": 1062
+      },
+      {
+        "id": "eure_et_loir_eligibilite_aide_menagere_personne_handicap",
+        "total": 1403,
+        "already": 93,
+        "asked": 142,
+        "failed": 179,
+        "nothing": 989
+      },
+      {
+        "id": "gratuite_musees_monuments",
+        "total": 1333,
+        "already": 295,
+        "asked": 148,
+        "failed": 119,
+        "nothing": 771
+      }
+    ]
+  }
+}
