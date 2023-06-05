@@ -21,3 +21,15 @@ export const interceptSurveyStatistics = createFetchInterceptor(
   configuration.env.surveyStatisticsURL,
   "surveyStatistics.json"
 )
+
+export const interceptRecorderStatistics = createFetchInterceptor(
+  "interceptRecorderStatistics",
+  new RegExp(`${configuration.env.recorderStatisticsURL}/benefits?.*`),
+  "recorderStatistics.json"
+)
+
+export const interceptBenefits = createFetchInterceptor(
+  "interceptBenefits",
+  configuration.env.benefitsURL,
+  "benefits.json"
+)

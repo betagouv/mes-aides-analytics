@@ -251,6 +251,7 @@ class Behaviours extends Component {
                 <select
                   onChange={(e) => this.filterBenefits(e.target.value)}
                   value={this.state.currentInstitutionType}
+                  data-testid="select-institution-type"
                 >
                   {Config.institutionsType.map((type) => (
                     <option value={type.value} key={type.value}>
@@ -292,7 +293,7 @@ class Behaviours extends Component {
           </div>
         </div>
 
-        <div className="table-container">
+        <div className="table-container" data-testid="behaviours-table">
           <table className="collapsable">
             <thead>
               <tr>

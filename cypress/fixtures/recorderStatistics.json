@@ -1,0 +1,26 @@
+[
+  {
+    "events": {
+      "link": 1,
+      "show": 808,
+      "showDetails": 23,
+      "teleservice": 25
+    },
+    "id": "depart1825_montant_maximum"
+  },
+  {
+    "events": {
+      "show": 8
+    },
+    "id": "eure_et_loir_eligibilite_aide_menagere_personne_handicap"
+  },
+  {
+    "events": {
+      "link": 2,
+      "showDetails": 30,
+      "teleservice": 13,
+      "show": 686
+    },
+    "id": "gratuite_musees_monuments"
+  }
+]
