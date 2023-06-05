@@ -33,3 +33,9 @@ export const interceptBenefits = createFetchInterceptor(
   configuration.env.benefitsURL,
   "benefits.json"
 )
+
+export const interceptPagesStats = createFetchInterceptor(
+  "interceptPagesStats",
+  new RegExp(`${configuration.env.pagesStatsURL.replace("?", "\\?")}.*`),
+  "pagesStats.json"
+)
