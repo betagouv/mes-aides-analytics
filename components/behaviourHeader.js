@@ -2,7 +2,9 @@ import React from "react"
 
 const BehavioursHeader = () => (
   <>
-    <h2>Comportements utilisateur sur la page de résultats</h2>
+    <h2 data-testid="title">
+      Comportements utilisateur sur la page de résultats
+    </h2>
     <div>
       <p>
         Les graphiques suivants représentent les taux de conversion sur la page

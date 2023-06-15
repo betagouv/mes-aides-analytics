@@ -129,6 +129,7 @@ class SurveyDetails extends Component {
                 <select
                   onChange={(e) => this.filterBenefits(e.target.value)}
                   value={this.state.currentInstitutionType}
+                  data-testid="select-institution-type"
                 >
                   {Config.institutionsType.map((type) => (
                     <option value={type.value} key={type.value}>
@@ -180,7 +181,7 @@ class SurveyDetails extends Component {
                   {benefit.id}
                   <small>sur {benefit.total} réponses</small>
                 </h4>
-                <div className="chart">
+                <div className="chart" data-testid={`chart-${benefit.id}`}>
                   <ResponsiveBar
                     axisLeft={{
                       format: (value) => `${Number(value)} %`,
@@ -208,7 +209,7 @@ class SurveyDetails extends Component {
         </div>
 
         {!this.state.showGraph && (
-          <div className="table-container">
+          <div className="table-container" data-testid="survey-details-table">
             <table>
               <thead>
                 <tr>

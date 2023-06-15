@@ -14,7 +14,7 @@ class SurveyResults extends Component {
   render() {
     return (
       <div>
-        <h2>
+        <h2 data-testid="title">
           Résultats de sondage 7 jours après les simulations (sur{" "}
           {this.state.summary.total} réponses)
         </h2>
@@ -40,7 +40,7 @@ class SurveyResults extends Component {
         <h3>Résumé du sondage</h3>
         <div className="flex flex-gap">
           {this.state.summary.total && (
-            <div className="responsive-chart">
+            <div className="responsive-chart" data-testid="survey-summary">
               <ResponsiveBar
                 label={(entry) =>
                   `${entry.value} (${Math.round(

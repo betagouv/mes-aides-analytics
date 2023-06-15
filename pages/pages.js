@@ -114,7 +114,7 @@ class PagesVisits extends Component {
   render() {
     return (
       <>
-        <h2>Statistiques de visites</h2>
+        <h2 data-testid="title">Statistiques de visites</h2>
         <div className="flex-bottom flex-gap flex-justify">
           <label>
             <span>Période de référence</span>
@@ -179,7 +179,7 @@ class PagesVisits extends Component {
         </div>
 
         {!this.state.showGraph && (
-          <table>
+          <table data-testid="visits-table">
             <thead>
               <tr>
                 <th onClick={() => this.sortTable("label")}>

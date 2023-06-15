@@ -7,3 +7,7 @@ __pycache__
 .DS_Store
 out/
 .vscode/*
+
+cypress/screenshots
+cypress/videos
+cypress/downloads

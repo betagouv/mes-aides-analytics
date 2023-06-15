@@ -13,7 +13,11 @@
     "lint": "eslint --ext js  --max-warnings 0 .",
     "lint:fix": "eslint --fix .",
     "prettier:check": "prettier --check .",
-    "prettier:fix": "prettier --write ."
+    "prettier:fix": "prettier --write .",
+    "format": "npm run prettier:fix && npm run lint:fix",
+    "cypress:open": "cypress open",
+    "test:e2e": "cypress run",
+    "ci:e2e": "start-server-and-test dev http://localhost:3000 test:e2e"
   },
   "author": "",
   "license": "MIT",
@@ -26,11 +30,13 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "cypress": "^12.13.0",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "gh-pages": "^2.0.1",
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "start-server-and-test": "^2.0.0"
   }
 }
