@@ -44,7 +44,7 @@ class SurveyResults extends Component {
               <ResponsiveBar
                 label={(entry) =>
                   `${entry.value} (${Math.round(
-                    (100 * entry.value) / this.state.summary.total
+                    (100 * entry.value) / this.state.summary.total,
                   )}%)`
                 }
                 data={Object.keys(Config.surveyLabels).map((key) => {

@@ -43,7 +43,7 @@ class PagesVisits extends Component {
         this.flatten(result, element.subtable)
         this.setState(
           { pagesStats: result },
-          this.sortTable("exit_nb_visits", false)
+          this.sortTable("exit_nb_visits", false),
         )
       }
     }
@@ -77,7 +77,7 @@ class PagesVisits extends Component {
       sortAscending = DataFilter.getSortAscending(
         sortingBy,
         this.state.sortBy,
-        this.state.sortAscending
+        this.state.sortAscending,
       )
     }
 
@@ -85,7 +85,7 @@ class PagesVisits extends Component {
       this.state.pagesStats,
       sortingBy,
       sortAscending,
-      ["label"]
+      ["label"],
     )
 
     this.setState({

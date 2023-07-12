@@ -54,14 +54,14 @@ class Behaviours extends Component {
       recorderStatistics,
       institutions,
       institution_type,
-      institution
+      institution,
     )
 
     const sortedFilteredBenefits = DataFilter.sort(
       filterState.filteredBenefits,
       DEFAULT_SORT_BY,
       DEFAULT_SORT_ASCENDING,
-      ALPHABETICAL_COLUMNS
+      ALPHABETICAL_COLUMNS,
     )
 
     this.setState({
@@ -78,7 +78,7 @@ class Behaviours extends Component {
 
   async fetchData() {
     let recorderStatistics = await Fetch.getRecorderStatistics(
-      periods[this.state.period].from
+      periods[this.state.period].from,
     )
     const { benefits, benefitInstitutionMapping, institutions } =
       await Fetch.getBenefitsAndInstitutions()
@@ -94,12 +94,12 @@ class Behaviours extends Component {
   processData({ recorderStatistics, benefits, benefitInstitutionMapping }) {
     const benefitIds = benefits.map((benefit) => benefit.id)
     recorderStatistics = recorderStatistics.filter((benefitStatistic) =>
-      benefitIds.includes(benefitStatistic.id)
+      benefitIds.includes(benefitStatistic.id),
     )
 
     const displayedBenefits = recorderStatistics.map((benefit) => benefit.id)
     const undisplayedBenefits = benefitIds.filter(
-      (benefit) => displayedBenefits.indexOf(benefit) === -1
+      (benefit) => displayedBenefits.indexOf(benefit) === -1,
     )
 
     recorderStatistics = recorderStatistics.map((benefitStatistic) => {
@@ -116,13 +116,13 @@ class Behaviours extends Component {
           case EventCategories.SHOW_DETAILS:
             percentageOfEvents[event_name] = this.percent(
               events[event_name],
-              events.show
+              events.show,
             )
             break
           case EventCategories.ACTIONABLE:
             percentageOfEvents[event_name] = this.percent(
               events[event_name],
-              events.showDetails
+              events.showDetails,
             )
             break
           default:
@@ -158,15 +158,15 @@ class Behaviours extends Component {
 
   filterBenefits(
     institution_type = DataFilter.DEFAULT_FILTER_VALUE,
-    institution = DataFilter.DEFAULT_FILTER_VALUE
+    institution = DataFilter.DEFAULT_FILTER_VALUE,
   ) {
     this.setState(
       DataFilter.benefits(
         this.state.benefits,
         this.state.institutions,
         institution_type,
-        institution
-      )
+        institution,
+      ),
     )
   }
 
@@ -181,7 +181,7 @@ class Behaviours extends Component {
       ? DataFilter.getSortAscending(
           sortingBy,
           this.state.sortBy,
-          this.state.sortAscending
+          this.state.sortAscending,
         )
       : this.state.sortAscending
 
@@ -189,7 +189,7 @@ class Behaviours extends Component {
       this.state.filteredBenefits,
       sortingBy,
       sortAscending,
-      ALPHABETICAL_COLUMNS
+      ALPHABETICAL_COLUMNS,
     )
 
     this.setState({
@@ -208,7 +208,7 @@ class Behaviours extends Component {
   percent(numerator, denominator) {
     return Math.min(
       Math.round(((numerator || 0) / (denominator || 1)) * 100),
-      100
+      100,
     )
   }
 
@@ -270,7 +270,7 @@ class Behaviours extends Component {
                   onChange={(e) =>
                     this.filterBenefits(
                       this.state.currentInstitutionType,
-                      e.target.value
+                      e.target.value,
                     )
                   }
                   value={this.state.currentInstitution}
@@ -309,7 +309,7 @@ class Behaviours extends Component {
                   >
                     <div
                       className={`sortable ${this.sortState(
-                        this.eventSortName(key)
+                        this.eventSortName(key),
                       )}`}
                     >
                       {EventTypeCategoryMapping[key].name ||

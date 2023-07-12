@@ -6,7 +6,7 @@ export default class Fetch {
 
   static async getSurveyStatistics() {
     const surveyStatiastics = await this.getJSON(
-      process.env.surveyStatisticsURL
+      process.env.surveyStatisticsURL,
     )
     const { benefitInstitutionMapping, institutions } =
       await this.getBenefitsAndInstitutions()
@@ -45,7 +45,7 @@ export default class Fetch {
       } else {
         if (
           !institutions[benefit.institution.type].includes(
-            benefit.institution.label
+            benefit.institution.label,
           )
         ) {
           institutions[benefit.institution.type].push(benefit.institution.label)

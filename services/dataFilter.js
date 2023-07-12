@@ -23,7 +23,7 @@ export default class DataFilter {
     benefits,
     institutions,
     institution_type = DEFAULT_FILTER_VALUE,
-    institution = DEFAULT_FILTER_VALUE
+    institution = DEFAULT_FILTER_VALUE,
   ) {
     let filteredInstitutions = []
     if (institution_type == DEFAULT_FILTER_VALUE) {
@@ -34,7 +34,7 @@ export default class DataFilter {
       filteredInstitutions = institutions[institution_type]
     }
     filteredInstitutions = filteredInstitutions.sort((a, b) =>
-      a.localeCompare(b, "fi")
+      a.localeCompare(b, "fi"),
     )
 
     let filteredBenefits = benefits.filter((benefit) => {
@@ -65,21 +65,21 @@ export default class DataFilter {
     if (alphabeticals.includes(sortingBy)) {
       if (sortAscending) {
         output = target.sort((a, b) =>
-          get(a, sortingBy).localeCompare(get(b, sortingBy), "fi")
+          get(a, sortingBy).localeCompare(get(b, sortingBy), "fi"),
         )
       } else {
         output = target.sort((a, b) =>
-          get(b, sortingBy).localeCompare(get(a, sortingBy), "fi")
+          get(b, sortingBy).localeCompare(get(a, sortingBy), "fi"),
         )
       }
     } else {
       if (sortAscending) {
         output = target.sort((a, b) =>
-          numCompare(get(a, sortingBy), get(b, sortingBy))
+          numCompare(get(a, sortingBy), get(b, sortingBy)),
         )
       } else {
         output = target.sort((a, b) =>
-          numCompare(get(b, sortingBy), get(a, sortingBy))
+          numCompare(get(b, sortingBy), get(a, sortingBy)),
         )
       }
     }

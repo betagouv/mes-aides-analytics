@@ -50,16 +50,16 @@ class SurveyDetails extends Component {
 
   filterBenefits(
     institution_type = DataFilter.DEFAULT_FILTER_VALUE,
-    institution = DataFilter.DEFAULT_FILTER_VALUE
+    institution = DataFilter.DEFAULT_FILTER_VALUE,
   ) {
     this.setState(
       DataFilter.benefits(
         this.state.surveyDetails,
         this.state.institutions,
         institution_type,
-        institution
+        institution,
       ),
-      () => this.sortTable("total")
+      () => this.sortTable("total"),
     )
   }
 
@@ -73,14 +73,14 @@ class SurveyDetails extends Component {
     const sortAscending = DataFilter.getSortAscending(
       sortingBy,
       this.state.sortBy,
-      this.state.sortAscending
+      this.state.sortAscending,
     )
 
     const output = DataFilter.sort(
       this.state.filteredBenefits,
       sortingBy,
       sortAscending,
-      ["id"]
+      ["id"],
     )
 
     this.setState({
@@ -144,7 +144,7 @@ class SurveyDetails extends Component {
                   onChange={(e) =>
                     this.filterBenefits(
                       this.state.currentInstitutionType,
-                      e.target.value
+                      e.target.value,
                     )
                   }
                   value={this.state.currentInstitution}

@@ -22,13 +22,13 @@ describe("Survey Page", () => {
 
     cy.get("[data-testid=survey-details-table] tbody tr").should(
       "have.length",
-      3
+      3,
     )
     cy.checkTable("survey-details-table", 0, "depart1825 montant maximum")
     cy.checkTable(
       "survey-details-table",
       1,
-      "eure et loir eligibilite aide menagere personne handicap"
+      "eure et loir eligibilite aide menagere personne handicap",
     )
     cy.checkTable("survey-details-table", 2, "gratuite musees monuments")
   })
@@ -41,12 +41,12 @@ describe("Survey Page", () => {
     it("displays filtered rows", () => {
       cy.get("[data-testid=survey-details-table] tbody tr").should(
         "have.length",
-        1
+        1,
       )
       cy.checkTable(
         "survey-details-table",
         0,
-        "eure et loir eligibilite aide menagere personne handicap"
+        "eure et loir eligibilite aide menagere personne handicap",
       )
     })
   })
@@ -61,7 +61,7 @@ describe("Survey Page", () => {
       cy.checkGraph(
         "chart-eure_et_loir_eligibilite_aide_menagere_personne_handicap",
         "D. réussie",
-        "142"
+        "142",
       )
       cy.checkGraph("chart-gratuite_musees_monuments", "D. réussie", "148")
     })
