@@ -11,7 +11,7 @@ class BikeTypeNumberTable extends Component {
 
   componentDidMount() {
     const countGroupByBikeTypeNumber = BikeData.countGroupByBikeTypeNumber(
-      this.props.bikeData
+      this.props.bikeData,
     )
     this.setState({ countGroupByBikeTypeNumber })
   }
@@ -21,7 +21,7 @@ class BikeTypeNumberTable extends Component {
       return null
     }
     const countGroupByBikeTypeNumber = BikeData.countGroupByBikeTypeNumber(
-      this.props.bikeData
+      this.props.bikeData,
     )
     this.setState({ countGroupByBikeTypeNumber })
     return null
@@ -56,7 +56,7 @@ class BikeTypeNumberTable extends Component {
                     <td>{value.percentageWithoutZero} %</td>
                   )}
                 </tr>
-              )
+              ),
             )}
           </tbody>
         </table>

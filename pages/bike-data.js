@@ -51,7 +51,7 @@ class BikeData extends Component {
   render() {
     const bikeData = BikeDataService.filterDepcom(
       this.state.bikeData,
-      this.state.depcom
+      this.state.depcom,
     )
     return (
       <>

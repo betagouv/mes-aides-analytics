@@ -13,29 +13,29 @@ function createFetchInterceptor(interceptIdentifier, url, fixture) {
 export const interceptUsageStatistics = createFetchInterceptor(
   "interceptUsageStatistics",
   configuration.env.usageStatisticsURL,
-  "usageStatistics.json"
+  "usageStatistics.json",
 )
 
 export const interceptSurveyStatistics = createFetchInterceptor(
   "interceptSurveyStatistics",
   configuration.env.surveyStatisticsURL,
-  "surveyStatistics.json"
+  "surveyStatistics.json",
 )
 
 export const interceptRecorderStatistics = createFetchInterceptor(
   "interceptRecorderStatistics",
   new RegExp(`${configuration.env.recorderStatisticsURL}/benefits?.*`),
-  "recorderStatistics.json"
+  "recorderStatistics.json",
 )
 
 export const interceptBenefits = createFetchInterceptor(
   "interceptBenefits",
   configuration.env.benefitsURL,
-  "benefits.json"
+  "benefits.json",
 )
 
 export const interceptPagesStats = createFetchInterceptor(
   "interceptPagesStats",
   new RegExp(`${configuration.env.pagesStatsURL.replace("?", "\\?")}.*`),
-  "pagesStats.json"
+  "pagesStats.json",
 )

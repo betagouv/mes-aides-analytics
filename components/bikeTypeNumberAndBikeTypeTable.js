@@ -43,7 +43,7 @@ class BikeTypeNumberAndBikeTypeTable extends Component {
               {this.state.countGroupByBikeTypeNumberAndByBikeType.categories.map(
                 (_, index) => (
                   <th key={`category_${index}`}>Par {index + 1}</th>
-                )
+                ),
               )}
             </tr>
           </thead>
@@ -72,10 +72,10 @@ class BikeTypeNumberAndBikeTypeTable extends Component {
                           </>
                         )}
                       </td>
-                    )
+                    ),
                   )}
                 </tr>
-              )
+              ),
             )}
             {this.state.percentage && (
               <tr>
@@ -89,7 +89,7 @@ class BikeTypeNumberAndBikeTypeTable extends Component {
                       }
                       &nbsp;%
                     </td>
-                  )
+                  ),
                 )}
               </tr>
             )}

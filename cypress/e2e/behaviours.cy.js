@@ -33,7 +33,7 @@ describe("Behaviour Page", () => {
       cy.checkTable(
         "behaviours-table",
         0,
-        "eure_et_loir_eligibilite_aide_menagere_personne_handicap"
+        "eure_et_loir_eligibilite_aide_menagere_personne_handicap",
       )
     })
   })

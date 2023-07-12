@@ -16,7 +16,7 @@ describe("Visites Page", () => {
     cy.checkTable(
       "visits-table",
       0,
-      "/individu/demandeur/ressources/montants/revenusActivite"
+      "/individu/demandeur/ressources/montants/revenusActivite",
     )
     cy.checkTable("visits-table", 0, "426")
     cy.checkTable("visits-table", 0, "47")

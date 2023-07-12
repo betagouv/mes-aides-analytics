@@ -15,7 +15,7 @@ export default class BikeData {
         return accum
       }
       const bikeTypeNumber = this.getBikeTypeNumber(
-        data._interetsAidesVelo
+        data._interetsAidesVelo,
       ).toString()
       if (!accum[bikeTypeNumber]) {
         accum[bikeTypeNumber] = {
@@ -100,7 +100,7 @@ export default class BikeData {
         result[bikeTypeNumber].totalPercentage += percentage
       })
       result[bikeTypeNumber].totalPercentage = Math.round(
-        result[bikeTypeNumber].totalPercentage
+        result[bikeTypeNumber].totalPercentage,
       )
     })
     return {
