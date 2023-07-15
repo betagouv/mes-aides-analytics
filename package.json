@@ -25,7 +25,7 @@
     "@nivo/bar": "^0.80.0",
     "eslint-config-next": "^13.4.9",
     "iframe-resizer": "^4.3.6",
-    "next": "^13.4.9",
+    "next": "^13.4.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
