@@ -1,7 +1,6 @@
 {
   "survey": {
     "summary": {
-      "total": 2756,
       "already": 39,
       "asked": 1329,
       "failed": 617,
@@ -32,6 +31,7 @@
         "failed": 119,
         "nothing": 771
       }
-    ]
+    ],
+    "total": 2756
   }
 }

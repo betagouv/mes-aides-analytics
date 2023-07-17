@@ -8,6 +8,7 @@ class SurveyResults extends Component {
     super(props)
     this.state = {
       summary: props.summary,
+      total: props.total,
     }
   }
 
@@ -16,7 +17,7 @@ class SurveyResults extends Component {
       <div>
         <h2 data-testid="title">
           Résultats de sondage 7 jours après les simulations (sur{" "}
-          {this.state.summary.total} réponses)
+          {this.state.total} réponses)
         </h2>
 
         <h3>Le sondage</h3>
@@ -39,12 +40,12 @@ class SurveyResults extends Component {
 
         <h3>Résumé du sondage</h3>
         <div className="flex flex-gap">
-          {this.state.summary.total && (
+          {this.state.total && (
             <div className="responsive-chart" data-testid="survey-summary">
               <ResponsiveBar
                 label={(entry) =>
                   `${entry.value} (${Math.round(
-                    (100 * entry.value) / this.state.summary.total,
+                    (100 * entry.value) / this.state.total,
                   )}%)`
                 }
                 data={Object.keys(Config.surveyLabels).map((key) => {

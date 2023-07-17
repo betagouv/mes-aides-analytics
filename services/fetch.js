@@ -21,6 +21,7 @@ export default class Fetch {
 
     return {
       summary: surveyStatiastics.survey.summary,
+      total: surveyStatiastics.survey.total,
       details: surveyStatiastics.survey.details,
       institutions: institutions,
     }
