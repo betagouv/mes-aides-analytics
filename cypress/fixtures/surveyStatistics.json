@@ -32,6 +32,78 @@
         "nothing": 771
       }
     ],
-    "total": 2756
+    "total": 2756,
+    "historical": {
+      "2022-08": {
+        "asked": 5,
+        "failed": 1,
+        "nothing": 3,
+        "already": 1
+      },
+      "2022-09": {
+        "already": 1,
+        "failed": 27,
+        "asked": 66,
+        "nothing": 17
+      },
+      "2022-10": {
+        "nothing": 33,
+        "asked": 117,
+        "failed": 52,
+        "already": 3
+      },
+      "2022-11": {
+        "failed": 26,
+        "already": 1,
+        "nothing": 16,
+        "asked": 58
+      },
+      "2022-12": {
+        "failed": 14,
+        "nothing": 3,
+        "asked": 27
+      },
+      "2023-01": {
+        "asked": 68,
+        "already": 1,
+        "nothing": 41,
+        "failed": 23
+      },
+      "2023-02": {
+        "failed": 41,
+        "nothing": 38,
+        "asked": 71,
+        "already": 3
+      },
+      "2023-03": {
+        "already": 3,
+        "asked": 74,
+        "failed": 32,
+        "nothing": 25
+      },
+      "2023-04": {
+        "failed": 27,
+        "asked": 73,
+        "already": 3,
+        "nothing": 26
+      },
+      "2023-05": {
+        "failed": 24,
+        "nothing": 14,
+        "asked": 41,
+        "already": 1
+      },
+      "2023-06": {
+        "already": 5,
+        "nothing": 10,
+        "failed": 20,
+        "asked": 45
+      },
+      "2023-07": {
+        "failed": 14,
+        "asked": 31,
+        "nothing": 9
+      }
+    }
   }
 }
