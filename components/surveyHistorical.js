@@ -42,7 +42,7 @@ class SurveyHistorical extends Component {
               indexBy="month"
               margin={{ top: 50, right: 140, bottom: 50, left: 60 }}
               padding={0.3}
-              colors={({ id, data }) => {
+                        colors={({ id }) => {
                 return Config.surveyLabels[id].lightColor
               }}
               valueScale={{ type: "linear" }}
