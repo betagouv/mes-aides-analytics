@@ -55,6 +55,9 @@ class SurveyHistorical extends Component {
                 tickRotation: -45,
                 legendOffset: 32,
               }}
+              legendLabel={(d) => {
+                return Config.surveyLabels[d.id].short
+              }}
               legends={[
                 {
                   anchor: "bottom-right",
