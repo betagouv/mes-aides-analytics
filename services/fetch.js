@@ -23,6 +23,7 @@ export default class Fetch {
       summary: surveyStatiastics.survey.summary,
       total: surveyStatiastics.survey.total,
       details: surveyStatiastics.survey.details,
+      historical: surveyStatiastics.survey.historical,
       institutions: institutions,
     }
   }
