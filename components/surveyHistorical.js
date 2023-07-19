@@ -8,7 +8,7 @@ class SurveyHistorical extends Component {
     super(props)
     this.state = {
       historical: props.historical,
-      monthsToDisplay: 0,
+      monthsToDisplay: 12,
       orderedData: [],
     }
   }
@@ -16,7 +16,7 @@ class SurveyHistorical extends Component {
   async componentDidMount() {
     const historicalData = Object.keys(this.state.historical)
       .sort((a, b) => a > b)
-      .slice(-12)
+      .slice(-this.state.monthsToDisplay)
 
     this.setState({
       monthsToDisplay: historicalData.length,
