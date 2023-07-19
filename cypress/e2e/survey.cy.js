@@ -33,6 +33,13 @@ describe("Survey Page", () => {
     cy.checkTable("survey-details-table", 2, "gratuite musees monuments")
   })
 
+  it("displays survey historical", () => {
+    cy.get("[data-testid=survey-historical-title]").should("be.visible")
+    cy.get("[data-testid=survey-historical-graph] div")
+      .invoke("outerHeight")
+      .should("be.greaterThan", 0)
+  })
+
   context("when select a geographic area", () => {
     beforeEach(() => {
       cy.selectInstitutionType("departement")
