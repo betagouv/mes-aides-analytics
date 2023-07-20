@@ -8,8 +8,6 @@
     "dev": "next",
     "start": "npm run build && next start",
     "build": "NODE_ENV=production next build",
-    "deploy": "npm run build && npm run deploy:github",
-    "deploy:github": "touch out/.nojekyll && gh-pages -d out --dotfiles",
     "lint": "eslint --ext js  --max-warnings 0 .",
     "lint:fix": "eslint --fix .",
     "prettier:check": "prettier --check .",
@@ -35,7 +33,6 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-react": "^7.32.2",
-    "gh-pages": "^2.0.1",
     "prettier": "^3.0.0",
     "start-server-and-test": "^2.0.0"
   }
