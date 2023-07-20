@@ -8,7 +8,7 @@ Cypress.Commands.add("visitFromHome", (path) => {
 })
 
 Cypress.Commands.add("checkMenu", () => {
-  const links = ["/", "/survey", "/behaviours", "/pages", "/bike-data"]
+  const links = ["/", "/survey", "/behaviours", "/pages"]
 
   cy.get("nav").should("be.visible")
 

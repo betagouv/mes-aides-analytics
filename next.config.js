@@ -26,7 +26,6 @@ const configuration = {
     recorderStatisticsURL:
       process.env.RECORDER_STATISTICS_URL ||
       "https://aides-jeunes-stats-recorder.osc-fr1.scalingo.io",
-    _interetsAidesVeloCsvUrl: `${aidesJeunesUrl}documents/_interetsAidesVelo.csv`,
     commitSHA: process.env.GITHUB_SHA || "local",
   },
 }
