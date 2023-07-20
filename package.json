@@ -35,7 +35,6 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-react": "^7.32.2",
-    "gh-pages": "^2.0.1",
     "prettier": "^3.0.0",
     "start-server-and-test": "^2.0.0"
   }
