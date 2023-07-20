@@ -38,6 +38,8 @@ describe("Survey Page", () => {
     cy.get("[data-testid=survey-historical-graph] div")
       .invoke("outerHeight")
       .should("be.greaterThan", 0)
+    // related to historical values in fixtures/surveyStatistics.json
+    cy.checkGraph("survey-historical-graph", "2022-08", "5")
   })
 
   context("when select a geographic area", () => {
