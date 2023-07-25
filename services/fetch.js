@@ -6,7 +6,7 @@ export default class Fetch {
 
   static async getSurveyStatistics() {
     const surveyStatiastics = await this.getJSON(
-      process.env.surveyStatisticsURL,
+      process.env.aidesJeunesStatisticsURL,
     )
     const { benefitInstitutionMapping, institutions } =
       await this.getBenefitsAndInstitutions()

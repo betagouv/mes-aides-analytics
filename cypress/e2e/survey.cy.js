@@ -1,8 +1,8 @@
-import { interceptSurveyStatistics } from "../support/utils.js"
+import { interceptAidesJeunesStatistics } from "../support/utils.js"
 
 describe("Survey Page", () => {
   beforeEach(() => {
-    const interceptIdentifier = interceptSurveyStatistics()
+    const interceptIdentifier = interceptAidesJeunesStatistics()
     cy.visitFromHome("/survey")
     cy.wait(interceptIdentifier)
   })

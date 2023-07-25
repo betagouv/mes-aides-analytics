@@ -16,10 +16,10 @@ export const interceptUsageStatistics = createFetchInterceptor(
   "usageStatistics.json",
 )
 
-export const interceptSurveyStatistics = createFetchInterceptor(
-  "interceptSurveyStatistics",
-  configuration.env.surveyStatisticsURL,
-  "surveyStatistics.json",
+export const interceptAidesJeunesStatistics = createFetchInterceptor(
+  "interceptAidesJeunesStatistics",
+  configuration.env.aidesJeunesStatisticsURL,
+  "aidesJeunesStatistics.json",
 )
 
 export const interceptRecorderStatistics = createFetchInterceptor(
