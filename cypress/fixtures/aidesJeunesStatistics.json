@@ -105,5 +105,18 @@
         "nothing": 9
       }
     }
+  },
+  "funnel": {
+    "2023-06": {
+      "visits": 125821,
+      "nbUniqVisitors": 97525,
+      "simulationCount": 25,
+      "followupWithOptinCount": 16,
+      "followupWithoutOptinCount": 0,
+      "followupWithSurveyCount": 2,
+      "followupWithSurveyRepliedCount": 2,
+      "showAccompanimentCount": 66,
+      "clickAccompanimentCount": 37
+    }
   }
 }

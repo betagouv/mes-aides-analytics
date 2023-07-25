@@ -14,11 +14,11 @@ function findKeysFromData(data) {
   }, [])
 }
 
-export const DefaultFunnelChart = ({ data }) => {
+export const DefaultFunnelChart = ({ data, dataTestid }) => {
   const keys = findKeysFromData(data)
 
   return (
-    <div className="responsive-chart">
+    <div className="responsive-chart" data-testid={dataTestid}>
       <ResponsiveBar
         data={data}
         indexBy={xAxisKey}

@@ -44,7 +44,12 @@ class Funnel extends Component {
           <div className="funnel-charts">
             <div className="funnel-chart">
               <h2>Visites - Emails Récapitulatifs</h2>
-              {visitToRecap && <DefaultFunnelChart data={visitToRecap} />}
+              {visitToRecap && (
+                <DefaultFunnelChart
+                  data={visitToRecap}
+                  dataTestid="funnel-visits"
+                />
+              )}
             </div>
 
             <div className="funnel-chart">
