@@ -6,6 +6,7 @@ const menu = [
   { url: "/survey", label: "Résultats de sondage" },
   { url: "/behaviours", label: "Comportements utilisateur" },
   { url: "/pages", label: "Statistiques de visite" },
+  { url: "/funnel", label: "Tunnel de conversion" },
 ]
 
 function closeMenu() {
