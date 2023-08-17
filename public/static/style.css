@@ -396,3 +396,23 @@ table .sortable-asc:after {
     display: none;
   }
 }
+
+.funnel-charts {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.funnel-charts .funnel-chart {
+  flex: 1;
+  max-width: calc(100% / 3);
+}
+
+@media screen and (max-width: 1024px) {
+  .funnel-charts {
+    flex-direction: column;
+  }
+  .funnel-charts .funnel-chart {
+    max-width: 100%;
+  }
+}
