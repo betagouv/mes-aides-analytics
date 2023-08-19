@@ -33,7 +33,7 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-react": "^7.33.2",
-    "prettier": "^3.0.0",
+    "prettier": "^3.0.2",
     "start-server-and-test": "^2.0.0"
   }
 }
