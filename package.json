@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "cypress": "^12.17.2",
-    "eslint": "^8.47.0",
+    "eslint": "^8.48.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-react": "^7.33.2",
