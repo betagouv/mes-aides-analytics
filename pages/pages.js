@@ -210,7 +210,7 @@ class PagesVisits extends Component {
               {this.state.pagesStats.length > 0 &&
                 this.state.pagesStats.map((page) => (
                   <tr key={page.label}>
-                    <td>{page.label}</td>
+                    <td className="text-truncate-ellipsis">{page.label}</td>
                     <td className="text-right">{page.nb_visits}</td>
                     <td className="text-right">{page.exit_nb_visits}</td>
                     <td className="text-right">
