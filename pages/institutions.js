@@ -92,7 +92,7 @@ const InstitutionsStats = () => {
 
   return (
     <>
-      <h2>Statistiques sur les institutions (EPCI)</h2>
+      <h2 data-testid="title">Statistiques sur les institutions (EPCI)</h2>
       <div className="flex-bottom flex-gap">
         <div>
           <label>
@@ -101,6 +101,7 @@ const InstitutionsStats = () => {
               type="text"
               value={queryName}
               onChange={(e) => setQueryName(e.target.value)}
+              data-testid="filter-name"
             />
           </label>
         </div>
@@ -111,6 +112,7 @@ const InstitutionsStats = () => {
               type="text"
               value={queryCode}
               onChange={(e) => setQueryCode(e.target.value)}
+              data-testid="filter-code"
             />
           </label>
         </div>
@@ -120,6 +122,7 @@ const InstitutionsStats = () => {
             <select
               onChange={(e) => setSelectedType(e.target.value)}
               value={selectedType}
+              data-testid="filter-type"
             >
               <option value={allType}>{allType}</option>
               {dataService.getUniqueValuesForKey("type").map((k) => {
@@ -135,7 +138,7 @@ const InstitutionsStats = () => {
       </div>
 
       <div className="flex-bottom flex-gap flex-justify">
-        <table>
+        <table data-testid="institutions-table">
           <thead>
             <tr>
               <th>
@@ -151,6 +154,7 @@ const InstitutionsStats = () => {
                 <div
                   className={`sortable ${getSortOrderClass("population")}`}
                   onClick={() => handleHeaderClick("population")}
+                  data-testid="column-population"
                 >
                   Population
                 </div>
