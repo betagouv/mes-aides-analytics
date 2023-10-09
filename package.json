@@ -21,7 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "@nivo/bar": "^0.80.0",
-    "eslint-config-next": "^13.5.3",
+    "eslint-config-next": "^13.5.4",
     "iframe-resizer": "^4.3.7",
     "next": "^13.5.4",
     "react": "^18.2.0",
