@@ -7,6 +7,7 @@ const menu = [
   { url: "/behaviours", label: "Comportements utilisateur" },
   { url: "/pages", label: "Statistiques de visite" },
   { url: "/funnel", label: "Tunnel de conversion" },
+  { url: "/institutions", label: "Institutions" },
 ]
 
 function closeMenu() {
