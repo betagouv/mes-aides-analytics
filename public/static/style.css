@@ -427,3 +427,9 @@ table .sortable-asc:after {
     max-width: 100%;
   }
 }
+
+.info-icon {
+  opacity: 0.7;
+  line-height: 1em;
+  cursor: help;
+}
