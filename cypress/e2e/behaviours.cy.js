@@ -12,6 +12,11 @@ describe("Behaviour Page", () => {
     cy.wait(interceptBenefitsIdentifier)
   })
 
+  it("passes axe accessibility", () => {
+    cy.injectAxe()
+    cy.checkA11y()
+  })
+
   it("displays the menu and title", () => {
     cy.checkMenu()
     cy.checkTitle()

@@ -7,6 +7,11 @@ describe("Institution Page Functionalities", () => {
     cy.wait(interceptIdentifier)
   })
 
+  it("passes axe accessibility", () => {
+    cy.injectAxe()
+    cy.checkA11y()
+  })
+
   it("displays the navigation menu and page title", () => {
     cy.checkMenu()
     cy.checkTitle()
