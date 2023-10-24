@@ -35,5 +35,8 @@
     "eslint-plugin-react": "^7.33.2",
     "prettier": "^3.0.3",
     "start-server-and-test": "^2.0.1"
+  },
+  "overrides": {
+    "d3-color": "3.1.0"
   }
 }
