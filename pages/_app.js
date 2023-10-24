@@ -33,6 +33,7 @@ export default function App({ Component, pageProps }) {
           target="_blank"
           rel="noreferrer"
           href={`https://github.com/betagouv/mes-aides-analytics/commit/${process.env.commitSHA}`}
+          className="commit-sha"
         >
           {process.env.commitSHA}
         </a>
