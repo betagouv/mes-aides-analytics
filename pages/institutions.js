@@ -92,7 +92,7 @@ const InstitutionsStats = () => {
 
   return (
     <>
-      <h2 data-testid="title">Statistiques sur les institutions (EPCI)</h2>
+      <h1 data-testid="title">Statistiques sur les institutions (EPCI)</h1>
       <div className="flex-bottom flex-gap">
         <div>
           <label>

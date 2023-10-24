@@ -32,6 +32,7 @@ class Survey extends Component {
   render() {
     return (
       <>
+        <h1>Résultats de sondage</h1>
         {this.state.survey.length && (
           <>
             <SurveyResults

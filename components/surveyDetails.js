@@ -120,7 +120,7 @@ class SurveyDetails extends Component {
   render() {
     return (
       <div>
-        <h3>Détails des résultats du sondage par prestation</h3>
+        <h2>Détails des résultats du sondage par prestation</h2>
 
         <div className="flex flex-gap flex-justify">
           <div>
