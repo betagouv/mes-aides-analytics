@@ -114,7 +114,7 @@ class PagesVisits extends Component {
   render() {
     return (
       <>
-        <h2 data-testid="title">Statistiques de visites</h2>
+        <h1 data-testid="title">Statistiques de visites</h1>
         <div className="flex-bottom flex-gap flex-justify">
           <label>
             <span>Période de référence</span>

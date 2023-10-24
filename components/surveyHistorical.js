@@ -33,9 +33,9 @@ class SurveyHistorical extends Component {
     return (
       this.state.historical && (
         <>
-          <h3 data-testid="survey-historical-title">
+          <h2 data-testid="survey-historical-title">
             Données historiques des {this.state.monthsToDisplay} derniers mois
-          </h3>
+          </h2>
           <div
             data-testid="survey-historical-graph"
             className="responsive-chart"

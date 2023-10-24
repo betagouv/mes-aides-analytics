@@ -34,6 +34,7 @@ export const DefaultFunnelChart = ({ data, dataTestid }) => {
           tickRotation: -45,
           legendOffset: 32,
         }}
+        role="figure"
       />
     </div>
   )

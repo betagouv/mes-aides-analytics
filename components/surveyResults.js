@@ -16,8 +16,7 @@ class SurveyResults extends Component {
     return (
       <div>
         <h2 data-testid="title">
-          Résultats de sondage 7 jours après les simulations (sur{" "}
-          {this.state.total} réponses)
+          7 jours après les simulations (sur {this.state.total} réponses)
         </h2>
 
         <h3>Le sondage</h3>

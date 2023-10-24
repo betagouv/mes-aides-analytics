@@ -1,9 +1,10 @@
 :root {
-  --theme-color: #6fb2ac;
+  --theme-color: #cfebb6;
   --light-gray: #f1f1f7;
   --page-width: 1600px;
-  --text-color: #000;
+  --text-color: #222;
   --border-radius: 4px;
+  --thead-color: #222;
 }
 
 body {
@@ -16,7 +17,7 @@ body {
 
 header {
   min-height: 80px;
-  color: #fff;
+  color: var(--header-color);
   padding: 0 30px;
   background: transparent;
   box-sizing: border-box;
@@ -36,7 +37,7 @@ header nav a {
   text-decoration: none;
   padding: 15px;
   box-sizing: border-box;
-  color: #777;
+  color: #222;
   font-size: 0.9rem;
   font-weight: bold;
   line-height: 0.9rem;
@@ -75,7 +76,7 @@ h4 small {
 a {
   color: var(--theme-color);
   text-decoration: none;
-  color: rgb(111, 146, 186);
+  color: var(--text-color);
   border-bottom: 1px dotted rgb(111, 146, 186);
 }
 
@@ -85,6 +86,10 @@ main {
   margin: auto;
   padding: 40px 20px;
   box-sizing: border-box;
+}
+
+.commit-sha {
+  color: var(--text-color);
 }
 
 .flex,
@@ -123,7 +128,7 @@ label {
 label span {
   font-size: 0.8rem;
   font-weight: bold;
-  color: #999;
+  color: var(--text-color);
 }
 .table-container {
   max-width: 100%;
@@ -142,7 +147,7 @@ table thead {
   position: sticky;
   top: 0;
   background-color: var(--theme-color);
-  color: #ffffff;
+  color: var(--thead-color);
   opacity: 0.95;
   z-index: 10;
 }
@@ -198,16 +203,15 @@ table .sortable:before {
   height: 0;
   border-style: solid;
   border-width: 0 4px 4px 4px;
-  border-color: transparent transparent #fff transparent;
+  border-color: transparent transparent var(--text-color) transparent;
   top: 5px;
   right: 0;
-  opacity: 0.5;
 
   top: calc(50% - 7px);
 }
 table .sortable:before {
   border-width: 4px 4px 0 4px;
-  border-color: #fff transparent transparent transparent;
+  border-color: var(--text-color) transparent transparent transparent;
   top: auto;
   bottom: calc(50% - 7px);
 }
