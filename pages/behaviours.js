@@ -297,7 +297,7 @@ class Behaviours extends Component {
           <table className="collapsable">
             <thead>
               <tr>
-                <th onClick={() => this.sortTable("label")}>
+                <th onClick={() => this.sortTable("label")} tabIndex="0">
                   <div className={`sortable ${this.sortState("label")}`}>
                     Nom de l'aide
                   </div>
@@ -306,6 +306,7 @@ class Behaviours extends Component {
                   <th
                     key={key}
                     onClick={() => this.sortTable(this.eventSortName(key))}
+                    tabIndex="0"
                   >
                     <div
                       className={`sortable ${this.sortState(
