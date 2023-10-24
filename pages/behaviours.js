@@ -2,6 +2,7 @@ import { Component } from "react"
 
 import BehavioursHeader from "../components/behaviourHeader.js"
 import UndisplayedBenefits from "../components/undisplayedBenefits.js"
+import InfoIcon from "../components/InfoIcon.js"
 
 import {
   Config,
@@ -313,20 +314,17 @@ class Behaviours extends Component {
                         this.eventSortName(key),
                       )}`}
                     >
-                      {EventTypeCategoryMapping[key].name ||
-                        EventTypeCategoryMapping[key].cat ||
-                        key}
-                      {PercentageAnnotation[
-                        EventTypeCategoryMapping[key].cat
-                      ] && (
-                        <sup>
-                          {
-                            PercentageAnnotation[
-                              EventTypeCategoryMapping[key].cat
-                            ].annotation
-                          }
-                        </sup>
-                      )}
+                      <InfoIcon
+                        title={
+                          PercentageAnnotation[
+                            EventTypeCategoryMapping[key].cat
+                          ]?.description
+                        }
+                      >
+                        {EventTypeCategoryMapping[key].name ||
+                          EventTypeCategoryMapping[key].cat ||
+                          key}
+                      </InfoIcon>
                     </div>
                   </th>
                 ))}
@@ -384,17 +382,6 @@ class Behaviours extends Component {
             </tbody>
           </table>
         </div>
-
-        {Object.values(PercentageAnnotation).map((annotation) => {
-          return (
-            <div key={annotation.annotation}>
-              <i>
-                {annotation.annotation} {annotation.description}
-              </i>
-            </div>
-          )
-        })}
-
         <UndisplayedBenefits
           undisplayedBenefits={this.state.undisplayedBenefits}
         />

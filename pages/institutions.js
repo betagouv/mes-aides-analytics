@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 
 import useFetchInstitutionsData from "../hooks/fetch-institutions-data"
+import InfoIcon from "../components/InfoIcon"
 
 const defaultSortOrder = "desc"
 const allType = "Tous"
@@ -156,7 +157,9 @@ const InstitutionsStats = () => {
                   onClick={() => handleHeaderClick("population")}
                   data-testid="column-population"
                 >
-                  Population
+                  <InfoIcon title="Données issues d'Étalab - Découpage Administratif">
+                    <span>Population</span>
+                  </InfoIcon>
                 </div>
               </th>
               <th>
@@ -164,7 +167,9 @@ const InstitutionsStats = () => {
                   className={`sortable ${getSortOrderClass("simulationCount")}`}
                   onClick={() => handleHeaderClick("simulationCount")}
                 >
-                  Nombre de simulation
+                  <InfoIcon title="Données sur les 6 derniers mois">
+                    Nombre de simulation
+                  </InfoIcon>
                 </div>
               </th>
               <th>
@@ -172,7 +177,9 @@ const InstitutionsStats = () => {
                   className={`sortable ${getSortOrderClass("benefitCount")}`}
                   onClick={() => handleHeaderClick("benefitCount")}
                 >
-                  Nombre d'aides
+                  <InfoIcon title="Ratachées directement à l'institution">
+                    Nombre d'aides
+                  </InfoIcon>
                 </div>
               </th>
             </tr>
