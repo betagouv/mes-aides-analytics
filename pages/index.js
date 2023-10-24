@@ -64,6 +64,7 @@ class Index extends Component {
                     tickRotation: -45,
                     legendOffset: 32,
                   }}
+                  role="figure"
                 />
               </div>
             </div>
