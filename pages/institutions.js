@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useMemo } from "react"
 
 import useFetchInstitutionsData from "../hooks/fetch-institutions-data"
 import InfoIcon from "../components/InfoIcon"
@@ -14,6 +14,7 @@ const filterData = (
   sortKey,
   sortOrder,
 ) => {
+  console.log("filterData")
   let filters = {}
 
   if (queryName) {
@@ -39,7 +40,6 @@ const filterData = (
 
 const InstitutionsStats = () => {
   const { dataService, loading, error } = useFetchInstitutionsData()
-  const [results, setResults] = useState([])
 
   const [queryName, setQueryName] = useState("")
   const [queryCode, setQueryCode] = useState("")
@@ -47,22 +47,17 @@ const InstitutionsStats = () => {
   const [sortKey, setSortKey] = useState(null)
   const [sortOrder, setSortOrder] = useState(defaultSortOrder)
 
-  useEffect(() => {
-    if (!dataService) {
-      return
-    }
-
-    setResults(
-      filterData(
-        dataService,
-        queryName,
-        queryCode,
-        selectedType,
-        sortKey,
-        sortOrder,
-      ),
+  let results = []
+  if (dataService) {
+    results = filterData(
+      dataService,
+      queryName,
+      queryCode,
+      selectedType,
+      sortKey,
+      sortOrder,
     )
-  }, [queryName, queryCode, selectedType, sortKey, sortOrder, dataService])
+  }
 
   const handleHeaderClick = (newSortKey) => {
     if (newSortKey === sortKey) {
