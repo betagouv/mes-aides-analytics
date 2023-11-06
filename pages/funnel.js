@@ -1,73 +1,58 @@
-import { Component } from "react"
+import React, { useState, useEffect } from "react"
 
 import { fetchFunnelData } from "../services/funnelService.js"
 import { DefaultFunnelChart } from "../components/defaultFunnelChart.js"
 
-class Funnel extends Component {
-  state = {
-    chartsData: null,
-    loading: true,
-    selectedMonth: null,
-  }
+function Funnel() {
+  const [chartsData, setChartsData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [selectedMonth, setSelectedMonth] = useState(null)
 
-  async componentDidMount() {
-    await this.fetchData()
-  }
-
-  async fetchData() {
-    const { availableMonths, chartsData } = await fetchFunnelData()
-
-    const selectedMonth = availableMonths[0]
-
-    this.setState({
-      chartsData,
-      selectedMonth,
-      loading: false,
-    })
-  }
-
-  render() {
-    const { loading, selectedMonth, chartsData } = this.state
-
-    if (loading) {
-      return <p>Chargement...</p>
+  useEffect(() => {
+    const fetchData = async () => {
+      const { availableMonths, chartsData } = await fetchFunnelData()
+      const selectedMonth = availableMonths[0]
+      setChartsData(chartsData)
+      setSelectedMonth(selectedMonth)
+      setLoading(false)
     }
 
-    const { visitToRecap, surveyData, accompanimentData } =
-      chartsData[selectedMonth]
+    fetchData()
+  }, [])
 
-    return (
-      <>
-        <h1 data-testid="title">Metriques de parcours {selectedMonth}</h1>
-
-        <>
-          <div className="funnel-charts">
-            <div className="funnel-chart">
-              <h2>Visites - Emails Récapitulatifs</h2>
-              {visitToRecap && (
-                <DefaultFunnelChart
-                  data={visitToRecap}
-                  dataTestid="funnel-visits"
-                />
-              )}
-            </div>
-
-            <div className="funnel-chart">
-              <h2>Sondages Envoyés - Répondus</h2>
-              {surveyData && <DefaultFunnelChart data={surveyData} />}
-            </div>
-
-            <div className="funnel-chart">
-              <h2>Accompagnement</h2>
-              {accompanimentData && (
-                <DefaultFunnelChart data={accompanimentData} />
-              )}
-            </div>
-          </div>
-        </>
-      </>
-    )
+  if (loading) {
+    return <p>Chargement...</p>
   }
+
+  const { visitToRecap, surveyData, accompanimentData } =
+    chartsData[selectedMonth]
+
+  return (
+    <>
+      <h1 data-testid="title">Metriques de parcours {selectedMonth}</h1>
+      <div className="funnel-charts">
+        <div className="funnel-chart">
+          <h2>Visites - Emails Récapitulatifs</h2>
+          {visitToRecap && (
+            <DefaultFunnelChart
+              data={visitToRecap}
+              dataTestid="funnel-visits"
+            />
+          )}
+        </div>
+
+        <div className="funnel-chart">
+          <h2>Sondages Envoyés - Répondus</h2>
+          {surveyData && <DefaultFunnelChart data={surveyData} />}
+        </div>
+
+        <div className="funnel-chart">
+          <h2>Accompagnement</h2>
+          {accompanimentData && <DefaultFunnelChart data={accompanimentData} />}
+        </div>
+      </div>
+    </>
+  )
 }
 
 export default Funnel
