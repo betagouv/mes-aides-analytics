@@ -15,7 +15,7 @@ class SurveyHistorical extends Component {
 
   async componentDidMount() {
     const historicalData = Object.keys(this.state.historical)
-      .sort((a, b) => a > b)
+      .sort()
       .slice(-this.state.monthsToDisplay)
 
     this.setState({
