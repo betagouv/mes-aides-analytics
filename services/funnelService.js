@@ -5,14 +5,9 @@ import configuration from "../next.config.js"
 function formatFunnelData(data) {
   return {
     visitToRecap: [
-      { label: "Visites", total: data.visits },
-      { label: "Visites Uniques", total: data.nbUniqVisitors },
-      { label: "Simulations terminées", total: data.simulationCount },
-      {
-        label: "Emails de recap envoyés",
-        "Avec recontact": data.followupWithOptinCount,
-        "Sans recontact": data.followupWithoutOptinCount,
-      },
+      { label: "1ère Page", total: data.firstPageVisits },
+      { label: "2ème Page", total: data.secondPageVisits },
+      { label: "Page de Résultats", total: data.resultsPageVisits },
     ],
     surveyData: [
       {
