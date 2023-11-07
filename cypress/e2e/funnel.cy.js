@@ -19,6 +19,8 @@ describe("Funnel Page", () => {
 
   it("displays funnel results chart", () => {
     cy.get(".responsive-chart").should("be.visible")
-    cy.checkGraph("funnel-visits", "Visites", "125821")
+    cy.checkGraph("funnel-visits", "1ère Page", "127857")
+    cy.checkGraph("funnel-visits", "2ème Page", "102925")
+    cy.checkGraph("funnel-visits", "Page de Résultats", "76436")
   })
 })

@@ -108,8 +108,9 @@
   },
   "funnel": {
     "2023-06": {
-      "visits": 125821,
-      "nbUniqVisitors": 97525,
+      "firstPageVisits": 127857,
+      "secondPageVisits": 102925,
+      "resultsPageVisits": 76436,
       "simulationCount": 25,
       "followupWithOptinCount": 16,
       "followupWithoutOptinCount": 0,
