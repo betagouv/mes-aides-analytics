@@ -24,7 +24,7 @@ function Funnel() {
     return <p>Chargement...</p>
   }
 
-  const { visitToRecap, surveyData, accompanimentData } =
+  const { visitToResults, surveyData, accompanimentData } =
     chartsData[selectedMonth]
 
   return (
@@ -32,10 +32,10 @@ function Funnel() {
       <h1 data-testid="title">Metriques de parcours {selectedMonth}</h1>
       <div className="funnel-charts">
         <div className="funnel-chart">
-          <h2>Visites - Emails Récapitulatifs</h2>
-          {visitToRecap && (
+          <h2>Visites - Page Résultats</h2>
+          {visitToResults && (
             <DefaultFunnelChart
-              data={visitToRecap}
+              data={visitToResults}
               dataTestid="funnel-visits"
             />
           )}
