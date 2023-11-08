@@ -4,10 +4,14 @@ import configuration from "../next.config.js"
 
 function formatFunnelData(data) {
   return {
-    visitToRecap: [
+    visitToResults: [
       { label: "1ère Page", total: data.firstPageVisits },
       { label: "2ème Page", total: data.secondPageVisits },
       { label: "Page de Résultats", total: data.resultsPageVisits },
+    ],
+    followupData: [
+      { label: "avec recontact", total: data.followupWithOptinCount },
+      { label: "sans recontact", total: data.followupWithoutOptinCount },
     ],
     surveyData: [
       {
