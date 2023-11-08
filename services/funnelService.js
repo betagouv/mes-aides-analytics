@@ -9,6 +9,10 @@ function formatFunnelData(data) {
       { label: "2ème Page", total: data.secondPageVisits },
       { label: "Page de Résultats", total: data.resultsPageVisits },
     ],
+    followupData: [
+      { label: "avec recontact", total: data.followupWithOptinCount },
+      { label: "sans recontact", total: data.followupWithoutOptinCount },
+    ],
     surveyData: [
       {
         label: "Email de sondage envoyés",
