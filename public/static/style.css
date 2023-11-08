@@ -416,7 +416,8 @@ table .sortable-asc:after {
 
 .funnel-charts .funnel-chart {
   flex: 1;
-  max-width: calc(100% / 3);
+  max-width: 50%;
+  flex-basis: 50%;
 }
 
 @media screen and (max-width: 1024px) {
