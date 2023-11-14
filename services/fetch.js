@@ -1,3 +1,5 @@
+import { EventTypeCategoryMapping } from "./config.js"
+
 export default class Fetch {
   static async getJSON(url) {
     const data = await fetch(url)
@@ -64,7 +66,39 @@ export default class Fetch {
 
   static async getRecorderStatistics(startAt) {
     const url = `${process.env.recorderStatisticsURL}/benefits?start_at=${startAt}`
-    const recorderStatistics = await this.getJSON(url)
+    const recorderStatistics = this.aggregateRelatedEventStatistics(
+      await this.getJSON(url),
+    )
+
+    return recorderStatistics
+  }
+
+  static aggregateRelatedEventStatistics(recorderStatistics) {
+    const initializeEventCount = (events, eventType) => {
+      events[eventType] = events[eventType] || 0
+    }
+
+    const sumRelatedCategoryEvents = (events, relatedCategories) =>
+      relatedCategories.reduce((sum, category) => {
+        initializeEventCount(events, category)
+        return sum + events[category]
+      }, 0)
+
+    for (const [eventType, eventCategory] of Object.entries(
+      EventTypeCategoryMapping,
+    )) {
+      if (!eventCategory.relatedCategories) {
+        continue
+      }
+
+      for (const statistic of recorderStatistics) {
+        initializeEventCount(statistic.events, eventType)
+        statistic.events[eventType] += sumRelatedCategoryEvents(
+          statistic.events,
+          eventCategory.relatedCategories,
+        )
+      }
+    }
 
     return recorderStatistics
   }

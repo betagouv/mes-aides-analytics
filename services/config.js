@@ -93,6 +93,7 @@ export const EventTypeCategoryMapping = {
     cat: EventCategories.ACTIONABLE,
     name: "Téléservice",
     color: "#7f7f7f",
+    relatedCategories: ["teleservicePrefill"],
   },
   "link-ineligible": {
     cat: EventCategories.INELIGIBLE_ACTIONABLE,
