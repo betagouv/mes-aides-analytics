@@ -111,13 +111,19 @@
       "firstPageVisits": 127857,
       "secondPageVisits": 102925,
       "resultsPageVisits": 76436,
-      "simulationCount": 25,
-      "followupWithOptinCount": 16,
-      "followupWithoutOptinCount": 0,
-      "followupWithSurveyCount": 2,
+      "simulationCount": 0,
+      "followupWithOptinCount": 56,
+      "followupWithoutOptinCount": 95,
+      "followupWithOptinCountSms": 2,
+      "followupWithoutOptinCountSms": 3,
+      "followupWithOptinCountEmail": 24,
+      "followupWithoutOptinCountEmail": 55,
+      "followupWithOptinCountEmailAndSms": 30,
+      "followupWithoutOptinCountEmailAndSms": 37,
+      "followupWithSurveyCount": 54,
       "followupWithSurveyRepliedCount": 2,
-      "showAccompanimentCount": 66,
-      "clickAccompanimentCount": 37
+      "showAccompanimentCount": 22,
+      "clickAccompanimentCount": 26
     }
   },
   "institutions": [

@@ -10,8 +10,18 @@ function formatFunnelData(data) {
       { label: "Page de Résultats", total: data.resultsPageVisits },
     ],
     followupData: [
-      { label: "avec recontact", total: data.followupWithOptinCount },
-      { label: "sans recontact", total: data.followupWithoutOptinCount },
+      {
+        label: "avec recontact",
+        Sms: data.followupWithOptinCountSms,
+        Email: data.followupWithOptinCountEmail,
+        "Email et Sms": data.followupWithOptinCountEmailAndSms,
+      },
+      {
+        label: "sans recontact",
+        Sms: data.followupWithoutOptinCountSms,
+        Email: data.followupWithoutOptinCountEmail,
+        "Email et Sms": data.followupWithoutOptinCountEmailAndSms,
+      },
     ],
     surveyData: [
       {

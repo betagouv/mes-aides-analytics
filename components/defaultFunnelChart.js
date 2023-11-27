@@ -23,7 +23,7 @@ export const DefaultFunnelChart = ({ data, dataTestid }) => {
         data={data}
         indexBy={xAxisKey}
         keys={keys}
-        groupMode="stacked"
+        groupMode="grouped"
         margin={{ top: 15, right: 10, bottom: 150, left: 60 }}
         padding={0.1}
         animate={false}
