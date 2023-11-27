@@ -44,7 +44,11 @@ function Funnel() {
         <div className="funnel-chart">
           <h2>Nombre d'emails et/ou sms récapitulatifs</h2>
           {followupData && (
-            <DefaultFunnelChart data={followupData} dataTestid="funnel-email" />
+            <DefaultFunnelChart
+              data={followupData}
+              dataTestid="funnel-email"
+              showLegend
+            />
           )}
         </div>
 

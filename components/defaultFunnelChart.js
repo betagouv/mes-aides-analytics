@@ -14,7 +14,7 @@ function findKeysFromData(data) {
   }, [])
 }
 
-export const DefaultFunnelChart = ({ data, dataTestid }) => {
+export const DefaultFunnelChart = ({ data, dataTestid, showLegend }) => {
   const keys = findKeysFromData(data)
 
   return (
@@ -23,6 +23,18 @@ export const DefaultFunnelChart = ({ data, dataTestid }) => {
         data={data}
         indexBy={xAxisKey}
         keys={keys}
+        legends={
+          showLegend
+            ? [
+                {
+                  dataFrom: "keys",
+                  anchor: "top-left",
+                  direction: "column",
+                  itemHeight: 20,
+                },
+              ]
+            : []
+        }
         groupMode="grouped"
         margin={{ top: 15, right: 10, bottom: 150, left: 60 }}
         padding={0.1}
