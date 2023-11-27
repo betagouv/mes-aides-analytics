@@ -12,14 +12,14 @@ function formatFunnelData(data) {
     followupData: [
       {
         label: "avec recontact",
-        Sms: data.followupWithOptinCountSms,
-        Email: data.followupWithOptinCountEmail,
+        "Sms uniq.": data.followupWithOptinCountSms,
+        "Email uniq.": data.followupWithOptinCountEmail,
         "Email et Sms": data.followupWithOptinCountEmailAndSms,
       },
       {
         label: "sans recontact",
-        Sms: data.followupWithoutOptinCountSms,
-        Email: data.followupWithoutOptinCountEmail,
+        "Sms uniq.": data.followupWithoutOptinCountSms,
+        "Email uniq.": data.followupWithoutOptinCountEmail,
         "Email et Sms": data.followupWithoutOptinCountEmailAndSms,
       },
     ],
