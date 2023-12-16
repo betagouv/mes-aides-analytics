@@ -18,10 +18,6 @@ const configuration = {
     benefitsURL: `${aidesJeunesUrl}api/benefits`,
     pagesStatsURL:
       "https://stats.data.gouv.fr/index.php?module=API&format=JSON&idSite=165&period=range&method=Actions.getExitPageUrls&expanded=1&date=",
-    visitorsBehaviour:
-      "https://stats.data.gouv.fr/index.php?date=yesterday&expanded=1&filter_limit=-1&format=JSON&idSite=165&method=Actions.getPageUrls&module=API&segment=&token_auth=anonymous&period=",
-    matomoEvents:
-      "https://stats.data.gouv.fr/index.php?&expanded=1&filter_limit=-1&format=JSON&idSite=165&method=Events.getName&module=API&period=range&date=",
     benefitDetailURL: `${aidesJeunesUrl}aides/`,
     recorderStatisticsURL:
       process.env.RECORDER_STATISTICS_URL ||
