@@ -24,5 +24,9 @@ const configuration = {
       "https://aides-jeunes-stats-recorder.osc-fr1.scalingo.io",
     commitSHA: process.env.GITHUB_SHA || "local",
   },
+  transpilePackages: ["@nivo"],
+  experimental: {
+    esmExternals: "loose",
+  },
 }
 export default configuration
