@@ -6,8 +6,12 @@ import { Config } from "../services/config.js"
 import Fetch from "../services/fetch.js"
 import DataFilter from "../services/dataFilter.js"
 import DateRange from "../services/date.js"
+import dynamic from "next/dynamic"
 
-import { ResponsiveBar } from "@nivo/bar"
+const ResponsiveBar = dynamic(
+  () => import("@nivo/bar").then((m) => m.ResponsiveBar),
+  { ssr: false },
+)
 
 const periods = DateRange.getPeriods()
 
