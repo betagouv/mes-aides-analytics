@@ -1,5 +1,10 @@
 import { Component } from "react"
-import { ResponsiveBar } from "@nivo/bar"
+import dynamic from "next/dynamic"
+
+const ResponsiveBar = dynamic(
+  () => import("@nivo/bar").then((m) => m.ResponsiveBar),
+  { ssr: false },
+)
 
 import { Config } from "../services/config.js"
 
