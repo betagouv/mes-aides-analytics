@@ -21,7 +21,7 @@ const configuration = {
       "https://mes-aides.1jeune1solution.beta.gouv.fr/documents/stats.json",
     benefitsURL: `${aidesJeunesUrl}api/benefits`,
     pagesStatsURL:
-      "https://stats.data.gouv.fr/index.php?module=API&format=JSON&idSite=165&period=range&method=Actions.getExitPageUrls&expanded=1&date=",
+      "https://stats.beta.gouv.fr/index.php?module=API&format=JSON&idSite=63&period=range&method=Actions.getExitPageUrls&expanded=1&date=",
     benefitDetailURL: `${aidesJeunesUrl}aides/`,
     recorderStatisticsURL:
       process.env.RECORDER_STATISTICS_URL ||
