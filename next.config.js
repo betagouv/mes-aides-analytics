@@ -9,7 +9,11 @@ const configuration = {
     : undefined,
   basePath: isProduction ? "/mes-aides-analytics" : undefined,
   env: {
+    // There is and old and a current usage stats URL
+    // because of the matomo migration (data.gouv.fr -> stats.data.gouv.fr) in august 2024
     usageStatisticsURL:
+      "https://stats.beta.gouv.fr/index.php?date=2024-08-01,yesterday&expanded=1&filter_limit=100&force_api_session=1&format=JSON&format_metrics=1&idSite=63&method=API.get&module=API&period=month&token_auth=anonymous",
+    usageStatisticsOldURL:
       "https://stats.data.gouv.fr/index.php?date=2021-01-01,yesterday&expanded=1&filter_limit=100&force_api_session=1&format=JSON&format_metrics=1&idSite=165&method=API.get&module=API&period=month&token_auth=anonymous",
     observatoryURL:
       "https://observatoire.numerique.gouv.fr/Demarches/3135?view-mode=statistics&date-debut=2020-07-01&date-fin=",

@@ -29,7 +29,11 @@ class Index extends Component {
   }
 
   async fetchData() {
-    const globalStats = await Fetch.getJSON(process.env.usageStatisticsURL)
+    const globalOldStats = await Fetch.getJSON(
+      process.env.usageStatisticsOldURL,
+    )
+    const globalNewStats = await Fetch.getJSON(process.env.usageStatisticsURL)
+    const globalStats = { ...globalOldStats, ...globalNewStats }
     return Object.keys(globalStats).map((m) => {
       return {
         month: m,
