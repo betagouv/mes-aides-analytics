@@ -88,7 +88,7 @@ const InstitutionsStats = () => {
   return (
     <>
       <h1 data-testid="title">
-        Statistiques des institutions (EPCI) sur les 12 derniers mois
+        Statistiques des institutions (EPCI) sur les 6 derniers mois
       </h1>
       <div className="flex-bottom flex-gap">
         <div>
