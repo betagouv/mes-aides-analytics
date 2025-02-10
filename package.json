@@ -23,7 +23,7 @@
     "@nivo/bar": "^0.85.1",
     "iframe-resizer": "^4.3.11",
     "next": "^14.2.3",
-    "react": "^18.2.0",
+    "react": "^19.0.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
