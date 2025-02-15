@@ -20,7 +20,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@nivo/bar": "^0.85.1",
+    "@nivo/bar": "^0.88.0",
     "iframe-resizer": "^4.3.11",
     "next": "^14.2.3",
     "react": "^18.2.0",
