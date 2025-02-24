@@ -1,5 +1,3 @@
-import "iframe-resizer"
-
 import Head from "next/head"
 import Header from "../components/header.js"
 
