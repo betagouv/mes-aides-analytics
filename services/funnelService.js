@@ -33,10 +33,10 @@ function formatFunnelData(data) {
         total: data.followupWithSurveyRepliedCount,
       },
     ],
-    accompanimentData: [
-      { label: "RDV affiché", total: data.showAccompanimentCount },
-      { label: "RDV cliqué", total: data.clickAccompanimentCount },
-    ],
+    // accompanimentData: [
+    //   { label: "RDV affiché", total: data.showAccompanimentCount },
+    //   { label: "RDV cliqué", total: data.clickAccompanimentCount },
+    // ],
   }
 }
 

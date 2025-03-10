@@ -24,8 +24,12 @@ function Funnel() {
     return <p>Chargement...</p>
   }
 
-  const { visitToResults, surveyData, accompanimentData, followupData } =
-    chartsData[selectedMonth]
+  const {
+    visitToResults,
+    surveyData,
+    // accompanimentData,
+    followupData,
+  } = chartsData[selectedMonth]
 
   return (
     <>
@@ -57,10 +61,10 @@ function Funnel() {
           {surveyData && <DefaultFunnelChart data={surveyData} />}
         </div>
 
-        <div className="funnel-chart">
-          <h2>Accompagnement</h2>
-          {accompanimentData && <DefaultFunnelChart data={accompanimentData} />}
-        </div>
+        {/*<div className="funnel-chart">*/}
+        {/*  <h2>Accompagnement</h2>*/}
+        {/*  {accompanimentData && <DefaultFunnelChart data={accompanimentData} />}*/}
+        {/*</div>*/}
       </div>
     </>
   )
