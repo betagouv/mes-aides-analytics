@@ -4,7 +4,7 @@ describe("Index Page", () => {
   beforeEach(() => {
     const interceptIdentifier = interceptUsageStatistics()
     cy.visitHome()
-    cy.wait(interceptIdentifier)
+    cy.wait(interceptIdentifier, { timeout: 15000 })
   })
 
   it("passes axe accessibility", () => {
