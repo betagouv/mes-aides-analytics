@@ -6,6 +6,7 @@ const ResponsiveBar = dynamic(
   { ssr: false },
 )
 import Fetch from "../services/fetch.js"
+import Loader from "../components/Loader.js"
 
 const statsTypes = {
   visites: "Visites",
@@ -18,6 +19,7 @@ class Index extends Component {
     this.state = {
       visitData: [],
       observatory: "",
+      loading: true,
     }
   }
 
@@ -25,7 +27,8 @@ class Index extends Component {
     const today = new Date()
     const nextMonth = `${today.getFullYear()}-${(today.getMonth() + 2) % 12}-01`
     this.setState({ observatory: `${process.env.observatoryURL}${nextMonth}` })
-    this.setState({ visitData: await this.fetchData() })
+    const visitData = await this.fetchData()
+    this.setState({ visitData, loading: false })
   }
 
   async fetchData() {
@@ -44,6 +47,10 @@ class Index extends Component {
   }
 
   render() {
+    if (this.state.loading) {
+      return <Loader />
+    }
+
     return (
       <>
         <h1 data-testid="title">

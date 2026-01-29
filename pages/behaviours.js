@@ -3,6 +3,7 @@ import { Component } from "react"
 import BehavioursHeader from "../components/behaviourHeader.js"
 import UndisplayedBenefits from "../components/undisplayedBenefits.js"
 import InfoIcon from "../components/InfoIcon.js"
+import Loader from "../components/Loader.js"
 
 import {
   Config,
@@ -221,6 +222,10 @@ class Behaviours extends Component {
   }
 
   render() {
+    if (this.state.loading) {
+      return <Loader />
+    }
+
     return (
       <>
         <BehavioursHeader />
@@ -331,54 +336,42 @@ class Behaviours extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.loading && (
-                <tr>
-                  <td
-                    colSpan={Object.keys(EventTypeCategoryMapping).length + 1}
-                  >
-                    <span className="loading">Chargement en cours...</span>
+              {this.state.filteredBenefits.map((benefit) => (
+                <tr key={benefit.id || benefit.label}>
+                  <td data-label="Aide" data-content="aide">
+                    {benefit.id || benefit.label}
                   </td>
-                </tr>
-              )}
-              {!this.state.loading &&
-                this.state.filteredBenefits.map((benefit) => (
-                  <tr key={benefit.id || benefit.label}>
-                    <td data-label="Aide" data-content="aide">
-                      {benefit.id || benefit.label}
+                  {Object.keys(EventTypeCategoryMapping).map((key) => (
+                    <td
+                      data-label={
+                        EventTypeCategoryMapping[key].name ||
+                        EventTypeCategoryMapping[key].cat
+                      }
+                      data-content={benefit.events[key]}
+                      className="text-right"
+                      key={key}
+                    >
+                      {key === "show" ? (
+                        <>{benefit.events.show}</>
+                      ) : (
+                        <>
+                          <div
+                            className="gauge"
+                            style={{
+                              width: `${benefit.percentageOfEvents[key]}%`,
+                              background: EventTypeCategoryMapping[key].color,
+                            }}
+                          ></div>
+                          {benefit.events[key]}
+                          {benefit.events[key] && (
+                            <small>({benefit.percentageOfEvents[key]}%)</small>
+                          )}
+                        </>
+                      )}
                     </td>
-                    {Object.keys(EventTypeCategoryMapping).map((key) => (
-                      <td
-                        data-label={
-                          EventTypeCategoryMapping[key].name ||
-                          EventTypeCategoryMapping[key].cat
-                        }
-                        data-content={benefit.events[key]}
-                        className="text-right"
-                        key={key}
-                      >
-                        {key === "show" ? (
-                          <>{benefit.events.show}</>
-                        ) : (
-                          <>
-                            <div
-                              className="gauge"
-                              style={{
-                                width: `${benefit.percentageOfEvents[key]}%`,
-                                background: EventTypeCategoryMapping[key].color,
-                              }}
-                            ></div>
-                            {benefit.events[key]}
-                            {benefit.events[key] && (
-                              <small>
-                                ({benefit.percentageOfEvents[key]}%)
-                              </small>
-                            )}
-                          </>
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
+                  ))}
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

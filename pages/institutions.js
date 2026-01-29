@@ -2,6 +2,7 @@ import { useState } from "react"
 
 import useFetchInstitutionsData from "../hooks/fetch-institutions-data"
 import InfoIcon from "../components/InfoIcon"
+import Loader from "../components/Loader"
 
 const defaultSortOrder = "desc"
 const allType = "Tous"
@@ -78,7 +79,7 @@ const InstitutionsStats = () => {
   }
 
   if (loading) {
-    return <p>Loading...</p>
+    return <Loader />
   }
 
   if (error) {
