@@ -8,6 +8,8 @@ describe("Survey Page", () => {
   })
 
   it("passes axe accessibility", () => {
+    // Wait for the loader to disappear and content to be loaded
+    cy.get(".responsive-chart", { timeout: 10000 }).should("be.visible")
     cy.injectAxe()
     cy.checkA11y()
   })

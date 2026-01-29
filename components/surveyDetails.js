@@ -131,38 +131,46 @@ class SurveyDetails extends Component {
           <div>
             <div className="flex flex-gap">
               {this.state.institutions && (
-                <select
-                  onChange={(e) => this.filterBenefits(e.target.value)}
-                  value={this.state.currentInstitutionType}
-                  data-testid="select-institution-type"
-                >
-                  {Config.institutionsType.map((type) => (
-                    <option value={type.value} key={type.value}>
-                      {type.label}
-                    </option>
-                  ))}
-                </select>
+                <label>
+                  <span>Filtrer par type d'institution</span>
+                  <br />
+                  <select
+                    onChange={(e) => this.filterBenefits(e.target.value)}
+                    value={this.state.currentInstitutionType}
+                    data-testid="select-institution-type"
+                  >
+                    {Config.institutionsType.map((type) => (
+                      <option value={type.value} key={type.value}>
+                        {type.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
               )}
 
               {this.state.filteredInstitutions && (
-                <select
-                  onChange={(e) =>
-                    this.filterBenefits(
-                      this.state.currentInstitutionType,
-                      e.target.value,
-                    )
-                  }
-                  value={this.state.currentInstitution}
-                >
-                  <option value="{DataFilter.DEFAULT_FILTER_VALUE}">
-                    Toutes les institutions
-                  </option>
-                  {this.state.filteredInstitutions.map((institution) => (
-                    <option value={institution} key={institution}>
-                      {institution}
+                <label>
+                  <span>Filtrer par institution</span>
+                  <br />
+                  <select
+                    onChange={(e) =>
+                      this.filterBenefits(
+                        this.state.currentInstitutionType,
+                        e.target.value,
+                      )
+                    }
+                    value={this.state.currentInstitution}
+                  >
+                    <option value="{DataFilter.DEFAULT_FILTER_VALUE}">
+                      Toutes les institutions
                     </option>
-                  ))}
-                </select>
+                    {this.state.filteredInstitutions.map((institution) => (
+                      <option value={institution} key={institution}>
+                        {institution}
+                      </option>
+                    ))}
+                  </select>
+                </label>
               )}
 
               {this.displayResetButton() && (
