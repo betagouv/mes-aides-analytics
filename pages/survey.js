@@ -4,6 +4,7 @@ import Fetch from "../services/fetch.js"
 import SurveyResults from "../components/surveyResults.js"
 import SurveyDetails from "../components/surveyDetails.js"
 import SurveyHistorical from "../components/surveyHistorical.js"
+import Loader from "../components/Loader.js"
 
 class Survey extends Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class Survey extends Component {
       institutions: {},
       historical: {},
       total: null,
+      loading: true,
     }
   }
 
@@ -26,10 +28,15 @@ class Survey extends Component {
       survey: details,
       historical: historical,
       total: total,
+      loading: false,
     })
   }
 
   render() {
+    if (this.state.loading) {
+      return <Loader />
+    }
+
     return (
       <>
         <h1>Résultats de sondage</h1>

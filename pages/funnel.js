@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 
 import { fetchFunnelData } from "../services/funnelService.js"
 import { DefaultFunnelChart } from "../components/defaultFunnelChart.js"
+import Loader from "../components/Loader.js"
 
 function Funnel() {
   const [chartsData, setChartsData] = useState(null)
@@ -21,7 +22,7 @@ function Funnel() {
   }, [])
 
   if (loading) {
-    return <p>Chargement...</p>
+    return <Loader />
   }
 
   const {
