@@ -42,7 +42,7 @@ describe("Survey Page", () => {
 
   it("displays survey historical", () => {
     cy.get("[data-testid=survey-historical-title]").should("be.visible")
-    cy.get("[data-testid=survey-historical-graph] div")
+    cy.get("[data-testid=survey-historical-graph] svg")
       .invoke("outerHeight")
       .should("be.greaterThan", 0)
     // related to historical values in fixtures/surveyStatistics.json
