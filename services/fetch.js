@@ -64,6 +64,79 @@ export default class Fetch {
     }
   }
 
+  static async getUsageSeries() {
+    const [globalOldStats, globalNewStats] = await Promise.all([
+      this.getJSON(process.env.usageStatisticsOldURL),
+      this.getJSON(process.env.usageStatisticsURL),
+    ])
+    const globalStats = { ...globalOldStats, ...globalNewStats }
+
+    return Object.keys(globalStats)
+      .sort()
+      .map((monthKey) => {
+        return {
+          month: monthKey,
+          visites: Number(globalStats[monthKey].nb_visits || 0),
+          simulations: Number(globalStats[monthKey].nb_visits_converted || 0),
+        }
+      })
+  }
+
+  static buildUsageKpi(visitData, today = new Date()) {
+    const totalVisits = visitData.reduce((sum, month) => sum + month.visites, 0)
+    const totalSimulations = visitData.reduce(
+      (sum, month) => sum + month.simulations,
+      0,
+    )
+
+    const previousMonthDate = new Date(
+      today.getFullYear(),
+      today.getMonth() - 1,
+      1,
+    )
+    const previousMonthKey = `${previousMonthDate.getFullYear()}-${String(previousMonthDate.getMonth() + 1).padStart(2, "0")}`
+    const previousMonthData = visitData.find(
+      (month) => month.month === previousMonthKey,
+    )
+
+    const previousMonthLabel = previousMonthDate.toLocaleDateString("fr-FR", {
+      month: "long",
+      year: "numeric",
+    })
+
+    return {
+      totalSimulations,
+      totalVisits,
+      previousMonthSimulations: previousMonthData?.simulations || 0,
+      previousMonthVisits: previousMonthData?.visites || 0,
+      previousMonthLabel,
+    }
+  }
+
+  static buildBenefitsKpi(benefits) {
+    const nationalBenefits = benefits.filter(
+      (benefit) => benefit.institution?.type === "national",
+    ).length
+
+    return {
+      nationalBenefits,
+      localBenefitsTotal: benefits.length - nationalBenefits,
+    }
+  }
+
+  static async getUsageDashboard(today = new Date()) {
+    const [visitData, benefits] = await Promise.all([
+      this.getUsageSeries(),
+      this.getBenefits(),
+    ])
+    const kpi = {
+      ...this.buildUsageKpi(visitData, today),
+      ...this.buildBenefitsKpi(benefits),
+    }
+
+    return { visitData, kpi }
+  }
+
   static async getRecorderStatistics(startAt) {
     const url = `${process.env.recorderStatisticsURL}/benefits?start_at=${startAt}`
     const recorderStatistics = this.aggregateRelatedEventStatistics(

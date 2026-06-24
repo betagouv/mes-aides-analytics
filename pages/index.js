@@ -9,8 +9,8 @@ import Fetch from "../services/fetch.js"
 import Loader from "../components/Loader.js"
 
 const statsTypes = {
-  visites: "Visites",
-  simulations: "Simulations terminées",
+  visites: "Visites totales par mois",
+  simulations: "Simulation terminée par mois",
 }
 
 class Index extends Component {
@@ -18,6 +18,15 @@ class Index extends Component {
     super(props)
     this.state = {
       visitData: [],
+      kpi: {
+        totalSimulations: 0,
+        totalVisits: 0,
+        previousMonthSimulations: 0,
+        previousMonthVisits: 0,
+        previousMonthLabel: "",
+        nationalBenefits: 0,
+        localBenefitsTotal: 0,
+      },
       observatory: "",
       loading: true,
     }
@@ -27,22 +36,12 @@ class Index extends Component {
     const today = new Date()
     const nextMonth = `${today.getFullYear()}-${(today.getMonth() + 2) % 12}-01`
     this.setState({ observatory: `${process.env.observatoryURL}${nextMonth}` })
-    const visitData = await this.fetchData()
-    this.setState({ visitData, loading: false })
-  }
+    const { visitData, kpi } = await Fetch.getUsageDashboard(today)
 
-  async fetchData() {
-    const globalOldStats = await Fetch.getJSON(
-      process.env.usageStatisticsOldURL,
-    )
-    const globalNewStats = await Fetch.getJSON(process.env.usageStatisticsURL)
-    const globalStats = { ...globalOldStats, ...globalNewStats }
-    return Object.keys(globalStats).map((m) => {
-      return {
-        month: m,
-        visites: globalStats[m].nb_visits || null,
-        simulations: globalStats[m].nb_visits_converted || null,
-      }
+    this.setState({
+      visitData,
+      kpi,
+      loading: false,
     })
   }
 
@@ -57,6 +56,53 @@ class Index extends Component {
           Statistiques d'impact et d'aide à l'amélioration du produit Mes Aides
         </h1>
         <h2>Statistiques d'usage</h2>
+
+        <div className="kpi-grid" data-testid="kpi-grid">
+          <div className="kpi-card">
+            <div className="kpi-card-number">
+              {this.state.kpi.totalVisits.toLocaleString("fr-FR")}
+            </div>
+            <div className="kpi-card-label">visites depuis 2021</div>
+          </div>
+          <div className="kpi-card">
+            <div className="kpi-card-number">
+              {this.state.kpi.totalSimulations.toLocaleString("fr-FR")}
+            </div>
+            <div className="kpi-card-label">
+              simulations terminées depuis 2021
+            </div>
+          </div>
+          <div className="kpi-card kpi-card-local">
+            <div className="kpi-card-number">
+              {this.state.kpi.localBenefitsTotal.toLocaleString("fr-FR")}
+            </div>
+            <div className="kpi-card-label">
+              aides locales disponibles sur le simulateur
+            </div>
+          </div>
+          <div className="kpi-card kpi-card-local">
+            <div className="kpi-card-number">
+              {this.state.kpi.previousMonthVisits.toLocaleString("fr-FR")}
+            </div>
+            <div className="kpi-card-label">
+              visites en {this.state.kpi.previousMonthLabel}
+            </div>
+          </div>
+          <div className="kpi-card kpi-card-local">
+            <div className="kpi-card-number">
+              {this.state.kpi.previousMonthSimulations.toLocaleString("fr-FR")}
+            </div>
+            <div className="kpi-card-label">
+              simulations terminées en {this.state.kpi.previousMonthLabel}
+            </div>
+          </div>
+          <div className="kpi-card kpi-card-local">
+            <div className="kpi-card-number">
+              {this.state.kpi.nationalBenefits.toLocaleString("fr-FR")}
+            </div>
+            <div className="kpi-card-label">aides nationales disponibles</div>
+          </div>
+        </div>
 
         <div className="flex-justify">
           {Object.keys(statsTypes).map((key) => (
