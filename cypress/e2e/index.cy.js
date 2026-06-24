@@ -8,6 +8,7 @@ describe("Index Page", () => {
   })
 
   it("passes axe accessibility", () => {
+    cy.get('[data-testid="kpi-grid"]').should("be.visible")
     cy.injectAxe()
     cy.checkA11y()
   })
