@@ -1,10 +1,15 @@
-import { interceptUsageStatistics } from "../support/utils.js"
+import {
+  interceptUsageStatistics,
+  interceptRegionStatistics,
+} from "../support/utils.js"
 
 describe("Index Page", () => {
   beforeEach(() => {
     const interceptIdentifier = interceptUsageStatistics()
+    const interceptRegionIdentifier = interceptRegionStatistics()
     cy.visitHome()
     cy.wait(interceptIdentifier, { timeout: 15000 })
+    cy.wait(interceptRegionIdentifier, { timeout: 15000 })
   })
 
   it("passes axe accessibility", () => {
@@ -23,5 +28,10 @@ describe("Index Page", () => {
     cy.checkGraph("visites", "2021-09", "82874")
     // related to nb_visits_converted in fixtures/usage_statistics.json
     cy.checkGraph("simulations", "2021-09", "49512")
+  })
+
+  it("fetches data and displays the region heatmap", () => {
+    cy.get('[data-testid="region-heatmap"]').should("be.visible")
+    cy.get('[data-testid="region-heatmap"] svg').should("exist")
   })
 })

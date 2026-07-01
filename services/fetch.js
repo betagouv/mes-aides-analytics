@@ -1,4 +1,9 @@
-import { EventTypeCategoryMapping } from "./config.js"
+import {
+  EventTypeCategoryMapping,
+  InseeCodeByMatomoRegionCode,
+} from "./config.js"
+
+const MONTHS_IN_A_YEAR = 12
 
 export default class Fetch {
   static async getJSON(url) {
@@ -124,17 +129,56 @@ export default class Fetch {
     }
   }
 
+  static buildRegionVisits(regionStats) {
+    const monthStatsList = Array.isArray(regionStats)
+      ? [regionStats]
+      : Object.values(regionStats || {})
+    const monthCount = Array.isArray(regionStats)
+      ? MONTHS_IN_A_YEAR
+      : monthStatsList.length || 1
+
+    const totalsByRegion = monthStatsList.reduce((totals, monthStats) => {
+      const stats = Array.isArray(monthStats) ? monthStats : []
+      stats.forEach((stat) => {
+        if (stat.country !== "fr") {
+          return
+        }
+
+        const regionId = InseeCodeByMatomoRegionCode[stat.region]
+        if (!regionId) {
+          return
+        }
+
+        totals[regionId] = (totals[regionId] || 0) + Number(stat.nb_visits || 0)
+      })
+
+      return totals
+    }, {})
+
+    return Object.entries(totalsByRegion).map(([regionId, totalVisits]) => ({
+      id: regionId,
+      value: Math.round(totalVisits / monthCount),
+    }))
+  }
+
+  static async getRegionVisits() {
+    const regionStats = await this.getJSON(process.env.regionStatisticsURL)
+
+    return this.buildRegionVisits(regionStats)
+  }
+
   static async getUsageDashboard(today = new Date()) {
-    const [visitData, benefits] = await Promise.all([
+    const [visitData, benefits, regionVisits] = await Promise.all([
       this.getUsageSeries(),
       this.getBenefits(),
+      this.getRegionVisits(),
     ])
     const kpi = {
       ...this.buildUsageKpi(visitData, today),
       ...this.buildBenefitsKpi(benefits),
     }
 
-    return { visitData, kpi }
+    return { visitData, kpi, regionVisits }
   }
 
   static async getRecorderStatistics(startAt) {
