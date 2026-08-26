@@ -1,6 +1,7 @@
 import { Component } from "react"
 
 import ViewSwitch from "../components/viewSwitch.js"
+import Loader from "../components/Loader.js"
 
 import { Config } from "../services/config.js"
 import Fetch from "../services/fetch.js"
@@ -24,6 +25,7 @@ class PagesVisits extends Component {
       sortBy: null,
       sortAscending: false,
       showGraph: false,
+      loading: true,
     }
   }
 
@@ -39,6 +41,8 @@ class PagesVisits extends Component {
   }
 
   async fetchPagesStats() {
+    this.setState({ loading: true })
+
     const pagesStats = await Fetch.getJSON(this.getDataUrl())
 
     for (const element of pagesStats) {
@@ -51,6 +55,8 @@ class PagesVisits extends Component {
         )
       }
     }
+
+    this.setState({ loading: false })
   }
 
   flatten(output, array, depth = "") {
@@ -116,6 +122,10 @@ class PagesVisits extends Component {
   }
 
   render() {
+    if (this.state.loading) {
+      return <Loader />
+    }
+
     return (
       <>
         <h1 data-testid="title">Statistiques de visites</h1>
