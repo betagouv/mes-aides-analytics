@@ -119,3 +119,21 @@ export const EventTypeCategoryMapping = {
   },
   email: { cat: EventCategories.EXPLAIN, name: "Email", color: "#d62728" },
 }
+
+// Matomo returns French regions using their own region codes, our map
+// features are indexed by the official INSEE region code.
+export const InseeCodeByMatomoRegionCode = {
+  IDF: "11",
+  CVL: "24",
+  BFC: "27",
+  NOR: "28",
+  HDF: "32",
+  GES: "44",
+  PDL: "52",
+  BRE: "53",
+  NAQ: "75",
+  OCC: "76",
+  ARA: "84",
+  PAC: "93",
+  "20R": "94", // Corse
+}

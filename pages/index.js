@@ -7,6 +7,7 @@ const ResponsiveBar = dynamic(
 )
 import Fetch from "../services/fetch.js"
 import Loader from "../components/Loader.js"
+import VisitsHeatmap from "../components/visitsHeatmap.js"
 
 const statsTypes = {
   visites: "Visites totales par mois",
@@ -18,6 +19,7 @@ class Index extends Component {
     super(props)
     this.state = {
       visitData: [],
+      regionVisits: [],
       kpi: {
         totalSimulations: 0,
         totalVisits: 0,
@@ -36,11 +38,13 @@ class Index extends Component {
     const today = new Date()
     const nextMonth = `${today.getFullYear()}-${(today.getMonth() + 2) % 12}-01`
     this.setState({ observatory: `${process.env.observatoryURL}${nextMonth}` })
-    const { visitData, kpi } = await Fetch.getUsageDashboard(today)
+    const { visitData, kpi, regionVisits } =
+      await Fetch.getUsageDashboard(today)
 
     this.setState({
       visitData,
       kpi,
+      regionVisits,
       loading: false,
     })
   }
@@ -132,6 +136,8 @@ class Index extends Component {
             </div>
           ))}
         </div>
+
+        <VisitsHeatmap data={this.state.regionVisits} />
 
         <p>
           Les statistiques d'usage du simulateur sont publiques et accessibles à

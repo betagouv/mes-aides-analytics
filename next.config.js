@@ -19,6 +19,8 @@ const configuration = {
       "https://observatoire.numerique.gouv.fr/Demarches/3135?view-mode=statistics&date-debut=2020-07-01&date-fin=",
     aidesJeunesStatisticsURL:
       "https://mes-aides.1jeune1solution.beta.gouv.fr/documents/stats.json",
+    regionStatisticsURL:
+      "https://stats.beta.gouv.fr/index.php?date=last12&filter_limit=100&force_api_session=1&format=JSON&format_metrics=1&idSite=63&method=UserCountry.getRegion&module=API&period=month&token_auth=anonymous",
     benefitsURL: `${aidesJeunesUrl}api/benefits`,
     pagesStatsURL:
       "https://stats.beta.gouv.fr/index.php?module=API&format=JSON&idSite=63&period=range&method=Actions.getExitPageUrls&expanded=1&date=",

@@ -234,6 +234,32 @@ table .sortable-asc:after {
   min-width: 300px;
   flex: 1;
 }
+.responsive-chart.map-chart {
+  max-width: 700px;
+  margin: 0 auto;
+}
+.map-header {
+  align-items: center;
+  gap: 16px;
+}
+.map-view-switch {
+  display: inline-flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.map-view-switch button {
+  border: 1px solid #9ac9d8;
+  background: #fff;
+  color: #1f2937;
+  border-radius: 999px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font: inherit;
+}
+.map-view-switch button.active {
+  background: #9ac9d8;
+  color: #0f172a;
+}
 .flex-column {
   min-width: 600px;
   flex: 1;
