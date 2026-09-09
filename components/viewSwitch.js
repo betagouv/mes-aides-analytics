@@ -20,6 +20,7 @@ class ViewSwitch extends Component {
           htmlFor="switch-view"
           id="switch-view-label"
           data-testid="switch-view"
+          aria-label="Changer l'affichage entre liste et graphique"
         >
           <div>
             <svg
@@ -32,6 +33,7 @@ class ViewSwitch extends Component {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              aria-hidden="true"
             >
               <line x1="8" y1="6" x2="21" y2="6"></line>
               <line x1="8" y1="12" x2="21" y2="12"></line>
@@ -52,6 +54,7 @@ class ViewSwitch extends Component {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              aria-hidden="true"
             >
               <rect x="3" y="3" width="7" height="7"></rect>
               <rect x="14" y="3" width="7" height="7"></rect>

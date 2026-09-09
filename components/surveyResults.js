@@ -47,6 +47,8 @@ class SurveyResults extends Component {
           {this.state.total && (
             <div className="responsive-chart" data-testid="survey-summary">
               <ResponsiveBar
+                role="figure"
+                ariaLabel="Résumé du sondage"
                 label={(entry) =>
                   `${entry.value} (${Math.round(
                     (100 * entry.value) / this.state.total,
