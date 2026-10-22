@@ -24,8 +24,7 @@ const configuration = {
       "https://stats.beta.gouv.fr/index.php?module=API&format=JSON&idSite=63&period=range&method=Actions.getExitPageUrls&expanded=1&date=",
     benefitDetailURL: `${aidesJeunesUrl}aides/`,
     recorderStatisticsURL:
-      process.env.RECORDER_STATISTICS_URL ||
-      "https://aides-jeunes-stats-recorder.osc-fr1.scalingo.io",
+      process.env.RECORDER_STATISTICS_URL || `${aidesJeunesUrl}stats-recorder`,
     commitSHA: process.env.GITHUB_SHA || "local",
   },
 }
