@@ -1,0 +1,168 @@
+{
+  "2021-01": {},
+  "2021-02": {},
+  "2021-03": {
+    "nb_visits": 352,
+    "nb_visits_converted": 48
+  },
+  "2021-04": {
+    "nb_visits": 105088,
+    "nb_visits_converted": 69939
+  },
+  "2021-05": {
+    "nb_visits": 373836,
+    "nb_visits_converted": 247773
+  },
+  "2021-06": {
+    "nb_visits": 94571,
+    "nb_visits_converted": 55570
+  },
+  "2021-07": {
+    "nb_visits": 100608,
+    "nb_visits_converted": 59207
+  },
+  "2021-08": {
+    "nb_visits": 76569,
+    "nb_visits_converted": 47110
+  },
+  "2021-09": {
+    "nb_visits": 82874,
+    "nb_visits_converted": 49512
+  },
+  "2021-10": {
+    "nb_visits": 75388,
+    "nb_visits_converted": 45185
+  },
+  "2021-11": {
+    "nb_visits": 85965,
+    "nb_visits_converted": 53816
+  },
+  "2021-12": {
+    "nb_visits": 76339,
+    "nb_visits_converted": 45729
+  },
+  "2022-01": {
+    "nb_visits": 117634,
+    "nb_visits_converted": 63939
+  },
+  "2022-02": {
+    "nb_visits": 83026,
+    "nb_visits_converted": 46322
+  },
+  "2022-03": {
+    "nb_visits": 85011,
+    "nb_visits_converted": 49582
+  },
+  "2022-04": {
+    "nb_visits": 81845,
+    "nb_visits_converted": 47678
+  },
+  "2022-05": {
+    "nb_visits": 78332,
+    "nb_visits_converted": 45891
+  },
+  "2022-06": {
+    "nb_visits": 100065,
+    "nb_visits_converted": 58041
+  },
+  "2022-07": {
+    "nb_visits": 106452,
+    "nb_visits_converted": 61333
+  },
+  "2022-08": {
+    "nb_visits": 106354,
+    "nb_visits_converted": 63101
+  },
+  "2022-09": {
+    "nb_visits": 138932,
+    "nb_visits_converted": 83023
+  },
+  "2022-10": {
+    "nb_visits": 113962,
+    "nb_visits_converted": 63725
+  },
+  "2022-11": {
+    "nb_visits": 109111,
+    "nb_visits_converted": 58990
+  },
+  "2022-12": {
+    "nb_visits": 89002,
+    "nb_visits_converted": 44802
+  },
+  "2023-01": {
+    "nb_visits": 232737,
+    "nb_visits_converted": 123086
+  },
+  "2023-02": {
+    "nb_visits": 153294,
+    "nb_visits_converted": 81809
+  },
+  "2023-03": {
+    "nb_visits": 149454,
+    "nb_visits_converted": 80062
+  },
+  "2023-04": {
+    "nb_visits": 117813,
+    "nb_visits_converted": 63973
+  },
+  "2023-05": {
+    "nb_visits": 117584,
+    "nb_visits_converted": 64322
+  },
+  "2023-06": {
+    "nb_visits": 125821,
+    "nb_visits_converted": 70034
+  },
+  "2023-07": {
+    "nb_visits": 131981,
+    "nb_visits_converted": 67787
+  },
+  "2023-08": {
+    "nb_visits": 129542,
+    "nb_visits_converted": 65703
+  },
+  "2023-09": {
+    "nb_visits": 161890,
+    "nb_visits_converted": 83049
+  },
+  "2023-10": {
+    "nb_visits": 163079,
+    "nb_visits_converted": 82905
+  },
+  "2023-11": {
+    "nb_visits": 130686,
+    "nb_visits_converted": 59952
+  },
+  "2023-12": {
+    "nb_visits": 122534,
+    "nb_visits_converted": 43425
+  },
+  "2024-01": {
+    "nb_visits": 265877,
+    "nb_visits_converted": 100490
+  },
+  "2024-02": {
+    "nb_visits": 224764,
+    "nb_visits_converted": 77449
+  },
+  "2024-03": {
+    "nb_visits": 233880,
+    "nb_visits_converted": 73080
+  },
+  "2024-04": {
+    "nb_visits": 212914,
+    "nb_visits_converted": 62166
+  },
+  "2024-05": {
+    "nb_visits": 317940,
+    "nb_visits_converted": 55982
+  },
+  "2024-06": {
+    "nb_visits": 261571,
+    "nb_visits_converted": 57710
+  },
+  "2024-07": {
+    "nb_visits": 314723,
+    "nb_visits_converted": 68820
+  }
+}

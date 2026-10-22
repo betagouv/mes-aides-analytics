@@ -1,9 +1,13 @@
 import { EventTypeCategoryMapping } from "./config.js"
+import usageStatistics2021To2024 from "./usage-statistics-2021-2024.json"
 
 export default class Fetch {
   static async getJSON(url) {
-    const data = await fetch(url)
-    return await data.json()
+    const response = await fetch(url)
+    if (!response.ok) {
+      throw new Error(`${url} a répondu ${response.status}`)
+    }
+    return await response.json()
   }
 
   static async getSurveyStatistics() {
@@ -65,11 +69,8 @@ export default class Fetch {
   }
 
   static async getUsageSeries() {
-    const [globalOldStats, globalNewStats] = await Promise.all([
-      this.getJSON(process.env.usageStatisticsOldURL),
-      this.getJSON(process.env.usageStatisticsURL),
-    ])
-    const globalStats = { ...globalOldStats, ...globalNewStats }
+    const globalNewStats = await this.getJSON(process.env.usageStatisticsURL)
+    const globalStats = { ...usageStatistics2021To2024, ...globalNewStats }
 
     return Object.keys(globalStats)
       .sort()
