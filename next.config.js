@@ -4,6 +4,7 @@ const aidesJeunesUrl = "https://mes-aides.1jeune1solution.beta.gouv.fr/"
 
 const configuration = {
   output: "export",
+  devIndicators: false,
   assetPrefix: isProduction
     ? "https://betagouv.github.io/mes-aides-analytics/"
     : undefined,
