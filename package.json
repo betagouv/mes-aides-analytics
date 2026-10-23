@@ -20,22 +20,22 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@iframe-resizer/child": "^5.5.9",
     "@nivo/bar": "^0.99.0",
-    "@iframe-resizer/child": "^5.3.3",
-    "next": "^16.2.9",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "next": "^16.4.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   },
   "devDependencies": {
-    "axe-core": "^4.10.3",
-    "cypress": "^14.3.2",
+    "axe-core": "^4.14.0",
+    "cypress": "^16.2.0",
     "cypress-axe-core": "^2.0.0",
-    "eslint": "^9.38.0",
-    "eslint-config-next": "^15.3.1",
-    "eslint-config-prettier": "^10.1.2",
-    "eslint-plugin-prettier": "^5.2.6",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^15.5.28",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.7",
     "eslint-plugin-react": "^7.37.5",
-    "prettier": "^3.5.3",
-    "start-server-and-test": "^2.0.11"
+    "prettier": "^3.9.10",
+    "start-server-and-test": "^2.1.5"
   }
 }

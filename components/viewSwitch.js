@@ -15,12 +15,12 @@ class ViewSwitch extends Component {
           onChange={() => this.state.trigger()}
           type="checkbox"
           id="switch-view"
+          aria-label="Changer l'affichage entre liste et graphique"
         />
         <label
           htmlFor="switch-view"
           id="switch-view-label"
           data-testid="switch-view"
-          aria-label="Changer l'affichage entre liste et graphique"
         >
           <div>
             <svg
