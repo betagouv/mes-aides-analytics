@@ -29,6 +29,7 @@ class Index extends Component {
       },
       observatory: "",
       loading: true,
+      error: false,
     }
   }
 
@@ -36,16 +37,25 @@ class Index extends Component {
     const today = new Date()
     const nextMonth = `${today.getFullYear()}-${(today.getMonth() + 2) % 12}-01`
     this.setState({ observatory: `${process.env.observatoryURL}${nextMonth}` })
-    const { visitData, kpi } = await Fetch.getUsageDashboard(today)
-
-    this.setState({
-      visitData,
-      kpi,
-      loading: false,
-    })
+    try {
+      const { visitData, kpi } = await Fetch.getUsageDashboard(today)
+      this.setState({ visitData, kpi, loading: false })
+    } catch (error) {
+      console.error(error)
+      this.setState({ error: true, loading: false })
+    }
   }
 
   render() {
+    if (this.state.error) {
+      return (
+        <p role="alert">
+          Les statistiques d'usage n'ont pas pu être chargées. Réessayez plus
+          tard.
+        </p>
+      )
+    }
+
     if (this.state.loading) {
       return <Loader />
     }
